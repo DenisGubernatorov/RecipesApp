@@ -2,4 +2,8 @@
 <resources>
     <dimen name="margin_full_16_dp">16dp</dimen>
     <dimen name="margin_half_8_dp">8dp</dimen>
+    <dimen name="_0dp">0dp</dimen>
+    <dimen name="margin_quarter_4dp">4dp</dimen>
+    <dimen name="corner_radius">4dp</dimen>
+    <dimen name="text_Size_14">14sp</dimen>
 </resources>
