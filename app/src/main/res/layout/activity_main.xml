@@ -5,15 +5,43 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_background"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginHorizontal="@dimen/margin_full_16_dp"
+        android:layout_marginBottom="@dimen/margin_half_8_dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/category"
+            style="@style/StyleNavButton"
+            android:layout_width="@dimen/_0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_quarter_4dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/btn_category_background"
+            android:text="@string/btnTxt_category">
+
+        </Button>
+
+        <Button
+            android:id="@+id/favorites"
+            style="@style/StyleNavButton"
+            android:layout_width="@dimen/_0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/btn_favorites_background"
+            android:text="@string/btnTxt_favorites"
+            app:icon="@drawable/ic_heart_empty"
+            app:iconGravity="end">
+
+        </Button>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
