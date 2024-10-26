@@ -7,17 +7,24 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
 
-class CategoriesListFragment : Fragment(R.layout.fragment_list_categories) {
+class CategoriesListFragment : Fragment() {
+    private var _binding: FragmentListCategoriesBinding? = null
+    private val binding
+        get() = _binding
+            ?: throw IllegalStateException("Binding  for FragmentListCategoriesBinding must be not null ")
 
-    private val binding: FragmentListCategoriesBinding by lazy {
-        FragmentListCategoriesBinding.inflate(layoutInflater)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _binding = FragmentListCategoriesBinding.inflate(inflater)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

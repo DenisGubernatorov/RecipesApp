@@ -28,8 +28,7 @@
         android:layout_marginHorizontal="@dimen/margin_full_16_dp"
         android:layout_marginBottom="@dimen/margin_half_8_dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="16dp">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
             android:id="@+id/category"

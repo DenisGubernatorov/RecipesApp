@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val categoriesListFragment = CategoriesListFragment()
         supportFragmentManager.commit {
+            setReorderingAllowed(true)
             add(R.id.mainContainer, categoriesListFragment)
         }
     }
