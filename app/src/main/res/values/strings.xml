@@ -3,4 +3,5 @@
     <string name="text_category">Категории</string>
     <string name="text_favorites">Избранное</string>
     <string name="text_main_fragment">Основной фрагмент</string>
+    <string name="text_favorites_fragment">Избранное</string>
 </resources>
