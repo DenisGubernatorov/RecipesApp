@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.example.recipesapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -17,24 +18,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
-            loadFragment(CategoriesListFragment())
+            load<CategoriesListFragment>()
         }
 
         binding.category.setOnClickListener {
-            val categoriesListFragment = CategoriesListFragment()
-            loadFragment(categoriesListFragment)
+            load<CategoriesListFragment>()
         }
 
         binding.favorites.setOnClickListener {
-            val favoritesFragment = FavoritesFragment()
-            loadFragment(favoritesFragment)
+            load<FavoritesFragment>()
         }
     }
 
-    private fun loadFragment(fragment: Fragment) {
+    private inline fun <reified T : Fragment> load() {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
-            replace(R.id.mainContainer, fragment)
+            replace<T>(R.id.mainContainer)
             addToBackStack(null)
         }
     }
