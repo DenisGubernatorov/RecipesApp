@@ -7,5 +7,5 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/text_main_fragment" />
+        android:text="@string/text_favorites" />
 </androidx.constraintlayout.widget.ConstraintLayout>
