@@ -22,19 +22,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.category.setOnClickListener {
-            loadFragment<CategoriesListFragment>(true)
+            loadFragment<CategoriesListFragment>()
         }
 
         binding.favorites.setOnClickListener {
-            loadFragment<FavoritesFragment>(true)
+            loadFragment<FavoritesFragment>()
         }
     }
 
-    private inline fun <reified T : Fragment> loadFragment(addToBackStack: Boolean) {
+    private inline fun <reified T : Fragment> loadFragment(isInBackstack: Boolean = true) {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             replace<T>(R.id.mainContainer)
-            if (addToBackStack) {
+            if (isInBackstack) {
                 addToBackStack(null)
             }
         }
