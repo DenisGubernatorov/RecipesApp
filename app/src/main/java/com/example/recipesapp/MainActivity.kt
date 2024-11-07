@@ -18,23 +18,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
-            load<CategoriesListFragment>()
+            loadFragment<CategoriesListFragment>(false)
         }
 
         binding.category.setOnClickListener {
-            load<CategoriesListFragment>()
+            loadFragment<CategoriesListFragment>()
         }
 
         binding.favorites.setOnClickListener {
-            load<FavoritesFragment>()
+            loadFragment<FavoritesFragment>()
         }
     }
 
-    private inline fun <reified T : Fragment> load() {
+    private inline fun <reified T : Fragment> loadFragment(isInBackstack: Boolean = true) {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             replace<T>(R.id.mainContainer)
-            addToBackStack(null)
+            if (isInBackstack) {
+                addToBackStack(null)
+            }
         }
     }
 }
