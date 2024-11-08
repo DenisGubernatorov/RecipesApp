@@ -14,5 +14,14 @@
         <item name="cornerRadius">@dimen/corner_radius</item>
     </style>
 
+    <style name="CategoryHeaderTextStyle">
+        <item name="android:fontFamily">@font/montserrat_alternates_semibold</item>
+        <item name="android:textSize">@dimen/text_Size_14</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/cat_header_txt</item>
+        <item name="android:padding">8dp</item>
+
+    </style>
+
 
 </resources>
