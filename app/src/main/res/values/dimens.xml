@@ -7,8 +7,9 @@
     <dimen name="corner_radius">4dp</dimen>
     <dimen name="text_Size_14">14sp</dimen>
     <dimen name="text_Size_20">20sp</dimen>
+    <dimen name="text_Size_12">12sp</dimen>
     <dimen name="cat_header_height_224dp">224dp</dimen>
-    <dimen name="cat_header_text_size">20sp</dimen>
     <dimen name="cat_corner_radius_header">8dp</dimen>
     <dimen name="cat_header_padding">10dp</dimen>
+    <dimen name="cat_header_padding_half_8_dp">8dp</dimen>
 </resources>
