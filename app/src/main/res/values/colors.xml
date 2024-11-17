@@ -8,5 +8,6 @@
     <color name="btn_favorites_background">#E13E3E</color>
     <color name="cat_header_txt">#5F3678</color>
     <color name="cat_description_txt">#666666</color>
+    <color name="test_red">#F00</color>
 
 </resources>
