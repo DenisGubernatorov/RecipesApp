@@ -32,7 +32,7 @@
 
         <Button
             android:id="@+id/category"
-            style="@style/StyleNavButton"
+            style="@style/NavButtonStyle"
             android:layout_width="@dimen/_0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_quarter_4dp"
@@ -44,7 +44,7 @@
 
         <Button
             android:id="@+id/favorites"
-            style="@style/StyleNavButton"
+            style="@style/NavButtonStyle"
             android:layout_width="@dimen/_0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
