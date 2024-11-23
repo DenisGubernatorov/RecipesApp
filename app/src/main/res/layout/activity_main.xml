@@ -50,6 +50,8 @@
             android:layout_weight="1"
             android:backgroundTint="@color/btn_favorites_background"
             android:text="@string/text_favorites"
+            android:maxLines="1"
+            android:ellipsize="end"
             app:icon="@drawable/ic_heart_empty"
             app:iconGravity="end">
 
