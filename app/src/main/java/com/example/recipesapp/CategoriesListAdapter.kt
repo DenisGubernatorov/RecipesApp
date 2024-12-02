@@ -9,6 +9,17 @@ import com.example.recipesapp.databinding.ItemCategoryBinding
 
 class CategoriesListAdapter(private val dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick()
+    }
+
+    private var itemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
+    }
+
     class ViewHolder(private var binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(category: Category) {
@@ -41,6 +52,9 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = dataSet[position]
         holder.bind(category)
+        holder.itemView.setOnClickListener {
+            itemClickListener?.onItemClick()
+        }
 
     }
 }
