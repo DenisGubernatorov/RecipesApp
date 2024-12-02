@@ -20,11 +20,20 @@ class CategoriesListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentListCategoriesBinding.inflate(inflater)
+        initRecycler()
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+    private fun initRecycler() {
+        val categoriesListAdapter = CategoriesListAdapter(STUB.getCategories())
+        val rvCategories = binding.rvCategories
+        rvCategories.adapter = categoriesListAdapter
+
     }
 }
