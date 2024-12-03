@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
 
 class CategoriesListFragment : Fragment() {
@@ -46,8 +47,10 @@ class CategoriesListFragment : Fragment() {
 
     private fun openRecipesByCategoryId() {
         val recipesListFragment = RecipesListFragment()
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.mainContainer, recipesListFragment).addToBackStack(null).commit()
+        parentFragmentManager.commit {
+            add(R.id.mainContainer, recipesListFragment)
+            addToBackStack(null)
+        }
 
     }
 }
