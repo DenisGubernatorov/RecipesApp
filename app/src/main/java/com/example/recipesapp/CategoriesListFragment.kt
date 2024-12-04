@@ -34,23 +34,37 @@ class CategoriesListFragment : Fragment() {
     private fun initRecycler() {
 
         val categoriesListAdapter = CategoriesListAdapter(STUB.getCategories())
+
         categoriesListAdapter.setOnItemClickListener(object :
             CategoriesListAdapter.OnItemClickListener {
-            override fun onItemClick() {
-                openRecipesByCategoryId()
+            override fun onItemClick(categoryId: Int) {
+                openRecipesByCategoryId(categoryId)
             }
         })
+
         val rvCategories = binding.rvCategories
         rvCategories.adapter = categoriesListAdapter
 
     }
 
-    private fun openRecipesByCategoryId() {
+    private fun openRecipesByCategoryId(categoryId: Int) {
+
         val recipesListFragment = RecipesListFragment()
+        val category = STUB.getCategories()[categoryId]
+
+        val bundle = Bundle().apply {
+            putInt(RecipesListFragment.ARG_CATEGORY_ID, categoryId)
+            putString(RecipesListFragment.ARG_CATEGORY_NAME, category.title)
+            putString(RecipesListFragment.ARG_CATEGORY_IMAGE_URL, category.imageUrl)
+        }
+
+        recipesListFragment.apply {
+            arguments = bundle
+        }
+
         parentFragmentManager.commit {
             add(R.id.mainContainer, recipesListFragment)
             addToBackStack(null)
         }
-
     }
 }
