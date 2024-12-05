@@ -29,9 +29,12 @@ class RecipesListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = RecipesListFragmentBinding.inflate(inflater)
-        categoryId = requireArguments().getInt(ARG_CATEGORY_ID)
-        categoryName = requireArguments().getString(ARG_CATEGORY_NAME)
-        categoryImageUrl = requireArguments().getString(ARG_CATEGORY_IMAGE_URL)
+
+        requireArguments().let {
+            categoryId = it.getInt(ARG_CATEGORY_ID)
+            categoryName = it.getString(ARG_CATEGORY_NAME)
+            categoryImageUrl = it.getString(ARG_CATEGORY_IMAGE_URL)
+        }
         return binding.root
     }
 

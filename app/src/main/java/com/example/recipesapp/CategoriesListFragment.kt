@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
@@ -52,14 +53,12 @@ class CategoriesListFragment : Fragment() {
         val recipesListFragment = RecipesListFragment()
         val category = STUB.getCategories()[categoryId]
 
-        val bundle = Bundle().apply {
-            putInt(RecipesListFragment.ARG_CATEGORY_ID, categoryId)
-            putString(RecipesListFragment.ARG_CATEGORY_NAME, category.title)
-            putString(RecipesListFragment.ARG_CATEGORY_IMAGE_URL, category.imageUrl)
-        }
-
         recipesListFragment.apply {
-            arguments = bundle
+            arguments = bundleOf(
+                RecipesListFragment.ARG_CATEGORY_ID to categoryId,
+                RecipesListFragment.ARG_CATEGORY_NAME to category.title,
+                RecipesListFragment.ARG_CATEGORY_IMAGE_URL to category.imageUrl
+            )
         }
 
         parentFragmentManager.commit {
