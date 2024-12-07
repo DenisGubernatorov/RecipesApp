@@ -30,7 +30,7 @@ class RecipesListFragment : Fragment() {
     ): View {
         _binding = RecipesListFragmentBinding.inflate(inflater)
 
-        requireArguments().let {
+        arguments?.let {
             categoryId = it.getInt(ARG_CATEGORY_ID)
             categoryName = it.getString(ARG_CATEGORY_NAME)
             categoryImageUrl = it.getString(ARG_CATEGORY_IMAGE_URL)
