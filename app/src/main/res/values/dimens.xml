@@ -12,5 +12,6 @@
     <dimen name="cat_corner_radius_header">8dp</dimen>
     <dimen name="cat_header_padding">10dp</dimen>
     <dimen name="cat_header_padding_half_8_dp">8dp</dimen>
-    <dimen name="card_image_size_130dp">130dp</dimen>
+    <dimen name="cat_image_size_130dp">130dp</dimen>
+    <dimen name="recipe_image_size_100dp">100dp</dimen>
 </resources>

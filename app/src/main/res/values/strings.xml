@@ -1,7 +1,10 @@
 <resources>
     <string name="text_app_name">RecipesApp</string>
     <string name="text_category">Категории</string>
+    <string name="text_no_value">В разработке</string>
     <string name="text_favorites">Избранное</string>
     <string name="text_main_fragment">Основной фрагмент</string>
     <string name="text_recipes_list_title">Список рецептов в категории</string>
+    <string name="recipes_list_img_description">Категория еще в разработке</string>
+
 </resources>
