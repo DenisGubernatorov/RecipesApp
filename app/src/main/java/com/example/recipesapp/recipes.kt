@@ -24,7 +24,7 @@ object STUB {
 
     fun getCategories(): List<Category> = categories
 
-    fun getRecipesByCategoryId(categoryId: Int): List<Recipe> {
+    fun getRecipesByCategoryId(categoryId: Int?): List<Recipe> {
         return when (categoryId) {
             0 -> return burgerRecipes
             else -> emptyList()
@@ -121,7 +121,7 @@ object STUB {
             title = "Бургер с курицей и авокадо",
             ingredients = listOf(
                 Ingredient("1", "шт.", "Булочка для гамбургера"),
-                Ingredient("150", "г", "Куринное филе"),
+                Ingredient("150", "г", "Куриное филе"),
                 Ingredient("0.5", "шт.", "Лук репчатый"),
                 Ingredient("1", "лист", "Салат айсберг"),
                 Ingredient("1", "ломтик", "Помидор"),
@@ -133,7 +133,7 @@ object STUB {
                 Ingredient("0.5", "г", "Перец черный молотый")
             ),
             method = listOf(
-                "Куринное филе нарежьте на порционные куски и обжаривайте до готовности.",
+                "Куриное филе нарежьте на порционные куски и обжаривайте до готовности.",
                 "Лук нарежьте кольцами и добавьте к фаршу. Обжаривайте вместе до золотистой корки.",
                 "Авокадо порежьте ломтиками.",
                 "Разрежьте булочку на две части и поджарьте их до золотистости.",

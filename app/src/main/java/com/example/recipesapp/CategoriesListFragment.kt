@@ -62,6 +62,7 @@ class CategoriesListFragment : Fragment() {
         }
 
         parentFragmentManager.commit {
+            hide(this@CategoriesListFragment)
             add(R.id.mainContainer, recipesListFragment)
             addToBackStack(null)
         }
