@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.example.recipesapp.databinding.RecipesListFragmentBinding
 
 class RecipesListFragment : Fragment() {
@@ -51,7 +52,8 @@ class RecipesListFragment : Fragment() {
             null
         }
         binding.recipesListHeaderImg.setImageDrawable(drawableImage)
-        binding.recipesListHeaderImg.contentDescription = "Изображение для категории $categoryName"
+        binding.recipesListHeaderImg.contentDescription =
+            getString(R.string.category_header_image_description, categoryName)
         binding.recipesListTitle.text = categoryName
 
         initRecycler()
@@ -76,12 +78,9 @@ class RecipesListFragment : Fragment() {
 
     private fun openRecipeByRecipeId(categoryId: Int) {
 
-        val recipeFragment = RecipeFragment()
-
-
         parentFragmentManager.commit {
-            hide(this@RecipesListFragment)
-            add(R.id.mainContainer, recipeFragment)
+            setReorderingAllowed(true)
+            replace<RecipeFragment>(R.id.mainContainer)
             addToBackStack(null)
         }
     }

@@ -25,7 +25,8 @@ class RecipeListAdapter(private val dataSet: List<Recipe>) :
                 null
             }
             binding.recipeImageView.setImageDrawable(drawableImage)
-            binding.recipeImageView.contentDescription = "Изображение для категории ${recipe.title}"
+            binding.recipeImageView.contentDescription =
+                itemView.context.getString(R.string.recipe_header_image_description, recipe.title)
 
         }
     }

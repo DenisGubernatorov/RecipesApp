@@ -20,7 +20,7 @@
             android:id="@+id/recipe_imageView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/recipe_image_size_100dp"
-            android:contentDescription="@string/text_no_value"
+            android:contentDescription="@string/recipes_img_description"
             android:scaleType="centerCrop"
             tools:background="@color/test_red"
             tools:layout_height="@dimen/recipe_image_size_100dp" />

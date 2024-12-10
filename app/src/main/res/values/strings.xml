@@ -5,6 +5,9 @@
     <string name="text_favorites">Избранное</string>
     <string name="text_main_fragment">Основной фрагмент</string>
     <string name="text_recipes_list_title">Список рецептов в категории</string>
-    <string name="recipes_list_img_description">Категория еще в разработке</string>
-
+    <string name="category_image_description">Изображение для карточки категории %1$s</string>
+    <string name="category_header_image_description">Изображение для списка категорий %1$s</string>
+    <string name="recipe_header_image_description">Изображение для рецепта %1$s</string>
+    <string name="recipes_list_img_description">Изображение для категории </string>
+    <string name="recipes_img_description">Изображение для рецепта </string>
 </resources>
