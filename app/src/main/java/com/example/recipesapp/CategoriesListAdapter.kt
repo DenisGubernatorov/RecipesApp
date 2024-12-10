@@ -10,16 +10,6 @@ import com.example.recipesapp.databinding.ItemCategoryBinding
 class CategoriesListAdapter(private val dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
 
-    interface OnItemClickListener {
-        fun onItemClick(categoryId: Int)
-    }
-
-    private var itemClickListener: OnItemClickListener? = null
-
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-        itemClickListener = listener
-    }
-
     class ViewHolder(private var binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(category: Category) {
@@ -34,9 +24,20 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
                 null
             }
             binding.cardImageView.setImageDrawable(drawableImage)
-            binding.cardImageView.contentDescription = "Изображение для категории ${category.title}"
+            binding.cardImageView.contentDescription =
+                itemView.context.getString(R.string.category_image_description, category.title)
 
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(categoryId: Int)
+    }
+
+    private var itemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

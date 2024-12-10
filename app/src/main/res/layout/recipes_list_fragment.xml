@@ -1,14 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_background">
+    android:backgroundTint="@color/main_background"
+    android:orientation="vertical">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cat_header_height_224dp">
+
+        <ImageView
+            android:id="@+id/recipes_list_header_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/recipes_list_img_description"
+            android:scaleType="centerCrop"
+            tools:background="@color/test_red"
+
+            />
+
+        <TextView
+            android:id="@+id/recipes_list_title"
+            style="@style/CategoryHeaderTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_full_16_dp"
+            android:layout_marginBottom="@dimen/margin_full_16_dp"
+            android:background="@drawable/header_title_shape"
+            android:padding="@dimen/cat_header_padding"
+            android:textSize="@dimen/text_Size_20"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="название категории" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_recipes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/text_recipes_list_title">
+        android:layout_marginHorizontal="@dimen/margin_half_8_dp"
+        android:layout_marginTop="@dimen/margin_full_16_dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="1"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_category" />
 
-    </TextView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

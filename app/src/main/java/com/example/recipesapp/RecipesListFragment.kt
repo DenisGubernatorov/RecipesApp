@@ -1,13 +1,18 @@
 package com.example.recipesapp
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.example.recipesapp.databinding.RecipesListFragmentBinding
 
 class RecipesListFragment : Fragment() {
+
     companion object {
         const val ARG_CATEGORY_ID: String = "ARG_CATEGORY_ID"
         const val ARG_CATEGORY_NAME: String = "ARG_CATEGORY_NAME"
@@ -23,6 +28,7 @@ class RecipesListFragment : Fragment() {
     private var categoryName: String? = null
     private var categoryImageUrl: String? = null
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,12 +36,53 @@ class RecipesListFragment : Fragment() {
     ): View {
         _binding = RecipesListFragmentBinding.inflate(inflater)
 
-        requireArguments().let {
+        arguments?.let {
             categoryId = it.getInt(ARG_CATEGORY_ID)
             categoryName = it.getString(ARG_CATEGORY_NAME)
             categoryImageUrl = it.getString(ARG_CATEGORY_IMAGE_URL)
         }
+        val drawableImage = try {
+            Drawable.createFromStream(
+                binding.root.context.assets.open(categoryImageUrl ?: ""),
+                null
+            )
+
+        } catch (e: Exception) {
+            Log.e("!!!!__", "image not found $categoryName")
+            null
+        }
+        binding.recipesListHeaderImg.setImageDrawable(drawableImage)
+        binding.recipesListHeaderImg.contentDescription =
+            getString(R.string.category_header_image_description, categoryName)
+        binding.recipesListTitle.text = categoryName
+
+        initRecycler()
         return binding.root
+    }
+
+    private fun initRecycler() {
+
+        val recipeListAdapter = RecipeListAdapter(STUB.getRecipesByCategoryId(categoryId))
+
+        recipeListAdapter.setOnItemClickListener(object :
+            RecipeListAdapter.OnItemClickListener {
+            override fun onItemClick(recipeId: Int) {
+                openRecipeByRecipeId(recipeId)
+            }
+        })
+
+        val rvRecipesList = binding.rvRecipes
+        rvRecipesList.adapter = recipeListAdapter
+
+    }
+
+    private fun openRecipeByRecipeId(categoryId: Int) {
+
+        parentFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<RecipeFragment>(R.id.mainContainer)
+            addToBackStack(null)
+        }
     }
 
     override fun onDestroyView() {

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
 
 class CategoriesListFragment : Fragment() {
@@ -50,19 +51,17 @@ class CategoriesListFragment : Fragment() {
 
     private fun openRecipesByCategoryId(categoryId: Int) {
 
-        val recipesListFragment = RecipesListFragment()
         val category = STUB.getCategories()[categoryId]
 
-        recipesListFragment.apply {
-            arguments = bundleOf(
-                RecipesListFragment.ARG_CATEGORY_ID to categoryId,
-                RecipesListFragment.ARG_CATEGORY_NAME to category.title,
-                RecipesListFragment.ARG_CATEGORY_IMAGE_URL to category.imageUrl
-            )
-        }
+        arguments = bundleOf(
+            RecipesListFragment.ARG_CATEGORY_ID to categoryId,
+            RecipesListFragment.ARG_CATEGORY_NAME to category.title,
+            RecipesListFragment.ARG_CATEGORY_IMAGE_URL to category.imageUrl
+        )
 
         parentFragmentManager.commit {
-            add(R.id.mainContainer, recipesListFragment)
+            setReorderingAllowed(true)
+            replace<RecipesListFragment>(R.id.mainContainer, args = arguments)
             addToBackStack(null)
         }
     }
