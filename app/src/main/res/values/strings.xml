@@ -1,7 +1,6 @@
 <resources>
     <string name="text_app_name">RecipesApp</string>
     <string name="text_category">Категории</string>
-    <string name="text_no_value">В разработке</string>
     <string name="text_favorites">Избранное</string>
     <string name="text_main_fragment">Основной фрагмент</string>
     <string name="text_recipes_list_title">Список рецептов в категории</string>
@@ -10,4 +9,5 @@
     <string name="recipe_header_image_description">Изображение для рецепта %1$s</string>
     <string name="recipes_list_img_description">Изображение для категории </string>
     <string name="recipes_img_description">Изображение для рецепта </string>
+    <string name="get_recipes_error">Ошибка. Мы уже работаем над этим</string>
 </resources>
