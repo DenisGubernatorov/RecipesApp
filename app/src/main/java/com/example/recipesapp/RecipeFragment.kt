@@ -1,5 +1,6 @@
 package com.example.recipesapp
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.recipesapp.databinding.RecipeFragmentBinding
 
 class RecipeFragment : Fragment() {
+    private var recipe: Recipe? = null
     private var _binding: RecipeFragmentBinding? = null
     private val binding
         get() = _binding
@@ -19,6 +21,16 @@ class RecipeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = RecipeFragmentBinding.inflate(inflater)
+
+        arguments?.let {
+            recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                it.getParcelable(RecipesListFragment.ARG_RECIPE, Recipe::class.java)
+            } else {
+                it.getParcelable(RecipesListFragment.ARG_RECIPE)
+            }
+        }
+        binding.recipeName.text = recipe?.title ?: getString(R.string.get_recipes_error)
+
         return binding.root
     }
 

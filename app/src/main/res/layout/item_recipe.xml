@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_half_8_dp"
             android:textColor="@color/cat_header_txt"
-            tools:text="@string/text_no_value" />
+            tools:text="В разработке" />
 
     </LinearLayout>
 
