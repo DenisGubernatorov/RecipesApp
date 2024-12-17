@@ -1,14 +1,18 @@
 package com.example.recipesapp
 
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.recipesapp.databinding.RecipeFragmentBinding
+import java.io.IOException
 
 class RecipeFragment : Fragment() {
+    private val recipeImagePrefix = "Property 1="
     private var recipe: Recipe? = null
     private var _binding: RecipeFragmentBinding? = null
     private val binding
@@ -21,7 +25,6 @@ class RecipeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = RecipeFragmentBinding.inflate(inflater)
-
         arguments?.let {
             recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 it.getParcelable(RecipesListFragment.ARG_RECIPE, Recipe::class.java)
@@ -29,9 +32,34 @@ class RecipeFragment : Fragment() {
                 it.getParcelable(RecipesListFragment.ARG_RECIPE)
             }
         }
-        binding.recipeHeaderText.text = recipe?.title ?: getString(R.string.get_recipes_error)
+
+        initRecycler()
+        initUI()
 
         return binding.root
+    }
+
+    private fun initRecycler() {
+        val ingredients = recipe?.ingredients ?: emptyList()
+
+        val ingredientsAdapter = IngredientsAdapter(ingredients, requireContext())
+        binding.rvIngredients.adapter = ingredientsAdapter
+    }
+
+    private fun initUI() {
+        binding.recipeHeaderText.text = recipe?.title ?: getString(R.string.get_recipes_error)
+
+        binding.recipesHeaderImg.setImageDrawable(
+            try {
+                binding.root.context.assets.open(recipeImagePrefix + recipe?.imageUrl)
+                    .use { inputStream ->
+                        Drawable.createFromStream(inputStream, null)
+                    }
+            } catch (e: IOException) {
+                Log.e("!!!!__", "image not found ${recipe?.title}", e)
+                null
+            }
+        )
     }
 
     override fun onDestroyView() {
