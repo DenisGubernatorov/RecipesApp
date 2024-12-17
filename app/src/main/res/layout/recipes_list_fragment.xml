@@ -30,7 +30,7 @@
             android:layout_marginBottom="@dimen/margin_full_16_dp"
             android:background="@drawable/header_title_shape"
             android:padding="@dimen/cat_header_padding"
-            android:textSize="@dimen/text_Size_20"
+            android:textSize="@dimen/text_size_20"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="название категории" />

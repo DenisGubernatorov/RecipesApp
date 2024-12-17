@@ -27,7 +27,7 @@
             android:background="@drawable/header_title_shape"
             android:padding="@dimen/cat_header_padding"
             android:text="@string/text_category"
-            android:textSize="@dimen/text_Size_20"
+            android:textSize="@dimen/text_size_20"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

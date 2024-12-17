@@ -29,7 +29,7 @@ class RecipeFragment : Fragment() {
                 it.getParcelable(RecipesListFragment.ARG_RECIPE)
             }
         }
-        binding.recipeName.text = recipe?.title ?: getString(R.string.get_recipes_error)
+        binding.recipeHeaderText.text = recipe?.title ?: getString(R.string.get_recipes_error)
 
         return binding.root
     }

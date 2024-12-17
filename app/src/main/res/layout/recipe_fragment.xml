@@ -1,14 +1,121 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recipe_header_constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="@color/test_red">
+
+    <ImageView
+        android:id="@+id/recipes_list_header_img"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cat_header_height_224dp"
+        android:contentDescription="@string/recipes_img_description"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="@+id/recipe_header_constraint"
+        tools:background="@color/test_red" />
 
     <TextView
-        android:id="@+id/recipe_name"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:text="В разработке">
+        android:id="@+id/recipeHeaderText"
+        style="@style/CategoryHeaderTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_full_16_dp"
+        android:layout_marginBottom="@dimen/margin_full_16_dp"
+        android:background="@drawable/header_title_shape"
+        android:padding="@dimen/cat_header_padding"
+        android:text="@string/recipe_img_header_text"
+        android:textSize="@dimen/text_size_20"
+        app:layout_constraintBottom_toBottomOf="@id/recipes_list_header_img"
+        app:layout_constraintStart_toStartOf="@id/recipes_list_header_img" />
 
-    </TextView>
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="30dp"
+        android:contentDescription="@string/recipe_icon_favorite"
+        android:paddingTop="@dimen/margin_full_16_dp"
+        android:paddingEnd="@dimen/margin_full_16_dp"
+        android:src="@drawable/ic_heart_empty"
+        app:layout_constraintEnd_toEndOf="@id/recipes_list_header_img"
+        app:layout_constraintTop_toTopOf="@id/recipes_list_header_img"
+        tools:ignore="RtlSymmetry">
+
+    </ImageView>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_0dp"
+        app:layout_constraintTop_toBottomOf="@id/recipes_list_header_img">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ingredients_block_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_full_16_dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/recipes_list_header_img">
+
+                <TextView
+                    style="@style/CategoryHeaderTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/main_background"
+                    android:text="@string/ingredients_title"
+                    android:textSize="@dimen/text_size_20">
+
+                </TextView>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvIngredients"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/margin_full_16_dp"
+                android:padding="@dimen/padding_12_dp"
+                android:paddingBottom="@dimen/padding_16_dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/ingredients_block_header"
+                app:spanCount="1"
+                tools:itemCount="9"
+                tools:listitem="@layout/ingredient_item" />
+
+            <LinearLayout
+                android:id="@+id/method_block_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_full_16_dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/rvIngredients">
+
+                <TextView
+                    style="@style/CategoryHeaderTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/main_background"
+                    android:text="@string/method_title"
+                    android:textSize="@dimen/text_size_20">
+
+                </TextView>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMethod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_full_16_dp"
+                android:padding="@dimen/padding_12_dp"
+                android:paddingBottom="@dimen/padding_16_dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/method_block_header"
+                app:spanCount="1"
+                tools:itemCount="5"
+                tools:listitem="@layout/method_item" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
