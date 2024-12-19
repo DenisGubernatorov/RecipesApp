@@ -20,7 +20,7 @@
         <item name="cornerRadius">@dimen/corner_radius</item>
     </style>
 
-    <style name="CategoryHeaderTextStyle">
+    <style name="HeaderImageTextStyle">
         <item name="android:fontFamily">@font/montserrat_alternates_semibold</item>
         <item name="android:textSize">@dimen/text_size_14</item>
         <item name="android:textAllCaps">true</item>

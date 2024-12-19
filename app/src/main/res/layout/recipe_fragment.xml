@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/recipeHeaderText"
-        style="@style/CategoryHeaderTextStyle"
+        style="@style/HeaderImageTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_full_16_dp"
@@ -30,12 +30,12 @@
         app:layout_constraintStart_toStartOf="@id/recipes_header_img" />
 
     <ImageView
-        android:layout_width="35dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="@dimen/margin_full_16_dp"
+        android:layout_marginTop="@dimen/margin_full_16_dp"
         android:contentDescription="@string/recipe_icon_favorite"
-        android:paddingTop="@dimen/margin_full_16_dp"
-        android:paddingEnd="@dimen/margin_full_16_dp"
-        android:src="@drawable/ic_heart_empty"
+        android:src="@drawable/ic_heart_40_empty"
         app:layout_constraintEnd_toEndOf="@id/recipes_header_img"
         app:layout_constraintTop_toTopOf="@id/recipes_header_img"
         tools:ignore="RtlSymmetry">
@@ -61,7 +61,7 @@
                 app:layout_constraintTop_toBottomOf="@id/recipes_header_img">
 
                 <TextView
-                    style="@style/CategoryHeaderTextStyle"
+                    style="@style/HeaderImageTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/main_background"
@@ -95,7 +95,7 @@
                 app:layout_constraintTop_toBottomOf="@id/rvIngredients">
 
                 <TextView
-                    style="@style/CategoryHeaderTextStyle"
+                    style="@style/HeaderImageTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/main_background"
