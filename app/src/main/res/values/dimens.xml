@@ -11,10 +11,10 @@
     <dimen name="text_size_24">24sp</dimen>
     <dimen name="cat_header_height_224dp">224dp</dimen>
     <dimen name="cat_corner_radius_header">8dp</dimen>
-    <dimen name="cat_header_padding">10dp</dimen>
-    <dimen name="cat_header_padding_half_8_dp">8dp</dimen>
     <dimen name="cat_image_size_130dp">130dp</dimen>
     <dimen name="recipe_image_size_100dp">100dp</dimen>
+    <dimen name="padding_8_dp">8dp</dimen>
+    <dimen name="padding_10_dp">10dp</dimen>
     <dimen name="padding_12_dp">12dp</dimen>
     <dimen name="padding_16_dp">16dp</dimen>
 </resources>
