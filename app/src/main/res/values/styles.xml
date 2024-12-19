@@ -4,9 +4,15 @@
 
     <style name="TitleText14Style" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">@font/montserrat_alternates_semibold</item>
-        <item name="android:textSize">@dimen/text_Size_14</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="RecipeItemsText14Style" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textColor">@color/recipe_items_text</item>
     </style>
 
     <style name="NavButtonStyle" parent="Widget.Material3.Button">
@@ -16,7 +22,7 @@
 
     <style name="CategoryHeaderTextStyle">
         <item name="android:fontFamily">@font/montserrat_alternates_semibold</item>
-        <item name="android:textSize">@dimen/text_Size_14</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/cat_header_txt</item>
         <item name="android:padding">@dimen/cat_header_padding_half_8_dp</item>
@@ -24,7 +30,7 @@
 
     <style name="CategoryDescriptionTextStyle">
         <item name="android:fontFamily">@font/montserrat_regular</item>
-        <item name="android:textSize">@dimen/text_Size_12</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
         <item name="android:textColor">@color/cat_description_txt</item>
     </style>
 
