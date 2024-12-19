@@ -16,4 +16,5 @@
     <string name="ingredients_title">Ингредиенты</string>
     <string name="method_title">Способ</string>
     <string name="ingredient_display_format">%1$s %2$s</string>
+    <string name="method_display_format">%1$s. %2$s</string>
 </resources>

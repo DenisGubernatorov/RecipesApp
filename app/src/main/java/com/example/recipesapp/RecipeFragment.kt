@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.recipesapp.databinding.RecipeFragmentBinding
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import java.io.IOException
 
 class RecipeFragment : Fragment() {
@@ -41,9 +43,25 @@ class RecipeFragment : Fragment() {
 
     private fun initRecycler() {
         val ingredients = recipe?.ingredients ?: emptyList()
-
         val ingredientsAdapter = IngredientsAdapter(ingredients, requireContext())
         binding.rvIngredients.adapter = ingredientsAdapter
+        binding.rvIngredients.addItemDecoration(
+            MaterialDividerItemDecoration(
+                requireContext(),
+                DividerItemDecoration.VERTICAL
+            )
+        )
+
+
+        val method = recipe?.method ?: emptyList()
+        val methodAdapter = MethodAdapter(method, requireContext())
+        binding.rvMethod.adapter = methodAdapter
+        binding.rvMethod.addItemDecoration(
+            MaterialDividerItemDecoration(
+                requireContext(),
+                DividerItemDecoration.VERTICAL
+            )
+        )
     }
 
     private fun initUI() {

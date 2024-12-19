@@ -9,5 +9,6 @@
     <color name="cat_header_txt">#5F3678</color>
     <color name="cat_description_txt">#666666</color>
     <color name="test_red">#F00</color>
+    <color name="recipe_items_text">#666666</color>
 
 </resources>

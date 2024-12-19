@@ -7,8 +7,10 @@
 
     <TextView
         android:id="@+id/method_item_text"
+        style="@style/RecipeItemsText14Style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         tools:text="full">
 
     </TextView>
