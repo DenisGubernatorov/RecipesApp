@@ -11,5 +11,6 @@
     <color name="test_red">#F00</color>
     <color name="recipe_items_text">#666666</color>
     <color name="recipe_section_text">#422952</color>
+    <color name="divider_color">#F5F5F5</color>
 
 </resources>

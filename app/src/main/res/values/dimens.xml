@@ -17,4 +17,8 @@
     <dimen name="padding_10_dp">10dp</dimen>
     <dimen name="padding_12_dp">12dp</dimen>
     <dimen name="padding_16_dp">16dp</dimen>
+    <dimen name="recycler_divider_start">12dp</dimen>
+    <dimen name="recycler_divider_end">12dp</dimen>
+    <dimen name="recycler_divider_thickness">1px</dimen>
+
 </resources>

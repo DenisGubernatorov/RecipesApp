@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.recipesapp.databinding.RecipeFragmentBinding
@@ -42,26 +43,31 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initRecycler() {
+
+        val itemDecoration = MaterialDividerItemDecoration(
+            requireContext(),
+            DividerItemDecoration.VERTICAL
+        ).apply {
+            dividerInsetStart = resources.getDimensionPixelSize(R.dimen.recycler_divider_start)
+            dividerInsetEnd = resources.getDimensionPixelSize(R.dimen.recycler_divider_end)
+            dividerColor = ContextCompat.getColor(requireContext(), (R.color.divider_color))
+            dividerThickness = resources.getDimensionPixelSize(R.dimen.recycler_divider_thickness)
+            isLastItemDecorated = false
+        }
+
+
         val ingredients = recipe?.ingredients ?: emptyList()
         val ingredientsAdapter = IngredientsAdapter(ingredients, requireContext())
         binding.rvIngredients.adapter = ingredientsAdapter
         binding.rvIngredients.addItemDecoration(
-            MaterialDividerItemDecoration(
-                requireContext(),
-                DividerItemDecoration.VERTICAL
-            )
+            itemDecoration
         )
 
 
         val method = recipe?.method ?: emptyList()
         val methodAdapter = MethodAdapter(method, requireContext())
         binding.rvMethod.adapter = methodAdapter
-        binding.rvMethod.addItemDecoration(
-            MaterialDividerItemDecoration(
-                requireContext(),
-                DividerItemDecoration.VERTICAL
-            )
-        )
+        binding.rvMethod.addItemDecoration(itemDecoration)
     }
 
     private fun initUI() {
