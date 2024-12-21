@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
 
             android:layout_margin="@dimen/margin_half_8_dp"
-            android:textColor="@color/cat_header_txt"
+            android:textColor="@color/header_txt"
             tools:text="имя карточки" />
 
         <TextView

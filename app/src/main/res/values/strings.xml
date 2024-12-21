@@ -9,5 +9,12 @@
     <string name="recipe_header_image_description">Изображение для рецепта %1$s</string>
     <string name="recipes_list_img_description">Изображение для категории </string>
     <string name="recipes_img_description">Изображение для рецепта </string>
+    <string name="recipes_img_favorite_description">Значок для избранного </string>
+    <string name="recipe_img_header_text">Название рецепта</string>
     <string name="get_recipes_error">Ошибка. Мы уже работаем над этим</string>
+    <string name="recipe_icon_favorite">Значок избранное</string>
+    <string name="ingredients_title">Ингредиенты</string>
+    <string name="method_title">Способ приготовления</string>
+    <string name="ingredient_display_format">%1$s %2$s</string>
+    <string name="method_display_format">%1$s. %2$s</string>
 </resources>

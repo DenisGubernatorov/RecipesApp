@@ -5,13 +5,21 @@
     <dimen name="_0dp">0dp</dimen>
     <dimen name="margin_quarter_4dp">4dp</dimen>
     <dimen name="corner_radius">4dp</dimen>
-    <dimen name="text_Size_14">14sp</dimen>
-    <dimen name="text_Size_20">20sp</dimen>
-    <dimen name="text_Size_12">12sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_24">24sp</dimen>
     <dimen name="cat_header_height_224dp">224dp</dimen>
     <dimen name="cat_corner_radius_header">8dp</dimen>
-    <dimen name="cat_header_padding">10dp</dimen>
-    <dimen name="cat_header_padding_half_8_dp">8dp</dimen>
     <dimen name="cat_image_size_130dp">130dp</dimen>
     <dimen name="recipe_image_size_100dp">100dp</dimen>
+    <dimen name="padding_8_dp">8dp</dimen>
+    <dimen name="padding_10_dp">10dp</dimen>
+    <dimen name="padding_12_dp">12dp</dimen>
+    <dimen name="padding_16_dp">16dp</dimen>
+    <dimen name="recycler_divider_start">12dp</dimen>
+    <dimen name="recycler_divider_end">12dp</dimen>
+    <dimen name="recycler_divider_thickness">1px</dimen>
+    <dimen name="recipe_screen_bottom_13dp">13dp</dimen>
+
 </resources>
