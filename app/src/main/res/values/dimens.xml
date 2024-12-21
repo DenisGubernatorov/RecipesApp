@@ -20,5 +20,6 @@
     <dimen name="recycler_divider_start">12dp</dimen>
     <dimen name="recycler_divider_end">12dp</dimen>
     <dimen name="recycler_divider_thickness">1px</dimen>
+    <dimen name="recipe_screen_bottom_13dp">13dp</dimen>
 
 </resources>
