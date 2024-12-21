@@ -27,8 +27,8 @@
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="@dimen/margin_full_16_dp"
         android:layout_marginTop="@dimen/margin_full_16_dp"
+        android:layout_marginEnd="@dimen/margin_full_16_dp"
         android:contentDescription="@string/recipe_icon_favorite"
         android:src="@drawable/ic_heart_40_empty"
         app:layout_constraintEnd_toEndOf="@id/recipes_header_img"
@@ -40,6 +40,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="@dimen/_0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recipes_header_img">
 
         <LinearLayout
@@ -71,7 +72,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_full_16_dp"
                 android:layout_marginTop="@dimen/margin_full_16_dp"
-                android:layout_marginBottom="@dimen/margin_half_8_dp"
                 android:padding="@dimen/padding_12_dp"
                 android:paddingBottom="@dimen/padding_16_dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -80,23 +80,17 @@
                 tools:itemCount="9"
                 tools:listitem="@layout/ingredient_item" />
 
-            <LinearLayout
-                android:id="@+id/method_block_header"
+
+            <TextView
+                style="@style/RecipeTextSectionsStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_half_8_dp"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/rvIngredients">
+                android:layout_marginTop="@dimen/margin_full_16_dp"
+                android:background="@color/main_background"
+                android:text="@string/method_title">
 
-                <TextView
-                    style="@style/RecipeTextSectionsStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/main_background"
-                    android:text="@string/method_title">
+            </TextView>
 
-                </TextView>
-            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMethod"
@@ -106,7 +100,6 @@
                 android:layout_marginTop="@dimen/margin_full_16_dp"
                 android:paddingHorizontal="@dimen/padding_12_dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/method_block_header"
                 app:spanCount="1"
                 tools:itemCount="5"
                 tools:listitem="@layout/method_item" />
