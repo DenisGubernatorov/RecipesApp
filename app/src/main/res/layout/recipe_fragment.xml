@@ -40,7 +40,6 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="@dimen/_0dp"
-        android:layout_marginBottom="@dimen/recipe_screen_bottom_13dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recipes_header_img">
 
@@ -73,8 +72,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_full_16_dp"
                 android:layout_marginTop="@dimen/margin_full_16_dp"
-                android:padding="@dimen/padding_12_dp"
-                android:paddingBottom="@dimen/padding_16_dp"
+                android:paddingBottom="@dimen/padding_8_dp"
+                android:background="@drawable/recipe_recycler_shape"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@id/ingredients_block_header"
                 app:spanCount="1"
@@ -99,7 +98,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_full_16_dp"
                 android:layout_marginTop="@dimen/margin_full_16_dp"
-                android:paddingHorizontal="@dimen/padding_12_dp"
+                android:layout_marginBottom="@dimen/margin_half_8_dp"
+                android:paddingTop="@dimen/padding_12_dp"
+                android:background="@drawable/recipe_recycler_shape"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:spanCount="1"
                 tools:itemCount="5"

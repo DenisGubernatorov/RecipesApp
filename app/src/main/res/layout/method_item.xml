@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/padding_8_dp"
+    android:paddingHorizontal="@dimen/padding_12_dp"
     android:orientation="vertical">
 
     <TextView
@@ -10,7 +12,7 @@
         style="@style/RecipeItemsText14Style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+
         tools:text="full">
 
     </TextView>
