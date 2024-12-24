@@ -4,9 +4,15 @@
 
     <style name="TitleText14Style" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">@font/montserrat_alternates_semibold</item>
-        <item name="android:textSize">@dimen/text_Size_14</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="RecipeItemsText14Style" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textColor">@color/recipe_items_text</item>
     </style>
 
     <style name="NavButtonStyle" parent="Widget.Material3.Button">
@@ -14,18 +20,29 @@
         <item name="cornerRadius">@dimen/corner_radius</item>
     </style>
 
-    <style name="CategoryHeaderTextStyle">
+    <style name="HeaderImageTextStyle">
         <item name="android:fontFamily">@font/montserrat_alternates_semibold</item>
-        <item name="android:textSize">@dimen/text_Size_14</item>
+        <item name="android:textSize">@dimen/text_size_20</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/cat_header_txt</item>
-        <item name="android:padding">@dimen/cat_header_padding_half_8_dp</item>
+        <item name="android:textColor">@color/header_txt</item>
+        <item name="android:layout_marginStart">@dimen/margin_full_16_dp</item>
+        <item name="android:layout_marginBottom">@dimen/margin_full_16_dp</item>
+        <item name="android:background">@drawable/header_title_shape</item>
+        <item name="android:padding">@dimen/padding_10_dp</item>
     </style>
 
     <style name="CategoryDescriptionTextStyle">
         <item name="android:fontFamily">@font/montserrat_regular</item>
-        <item name="android:textSize">@dimen/text_Size_12</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
         <item name="android:textColor">@color/cat_description_txt</item>
+    </style>
+
+    <style name="RecipeTextSectionsStyle">
+        <item name="android:fontFamily">@font/montserrat_alternates_semibold</item>
+        <item name="android:textSize">@dimen/text_size_20</item>
+        <item name="android:textColor">@color/recipe_section_text</item>
+        <item name="android:layout_marginStart">@dimen/margin_full_16_dp</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
 

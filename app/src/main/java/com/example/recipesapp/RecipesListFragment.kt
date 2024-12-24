@@ -81,13 +81,13 @@ class RecipesListFragment : Fragment() {
     private fun openRecipeByRecipeId(recipeId: Int) {
         val recipe = STUB.getRecipeById(recipeId)
 
-        arguments = bundleOf(
+        val recipeArguments = bundleOf(
             ARG_RECIPE to recipe
         )
 
         parentFragmentManager.commit {
             setReorderingAllowed(true)
-            replace<RecipeFragment>(R.id.mainContainer, args = arguments)
+            replace<RecipeFragment>(R.id.mainContainer, args = recipeArguments)
             addToBackStack(null)
         }
     }

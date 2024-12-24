@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/padding_12_dp"
+    android:paddingVertical="@dimen/padding_8_dp">
+
+
+    <TextView
+        android:id="@+id/ingredient_item_lft"
+        style="@style/RecipeItemsText14Style"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_weight="2"
+        android:textAllCaps="true"
+        tools:text="left">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/ingredient_item_rgt"
+        style="@style/RecipeItemsText14Style"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:layout_weight="1"
+        android:textAlignment="viewEnd"
+        android:textAllCaps="true"
+        tools:text="right">
+
+    </TextView>
+
+</LinearLayout>
