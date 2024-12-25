@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -57,17 +58,36 @@ class RecipeFragment : Fragment() {
 
 
         val ingredients = recipe?.ingredients ?: emptyList()
-        val ingredientsAdapter = IngredientsAdapter(ingredients, requireContext())
-        binding.rvIngredients.adapter = ingredientsAdapter
+        binding.rvIngredients.adapter = IngredientsAdapter(ingredients, requireContext())
         binding.rvIngredients.addItemDecoration(
             itemDecoration
         )
 
+        binding.SeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            val offset = 1
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+
+                updateIngredients(p1 + offset)
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {}
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {}
+
+        })
 
         val method = recipe?.method ?: emptyList()
         val methodAdapter = MethodAdapter(method, requireContext())
         binding.rvMethod.adapter = methodAdapter
         binding.rvMethod.addItemDecoration(itemDecoration)
+    }
+
+    private fun updateIngredients(progress: Int) {
+
+        binding.portionCount.text = "$progress"
+        val ingredientsAdapter = binding.rvIngredients.adapter as? IngredientsAdapter
+        ingredientsAdapter?.updateQuantity(progress)
+
     }
 
     private fun initUI() {

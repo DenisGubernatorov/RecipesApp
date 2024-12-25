@@ -17,4 +17,6 @@
     <string name="method_title">Способ приготовления</string>
     <string name="ingredient_display_format">%1$s %2$s</string>
     <string name="method_display_format">%1$s. %2$s</string>
+    <string name="portions_count">Порции: </string>
+    <string name="portion_default_count">1</string>
 </resources>
