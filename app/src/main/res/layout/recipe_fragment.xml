@@ -65,20 +65,20 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/RecipePortionStyle"
                     android:id="@+id/textPortionCount"
+                    style="@style/RecipePortionStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_semibold"
                     android:layout_marginStart="@dimen/margin_full_16_dp"
                     android:layout_marginEnd="@dimen/margin_6_dp"
+                    android:fontFamily="@font/montserrat_semibold"
                     android:text="@string/portions_count">
 
                 </TextView>
 
                 <TextView
-                    style="@style/RecipePortionStyle"
                     android:id="@+id/portionCount"
+                    style="@style/RecipePortionStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/portion_default_count">
@@ -91,8 +91,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_full_16_dp"
-                android:max="4"
-                android:progress="0">
+                android:max="5"
+                android:progress="1">
 
             </SeekBar>
 

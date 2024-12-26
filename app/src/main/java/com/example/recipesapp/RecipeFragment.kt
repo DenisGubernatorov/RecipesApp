@@ -64,10 +64,14 @@ class RecipeFragment : Fragment() {
         )
 
         binding.SeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            val offset = 1
-            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
 
-                updateIngredients(p1 + offset)
+            override fun onProgressChanged(
+                seekBar: SeekBar?,
+                sliderPosition: Int,
+                isFromUser: Boolean
+            ) {
+
+                updateIngredients(sliderPosition)
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {}

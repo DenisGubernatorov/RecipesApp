@@ -4,10 +4,10 @@ package com.example.recipesapp
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipesapp.databinding.IngredientItemBinding
-import java.text.DecimalFormat
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class IngredientsAdapter(private val dataSet: List<Ingredient>, private val context: Context) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
@@ -17,12 +17,15 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>, private val cont
         RecyclerView.ViewHolder(binding.root) {
 
         private fun getTotalQuantity(quantityStr: String, quantity: Int): Any {
-            val value = quantityStr.toDouble() * quantity
-            return if (value.rem(1.0) == 0.0) {
-                DecimalFormat("#,###").format(value.toInt())
-            } else {
-                DecimalFormat("#,###.#").format(value)
-            }
+
+            val totalQuantity = BigDecimal(quantityStr) * BigDecimal(quantity)
+            val displayQuantity = totalQuantity
+                .setScale(1, RoundingMode.HALF_UP)
+                .stripTrailingZeros()
+                .toPlainString()
+
+            return displayQuantity
+
         }
 
         fun bind(ingredient: Ingredient, context: Context, quntity: Int) {
