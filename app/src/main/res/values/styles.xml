@@ -54,6 +54,10 @@
 
     </style>
 
+    <style name="styleSeekBar" parent="@style/Widget.AppCompat.SeekBar">
+        <item name="android:progressDrawable">@drawable/shape_seekbar_progress</item>
+        <item name="android:thumb">@drawable/shape_seekbar_thumb</item>
+    </style>
 
     <dimen name="text_size_16">16sp</dimen>
 </resources>
