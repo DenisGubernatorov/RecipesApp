@@ -45,5 +45,15 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
+    <style name="RecipePortionStyle">
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textColor">@color/recipe_section_text</item>
+        <item name="android:layout_marginVertical">@dimen/margin_6_dp</item>
+        <item name="android:layout_marginEnd">@dimen/margin_6_dp</item>
 
+    </style>
+
+
+    <dimen name="text_size_16">16sp</dimen>
 </resources>

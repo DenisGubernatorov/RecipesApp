@@ -48,23 +48,54 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ingredients_block_header"
+
+            <TextView
+                style="@style/RecipeTextSectionsStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_full_16_dp"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/recipes_header_img">
+                android:layout_marginTop="@dimen/padding_16_dp"
+                android:background="@color/main_background"
+                android:text="@string/ingredients_title">
+
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
-                    style="@style/RecipeTextSectionsStyle"
-                    android:layout_width="match_parent"
+                    android:id="@+id/textPortionCount"
+                    style="@style/RecipePortionStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/main_background"
-                    android:text="@string/ingredients_title">
+                    android:layout_marginStart="@dimen/margin_full_16_dp"
+                    android:layout_marginEnd="@dimen/margin_6_dp"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="@string/portions_count">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/portionCount"
+                    style="@style/RecipePortionStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/portion_default_count">
 
                 </TextView>
             </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/SeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_full_16_dp"
+                android:max="5"
+                android:progress="1">
+
+            </SeekBar>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvIngredients"
@@ -72,10 +103,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_full_16_dp"
                 android:layout_marginTop="@dimen/margin_full_16_dp"
-                android:paddingBottom="@dimen/padding_8_dp"
                 android:background="@drawable/recipe_recycler_shape"
+                android:paddingBottom="@dimen/padding_8_dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/ingredients_block_header"
+                app:layout_constraintTop_toBottomOf="@id/SeekBar"
                 app:spanCount="1"
                 tools:itemCount="9"
                 tools:listitem="@layout/ingredient_item" />
@@ -99,8 +130,8 @@
                 android:layout_marginHorizontal="@dimen/margin_full_16_dp"
                 android:layout_marginTop="@dimen/margin_full_16_dp"
                 android:layout_marginBottom="@dimen/margin_half_8_dp"
-                android:paddingTop="@dimen/padding_12_dp"
                 android:background="@drawable/recipe_recycler_shape"
+                android:paddingTop="@dimen/padding_12_dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:spanCount="1"
                 tools:itemCount="5"
