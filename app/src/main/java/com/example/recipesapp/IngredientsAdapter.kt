@@ -28,13 +28,13 @@ class IngredientsAdapter(private val dataSet: List<Ingredient>, private val cont
 
         }
 
-        fun bind(ingredient: Ingredient, context: Context, quntity: Int) {
+        fun bind(ingredient: Ingredient, context: Context, quantity: Int) {
             binding.ingredientItemLft.text = ingredient.description
 
 
             binding.ingredientItemRgt.text = context.getString(
                 R.string.ingredient_display_format,
-                getTotalQuantity(ingredient.quantity, quntity),
+                getTotalQuantity(ingredient.quantity, quantity),
                 ingredient.unitOfMeasure
             )
         }

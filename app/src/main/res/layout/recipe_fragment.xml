@@ -87,11 +87,13 @@
             </LinearLayout>
 
             <SeekBar
+                style="@style/styleSeekBar"
                 android:id="@+id/SeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_full_16_dp"
+
                 android:max="5"
+                android:min="1"
                 android:progress="1">
 
             </SeekBar>
