@@ -24,18 +24,23 @@
         app:layout_constraintBottom_toBottomOf="@id/recipes_header_img"
         app:layout_constraintStart_toStartOf="@id/recipes_header_img" />
 
-    <ImageView
+    <ImageButton
+        android:id="@+id/favoritesImage"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="@dimen/margin_full_16_dp"
         android:layout_marginEnd="@dimen/margin_full_16_dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:focusable="true"
+        android:clickable="true"
         android:contentDescription="@string/recipe_icon_favorite"
-        android:src="@drawable/ic_heart_40_empty"
+        android:backgroundTint="@android:color/transparent"
+        tools:src="@drawable/ic_heart_40_empty"
         app:layout_constraintEnd_toEndOf="@id/recipes_header_img"
         app:layout_constraintTop_toTopOf="@id/recipes_header_img"
         tools:ignore="RtlSymmetry">
 
-    </ImageView>
+    </ImageButton>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -105,6 +106,22 @@ class RecipeFragment : Fragment() {
                     }
             } catch (e: IOException) {
                 Log.e("!!!!__", "image not found ${recipe?.title}", e)
+                null
+            }
+        )
+        setFavoritesButtonImage(R.drawable.ic_heart_40_empty)
+
+        binding.favoritesImage.setOnClickListener {
+            setFavoritesButtonImage(R.drawable.ic_heart_40)
+        }
+    }
+
+    private fun setFavoritesButtonImage(favoriteImageId: Int) {
+        binding.favoritesImage.setImageDrawable(
+            try {
+                AppCompatResources.getDrawable(binding.root.context, favoriteImageId)
+            } catch (e: IOException) {
+                Log.e("!!!!__", "image for favorite button not found", e)
                 null
             }
         )
