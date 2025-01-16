@@ -23,6 +23,7 @@ class RecipeFragment : Fragment() {
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding  for RecipesListFragmentBinding must be not null ")
+    private var isFavorite = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -109,22 +110,29 @@ class RecipeFragment : Fragment() {
                 null
             }
         )
-        setFavoritesButtonImage(R.drawable.ic_heart_40_empty)
+        setFavoritesButtonImage()
 
         binding.favoritesImage.setOnClickListener {
-            setFavoritesButtonImage(R.drawable.ic_heart_40)
+            setFavoritesButtonImage()
         }
     }
 
-    private fun setFavoritesButtonImage(favoriteImageId: Int) {
-        binding.favoritesImage.setImageDrawable(
+    private fun setFavoritesButtonImage() {
+        val toDrawId = when (isFavorite) {
+            true -> R.drawable.ic_heart_40
+            false -> R.drawable.ic_heart_40_empty
+        }
+        val drawable =
             try {
-                AppCompatResources.getDrawable(binding.root.context, favoriteImageId)
+                AppCompatResources.getDrawable(binding.root.context, toDrawId)
+
             } catch (e: IOException) {
                 Log.e("!!!!__", "image for favorite button not found", e)
                 null
             }
-        )
+
+        binding.favoritesImage.setImageDrawable(drawable)
+        isFavorite = !isFavorite
     }
 
     override fun onDestroyView() {
