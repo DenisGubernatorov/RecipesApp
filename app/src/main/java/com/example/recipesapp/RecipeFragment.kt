@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -22,6 +23,7 @@ class RecipeFragment : Fragment() {
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding  for RecipesListFragmentBinding must be not null ")
+    private var isFavorite = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -108,6 +110,29 @@ class RecipeFragment : Fragment() {
                 null
             }
         )
+        setFavoritesButtonImage()
+
+        binding.favoritesImage.setOnClickListener {
+            setFavoritesButtonImage()
+        }
+    }
+
+    private fun setFavoritesButtonImage() {
+        val toDrawId = when (isFavorite) {
+            true -> R.drawable.ic_heart_40
+            false -> R.drawable.ic_heart_40_empty
+        }
+        val drawable =
+            try {
+                AppCompatResources.getDrawable(binding.root.context, toDrawId)
+
+            } catch (e: IOException) {
+                Log.e("!!!!__", "image for favorite button not found", e)
+                null
+            }
+
+        binding.favoritesImage.setImageDrawable(drawable)
+        isFavorite = !isFavorite
     }
 
     override fun onDestroyView() {
