@@ -1,5 +1,6 @@
 package com.example.recipesapp
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -112,22 +113,55 @@ class RecipeFragment : Fragment() {
         setFavoritesButtonImage()
 
         binding.favoritesImage.setOnClickListener {
+
+            val ids = context?.getSharedPreferences(FAVORITES_FILE_KEY, Context.MODE_PRIVATE)
+                ?.getStringSet(IDS_KEY, mutableSetOf())?.toMutableSet() ?: mutableSetOf()
+
+
+            val recipeId = recipe?.id.toString()
+            when {
+                ids.contains(recipeId) -> ids.remove(recipeId)
+                else -> ids.add(recipeId)
+            }
+
+            setFavorites(ids)
             setFavoritesButtonImage()
         }
     }
 
     private fun setFavoritesButtonImage() {
-        val toDrawId = when (isFavorite) {
+        val contains = getFavorites().contains(recipe?.id.toString())
+        val toDrawId = when (contains) {
             true -> R.drawable.ic_heart_40
             false -> R.drawable.ic_heart_40_empty
         }
-
         binding.favoritesImage.setImageResource(toDrawId)
-        isFavorite = !isFavorite
+
+    }
+
+    private fun setFavorites(ids: MutableSet<String>?) {
+        val sharedPrefs =
+            context?.getSharedPreferences(FAVORITES_FILE_KEY, Context.MODE_PRIVATE) ?: return
+        with(sharedPrefs.edit()) {
+            clear()
+            putStringSet(IDS_KEY, ids)
+            commit()
+        }
+    }
+
+    private fun getFavorites(): Set<String> {
+        val sharedPrefs = context?.getSharedPreferences(FAVORITES_FILE_KEY, Context.MODE_PRIVATE)
+        val idsCopy = (sharedPrefs?.getStringSet(IDS_KEY, mutableSetOf()))?.toMutableSet()
+        return idsCopy ?: emptySet()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val FAVORITES_FILE_KEY = "favorites"
+        private const val IDS_KEY = "ids"
     }
 }
