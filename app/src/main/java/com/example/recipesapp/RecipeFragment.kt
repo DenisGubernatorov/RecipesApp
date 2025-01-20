@@ -17,6 +17,8 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import java.io.IOException
 
 class RecipeFragment : Fragment() {
+    private lateinit var ids: java.util.HashSet<String>
+    private lateinit var recipeId: String
     private val recipeImagePrefix = "Property 1="
     private var recipe: Recipe? = null
     private var _binding: RecipeFragmentBinding? = null
@@ -38,11 +40,17 @@ class RecipeFragment : Fragment() {
                 it.getParcelable(RecipesListFragment.ARG_RECIPE)
             }
         }
-
+        initFavoritesState()
         initRecycler()
         initUI()
 
         return binding.root
+    }
+
+    private fun initFavoritesState() {
+        recipeId = recipe?.id.toString()
+        ids = getFavorites()
+        isFavorite = ids.contains(recipeId)
     }
 
     private fun initRecycler() {
@@ -113,15 +121,16 @@ class RecipeFragment : Fragment() {
         setFavoritesButtonImage()
 
         binding.favoritesImage.setOnClickListener {
-
-            val ids = context?.getSharedPreferences(FAVORITES_FILE_KEY, Context.MODE_PRIVATE)
-                ?.getStringSet(IDS_KEY, mutableSetOf())?.toMutableSet() ?: mutableSetOf()
-
-
-            val recipeId = recipe?.id.toString()
             when {
-                ids.contains(recipeId) -> ids.remove(recipeId)
-                else -> ids.add(recipeId)
+                isFavorite -> {
+                    isFavorite = false
+                    ids.remove(recipeId)
+                }
+
+                else -> {
+                    isFavorite = true
+                    ids.add(recipeId)
+                }
             }
 
             setFavorites(ids)
@@ -130,8 +139,7 @@ class RecipeFragment : Fragment() {
     }
 
     private fun setFavoritesButtonImage() {
-        val contains = getFavorites().contains(recipe?.id.toString())
-        val toDrawId = when (contains) {
+        val toDrawId = when (isFavorite) {
             true -> R.drawable.ic_heart_40
             false -> R.drawable.ic_heart_40_empty
         }
@@ -142,17 +150,13 @@ class RecipeFragment : Fragment() {
     private fun setFavorites(ids: MutableSet<String>?) {
         val sharedPrefs =
             context?.getSharedPreferences(FAVORITES_FILE_KEY, Context.MODE_PRIVATE) ?: return
-        with(sharedPrefs.edit()) {
-            clear()
-            putStringSet(IDS_KEY, ids)
-            commit()
-        }
+        sharedPrefs.edit().putStringSet(IDS_KEY, ids).apply()
+
     }
 
-    private fun getFavorites(): Set<String> {
+    private fun getFavorites(): HashSet<String> {
         val sharedPrefs = context?.getSharedPreferences(FAVORITES_FILE_KEY, Context.MODE_PRIVATE)
-        val idsCopy = (sharedPrefs?.getStringSet(IDS_KEY, mutableSetOf()))?.toMutableSet()
-        return idsCopy ?: emptySet()
+        return sharedPrefs?.getStringSet(IDS_KEY, HashSet<String>())?.toHashSet() ?: HashSet()
     }
 
     override fun onDestroyView() {
