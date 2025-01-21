@@ -1,5 +1,6 @@
 package com.example.recipesapp
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -8,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -17,7 +17,7 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import java.io.IOException
 
 class RecipeFragment : Fragment() {
-    private val recipeImagePrefix = "Property 1="
+
     private var recipe: Recipe? = null
     private var _binding: RecipeFragmentBinding? = null
     private val binding
@@ -38,12 +38,17 @@ class RecipeFragment : Fragment() {
                 it.getParcelable(RecipesListFragment.ARG_RECIPE)
             }
         }
+        val recipeId = recipe?.id.toString()
+        val ids = getFavorites()
+        isFavorite = ids.contains(recipeId)
 
         initRecycler()
-        initUI()
+        initUI(recipeId, ids)
 
         return binding.root
     }
+
+
 
     private fun initRecycler() {
 
@@ -96,12 +101,12 @@ class RecipeFragment : Fragment() {
 
     }
 
-    private fun initUI() {
+    private fun initUI(recipeId: String, ids: HashSet<String>) {
         binding.recipeHeaderText.text = recipe?.title ?: getString(R.string.get_recipes_error)
 
         binding.recipesHeaderImg.setImageDrawable(
             try {
-                binding.root.context.assets.open(recipeImagePrefix + recipe?.imageUrl)
+                binding.root.context.assets.open(RECIPE_IMAGE_PREFIX + recipe?.imageUrl)
                     .use { inputStream ->
                         Drawable.createFromStream(inputStream, null)
                     }
@@ -113,6 +118,19 @@ class RecipeFragment : Fragment() {
         setFavoritesButtonImage()
 
         binding.favoritesImage.setOnClickListener {
+            when {
+                isFavorite -> {
+                    isFavorite = false
+                    ids.remove(recipeId)
+                }
+
+                else -> {
+                    isFavorite = true
+                    ids.add(recipeId)
+                }
+            }
+
+            setFavorites(ids)
             setFavoritesButtonImage()
         }
     }
@@ -122,21 +140,30 @@ class RecipeFragment : Fragment() {
             true -> R.drawable.ic_heart_40
             false -> R.drawable.ic_heart_40_empty
         }
-        val drawable =
-            try {
-                AppCompatResources.getDrawable(binding.root.context, toDrawId)
+        binding.favoritesImage.setImageResource(toDrawId)
 
-            } catch (e: IOException) {
-                Log.e("!!!!__", "image for favorite button not found", e)
-                null
-            }
+    }
 
-        binding.favoritesImage.setImageDrawable(drawable)
-        isFavorite = !isFavorite
+    private fun setFavorites(ids: MutableSet<String>?) {
+        val sharedPrefs =
+            context?.getSharedPreferences(FAVORITES_FILE_KEY, Context.MODE_PRIVATE) ?: return
+        sharedPrefs.edit().putStringSet(IDS_KEY, ids).apply()
+
+    }
+
+    private fun getFavorites(): HashSet<String> {
+        val sharedPrefs = context?.getSharedPreferences(FAVORITES_FILE_KEY, Context.MODE_PRIVATE)
+        return sharedPrefs?.getStringSet(IDS_KEY, HashSet<String>())?.toHashSet() ?: HashSet()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val FAVORITES_FILE_KEY = "favorites"
+        private const val IDS_KEY = "ids"
+        private const val RECIPE_IMAGE_PREFIX = "Property 1="
     }
 }
