@@ -59,5 +59,9 @@
         <item name="android:thumb">@drawable/shape_seekbar_thumb</item>
     </style>
 
-    <dimen name="text_size_16">16sp</dimen>
+    <style name="EmptyFavoritesList">
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:textColor">@color/recipe_items_text</item>
+    </style>
 </resources>

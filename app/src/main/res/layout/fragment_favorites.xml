@@ -1,11 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/main_background">
+    android:backgroundTint="@color/main_background"
+    android:orientation="vertical">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cat_header_height_224dp">
+
+        <ImageView
+            android:id="@+id/favorites_list_header_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/favorites_list_img_description"
+            android:scaleType="centerCrop"
+            tools:background="@color/test_red" />
+
+        <TextView
+            android:id="@+id/favorites_list_title"
+            style="@style/HeaderImageTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_favorites"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_recipes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/text_favorites" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginHorizontal="@dimen/margin_half_8_dp"
+        android:layout_marginTop="@dimen/margin_full_16_dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="1"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_category" />
+
+    <TextView
+        style="@style/EmptyFavoritesList"
+        android:id="@+id/empty_recipes_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/favorites_empty_list"
+        app:layout_constraintBottom_toBottomOf="@+id/favorites_list_header_img"
+        android:layout_marginTop="@dimen/empty_favorites_202dp"
+        android:textAlignment="center">
+
+    </TextView>
+
+</LinearLayout>
