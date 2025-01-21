@@ -17,9 +17,7 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import java.io.IOException
 
 class RecipeFragment : Fragment() {
-    private lateinit var ids: java.util.HashSet<String>
-    private lateinit var recipeId: String
-    private val recipeImagePrefix = "Property 1="
+
     private var recipe: Recipe? = null
     private var _binding: RecipeFragmentBinding? = null
     private val binding
@@ -40,18 +38,17 @@ class RecipeFragment : Fragment() {
                 it.getParcelable(RecipesListFragment.ARG_RECIPE)
             }
         }
-        initFavoritesState()
+        val recipeId = recipe?.id.toString()
+        val ids = getFavorites()
+        isFavorite = ids.contains(recipeId)
+
         initRecycler()
-        initUI()
+        initUI(recipeId, ids)
 
         return binding.root
     }
 
-    private fun initFavoritesState() {
-        recipeId = recipe?.id.toString()
-        ids = getFavorites()
-        isFavorite = ids.contains(recipeId)
-    }
+
 
     private fun initRecycler() {
 
@@ -104,12 +101,12 @@ class RecipeFragment : Fragment() {
 
     }
 
-    private fun initUI() {
+    private fun initUI(recipeId: String, ids: HashSet<String>) {
         binding.recipeHeaderText.text = recipe?.title ?: getString(R.string.get_recipes_error)
 
         binding.recipesHeaderImg.setImageDrawable(
             try {
-                binding.root.context.assets.open(recipeImagePrefix + recipe?.imageUrl)
+                binding.root.context.assets.open(RECIPE_IMAGE_PREFIX + recipe?.imageUrl)
                     .use { inputStream ->
                         Drawable.createFromStream(inputStream, null)
                     }
@@ -167,5 +164,6 @@ class RecipeFragment : Fragment() {
     companion object {
         private const val FAVORITES_FILE_KEY = "favorites"
         private const val IDS_KEY = "ids"
+        private const val RECIPE_IMAGE_PREFIX = "Property 1="
     }
 }
