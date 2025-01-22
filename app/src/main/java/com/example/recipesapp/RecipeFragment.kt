@@ -1,6 +1,5 @@
 package com.example.recipesapp
 
-import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -39,11 +38,13 @@ class RecipeFragment : Fragment() {
             }
         }
         val recipeId = recipe?.id.toString()
-        val ids = getFavorites()
+        val favoritesUtils = FavoritesUtils()
+
+        val ids = favoritesUtils.getFavorites(context)
         isFavorite = ids.contains(recipeId)
 
         initRecycler()
-        initUI(recipeId, ids)
+        initUI(recipeId, ids, favoritesUtils)
 
         return binding.root
     }
@@ -101,7 +102,7 @@ class RecipeFragment : Fragment() {
 
     }
 
-    private fun initUI(recipeId: String, ids: HashSet<String>) {
+    private fun initUI(recipeId: String, ids: HashSet<String>, favoritesUtils: FavoritesUtils) {
         binding.recipeHeaderText.text = recipe?.title ?: getString(R.string.get_recipes_error)
 
         binding.recipesHeaderImg.setImageDrawable(
@@ -130,7 +131,7 @@ class RecipeFragment : Fragment() {
                 }
             }
 
-            setFavorites(ids)
+            favoritesUtils.setFavorites(context, ids)
             setFavoritesButtonImage()
         }
     }
@@ -143,27 +144,12 @@ class RecipeFragment : Fragment() {
         binding.favoritesImage.setImageResource(toDrawId)
 
     }
-
-    private fun setFavorites(ids: MutableSet<String>?) {
-        val sharedPrefs =
-            context?.getSharedPreferences(FAVORITES_FILE_KEY, Context.MODE_PRIVATE) ?: return
-        sharedPrefs.edit().putStringSet(IDS_KEY, ids).apply()
-
-    }
-
-    private fun getFavorites(): HashSet<String> {
-        val sharedPrefs = context?.getSharedPreferences(FAVORITES_FILE_KEY, Context.MODE_PRIVATE)
-        return sharedPrefs?.getStringSet(IDS_KEY, HashSet<String>())?.toHashSet() ?: HashSet()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     companion object {
-        private const val FAVORITES_FILE_KEY = "favorites"
-        private const val IDS_KEY = "ids"
         private const val RECIPE_IMAGE_PREFIX = "Property 1="
     }
 }
