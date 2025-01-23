@@ -19,4 +19,6 @@
     <string name="method_display_format">%1$s. %2$s</string>
     <string name="portions_count">Порции: </string>
     <string name="portion_default_count">1</string>
+    <string name="favorites_list_img_description">Изображение для избранного</string>
+    <string name="favorites_empty_list">Вы еще не добавили ни одного рецепта в избранное</string>
 </resources>

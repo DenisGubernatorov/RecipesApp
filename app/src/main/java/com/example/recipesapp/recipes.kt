@@ -252,9 +252,13 @@ object STUB {
             imageUrl = "burger-chili.png"
         )
     )
+
     fun getRecipeById(id: Int): Recipe {
         return burgerRecipes.first { it.id == id }
     }
 
+    fun getRecipesByIds(ids: Set<Int>): List<Recipe> {
+        return burgerRecipes.filter { ids.contains(it.id) }.toList()
+    }
 }
 
