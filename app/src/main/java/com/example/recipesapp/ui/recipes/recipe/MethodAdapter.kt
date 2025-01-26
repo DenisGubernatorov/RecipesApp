@@ -1,9 +1,10 @@
-package com.example.recipesapp
+package com.example.recipesapp.ui.recipes.recipe
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.recipesapp.R
 import com.example.recipesapp.databinding.MethodItemBinding
 
 class MethodAdapter(private val dataSet: List<String>, private val context: Context) :

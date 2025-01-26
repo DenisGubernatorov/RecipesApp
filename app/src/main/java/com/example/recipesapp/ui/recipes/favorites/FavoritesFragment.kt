@@ -1,4 +1,4 @@
-package com.example.recipesapp
+package com.example.recipesapp.ui.recipes.favorites
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -10,8 +10,13 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import com.example.recipesapp.RecipesListFragment.Companion.ARG_RECIPE
+import com.example.recipesapp.R
+import com.example.recipesapp.data.FavoritesUtils
+import com.example.recipesapp.data.STUB
 import com.example.recipesapp.databinding.FragmentFavoritesBinding
+import com.example.recipesapp.ui.recipes.recipe.RecipeFragment
+import com.example.recipesapp.ui.recipes.recipeslist.RecipeListAdapter
+import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment.Companion.ARG_RECIPE
 import java.io.IOException
 
 

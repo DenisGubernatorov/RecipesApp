@@ -1,4 +1,4 @@
-package com.example.recipesapp
+package com.example.recipesapp.ui.recipes.recipe
 
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -11,7 +11,11 @@ import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.example.recipesapp.R
+import com.example.recipesapp.data.FavoritesUtils
+import com.example.recipesapp.data.Recipe
 import com.example.recipesapp.databinding.RecipeFragmentBinding
+import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import java.io.IOException
 
