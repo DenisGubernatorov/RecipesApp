@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.recipesapp.R
 import com.example.recipesapp.data.FavoritesUtils
-import com.example.recipesapp.data.Recipe
 import com.example.recipesapp.databinding.RecipeFragmentBinding
+import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import java.io.IOException

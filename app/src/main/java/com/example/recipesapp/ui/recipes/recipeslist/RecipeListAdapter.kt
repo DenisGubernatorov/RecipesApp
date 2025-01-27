@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipesapp.R
-import com.example.recipesapp.data.Recipe
 import com.example.recipesapp.databinding.ItemRecipeBinding
+import com.example.recipesapp.model.Recipe
 
 
 class RecipeListAdapter(private val dataSet: List<Recipe>) :
