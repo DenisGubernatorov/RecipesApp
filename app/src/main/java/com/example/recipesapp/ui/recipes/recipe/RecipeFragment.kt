@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.recipesapp.R
 import com.example.recipesapp.data.FavoritesUtils
@@ -28,6 +29,14 @@ class RecipeFragment : Fragment() {
             ?: throw IllegalStateException("Binding  for RecipesListFragmentBinding must be not null ")
     private var isFavorite = false
 
+    private val recipeViewModel: RecipeViewModel by viewModels()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        recipeViewModel.rfLiveData.observe(viewLifecycleOwner) { state ->
+            Log.i("RRR", "${state.isFavorite}")
+        }
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
