@@ -1,7 +1,6 @@
 package com.example.recipesapp.ui.recipes.recipe
 
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,15 +12,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.recipesapp.R
-import com.example.recipesapp.data.FavoritesUtils
 import com.example.recipesapp.databinding.RecipeFragmentBinding
 import com.example.recipesapp.model.Recipe
-import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment
+import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment.Companion.ARG_RECIPE_ID
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import java.io.IOException
 
 class RecipeFragment : Fragment() {
 
+    private var sliderPositionState: Int = 1
     private var recipe: Recipe? = null
     private var _binding: RecipeFragmentBinding? = null
     private val binding
@@ -31,37 +30,23 @@ class RecipeFragment : Fragment() {
 
     private val recipeViewModel: RecipeViewModel by viewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        recipeViewModel.rfLiveData.observe(viewLifecycleOwner) { state ->
-            Log.i("RRR", "${state.isFavorite}")
-        }
 
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = RecipeFragmentBinding.inflate(inflater)
-        arguments?.let {
-            recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                it.getParcelable(RecipesListFragment.ARG_RECIPE, Recipe::class.java)
-            } else {
-                it.getParcelable(RecipesListFragment.ARG_RECIPE)
-            }
+
+        arguments?.getInt(ARG_RECIPE_ID)?.let { recipeId ->
+            recipeViewModel.loadRecipe(recipeId)
         }
-        val recipeId = recipe?.id.toString()
-        val favoritesUtils = FavoritesUtils()
 
-        val ids = favoritesUtils.getFavorites(context)
-        isFavorite = ids.contains(recipeId)
+        initUI()
 
-        initRecycler()
-        initUI(recipeId, ids, favoritesUtils)
 
         return binding.root
     }
-
 
 
     private fun initRecycler() {
@@ -91,7 +76,7 @@ class RecipeFragment : Fragment() {
                 sliderPosition: Int,
                 isFromUser: Boolean
             ) {
-
+                sliderPositionState = sliderPosition
                 updateIngredients(sliderPosition)
             }
 
@@ -115,36 +100,33 @@ class RecipeFragment : Fragment() {
 
     }
 
-    private fun initUI(recipeId: String, ids: HashSet<String>, favoritesUtils: FavoritesUtils) {
-        binding.recipeHeaderText.text = recipe?.title ?: getString(R.string.get_recipes_error)
+    private fun initUI() {
+        recipeViewModel.rfLiveData.observe(viewLifecycleOwner) { state ->
+            state?.let {
+                isFavorite = it.isFavorite
+                sliderPositionState = it.seekBarProgress
+                recipe = it.recipe
 
-        binding.recipesHeaderImg.setImageDrawable(
-            try {
-                binding.root.context.assets.open(RECIPE_IMAGE_PREFIX + recipe?.imageUrl)
-                    .use { inputStream ->
-                        Drawable.createFromStream(inputStream, null)
+                binding.recipeHeaderText.text =
+                    recipe?.title ?: getString(R.string.get_recipes_error)
+                binding.recipesHeaderImg.setImageDrawable(
+                    try {
+                        binding.root.context.assets.open(RECIPE_IMAGE_PREFIX + recipe?.imageUrl)
+                            .use { inputStream ->
+                                Drawable.createFromStream(inputStream, null)
+                            }
+                    } catch (e: IOException) {
+                        Log.e("!!!!__", "image not found ${recipe?.title}", e)
+                        null
                     }
-            } catch (e: IOException) {
-                Log.e("!!!!__", "image not found ${recipe?.title}", e)
-                null
+                )
+                setFavoritesButtonImage()
+                initRecycler()
             }
-        )
-        setFavoritesButtonImage()
+        }
 
         binding.favoritesImage.setOnClickListener {
-            when {
-                isFavorite -> {
-                    isFavorite = false
-                    ids.remove(recipeId)
-                }
-
-                else -> {
-                    isFavorite = true
-                    ids.add(recipeId)
-                }
-            }
-
-            favoritesUtils.setFavorites(context, ids)
+            recipeViewModel.onFavoritesClicked(recipe?.id ?: return@setOnClickListener)
             setFavoritesButtonImage()
         }
     }
@@ -157,6 +139,7 @@ class RecipeFragment : Fragment() {
         binding.favoritesImage.setImageResource(toDrawId)
 
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

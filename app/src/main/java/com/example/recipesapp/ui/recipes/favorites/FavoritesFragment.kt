@@ -10,11 +10,12 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
 import com.example.recipesapp.R
-import com.example.recipesapp.data.FavoritesUtils
 import com.example.recipesapp.data.STUB
 import com.example.recipesapp.databinding.FragmentFavoritesBinding
 import com.example.recipesapp.ui.recipes.recipe.RecipeFragment
+import com.example.recipesapp.ui.recipes.recipe.RecipeViewModel
 import com.example.recipesapp.ui.recipes.recipeslist.RecipeListAdapter
 import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment.Companion.ARG_RECIPE
 import java.io.IOException
@@ -25,7 +26,7 @@ class FavoritesFragment : Fragment() {
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding  for FragmentListCategoriesBinding must be not null ")
-
+    private val recipeViewModel: RecipeViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,8 +45,8 @@ class FavoritesFragment : Fragment() {
                 null
             })
 
-        val favoritesUtils = FavoritesUtils()
-        val favorites = favoritesUtils.getFavorites(context)
+
+        val favorites = recipeViewModel.getFavorites()
 
         if (favorites.isEmpty()) {
             setViewVisibilityState(favorites.isEmpty())
@@ -62,9 +63,9 @@ class FavoritesFragment : Fragment() {
         binding.rvFavoritesRecipes.visibility = if (isEmpty) View.GONE else View.VISIBLE
     }
 
-    private fun initRecycler(favorites: HashSet<String>) {
+    private fun initRecycler(favorites: HashSet<Int>) {
 
-        val toSet = favorites.map { it.toInt() }.toSet()
+        val toSet = favorites.map { it }.toSet()
         val recipesByIds = STUB.getRecipesByIds(toSet)
 
         val recipeListAdapter = RecipeListAdapter(recipesByIds)
