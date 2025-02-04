@@ -10,12 +10,11 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import androidx.fragment.app.viewModels
 import com.example.recipesapp.R
+import com.example.recipesapp.data.FavoritesUtils
 import com.example.recipesapp.data.STUB
 import com.example.recipesapp.databinding.FragmentFavoritesBinding
 import com.example.recipesapp.ui.recipes.recipe.RecipeFragment
-import com.example.recipesapp.ui.recipes.recipe.RecipeViewModel
 import com.example.recipesapp.ui.recipes.recipeslist.RecipeListAdapter
 import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment.Companion.ARG_RECIPE
 import java.io.IOException
@@ -26,7 +25,7 @@ class FavoritesFragment : Fragment() {
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding  for FragmentListCategoriesBinding must be not null ")
-    private val recipeViewModel: RecipeViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,7 +45,7 @@ class FavoritesFragment : Fragment() {
             })
 
 
-        val favorites = recipeViewModel.getFavorites()
+        val favorites = FavoritesUtils(requireActivity().application).getFavorites()
 
         if (favorites.isEmpty()) {
             setViewVisibilityState(favorites.isEmpty())
