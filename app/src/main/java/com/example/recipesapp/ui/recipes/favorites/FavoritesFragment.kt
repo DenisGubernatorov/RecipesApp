@@ -44,8 +44,8 @@ class FavoritesFragment : Fragment() {
                 null
             })
 
-        val favoritesUtils = FavoritesUtils()
-        val favorites = favoritesUtils.getFavorites(context)
+
+        val favorites = FavoritesUtils(requireActivity().application).getFavorites()
 
         if (favorites.isEmpty()) {
             setViewVisibilityState(favorites.isEmpty())
@@ -62,9 +62,9 @@ class FavoritesFragment : Fragment() {
         binding.rvFavoritesRecipes.visibility = if (isEmpty) View.GONE else View.VISIBLE
     }
 
-    private fun initRecycler(favorites: HashSet<String>) {
+    private fun initRecycler(favorites: HashSet<Int>) {
 
-        val toSet = favorites.map { it.toInt() }.toSet()
+        val toSet = favorites.map { it }.toSet()
         val recipesByIds = STUB.getRecipesByIds(toSet)
 
         val recipeListAdapter = RecipeListAdapter(recipesByIds)

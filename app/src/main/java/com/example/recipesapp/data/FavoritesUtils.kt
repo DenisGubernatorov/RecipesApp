@@ -1,21 +1,26 @@
 package com.example.recipesapp.data
 
+import android.app.Application
 import android.content.Context
 
-
-class FavoritesUtils {
+class FavoritesUtils(private val application: Application) {
     private val favoriteFileKey = "favorites"
     private val idsKey = "ids"
 
-    fun getFavorites(context: Context?): HashSet<String> {
+    fun getFavorites(): HashSet<Int> {
 
-        val sharedPrefs = context?.getSharedPreferences(favoriteFileKey, Context.MODE_PRIVATE)
-        return sharedPrefs?.getStringSet(idsKey, HashSet<String>())?.toHashSet() ?: HashSet()
+        val sharedPrefs = application.getSharedPreferences(
+            favoriteFileKey,
+            Context.MODE_PRIVATE
+        )
+        val idsAsStrings = sharedPrefs?.getStringSet(idsKey, emptySet()) ?: emptySet()
+        return idsAsStrings.mapNotNull { it.toIntOrNull() }.toHashSet()
+
     }
 
-    fun setFavorites(context: Context?, ids: MutableSet<String>?) {
+    fun setFavorites(ids: Set<String>) {
         val sharedPrefs =
-            context?.getSharedPreferences(favoriteFileKey, Context.MODE_PRIVATE) ?: return
+            application.getSharedPreferences(favoriteFileKey, Context.MODE_PRIVATE) ?: return
         sharedPrefs.edit().putStringSet(idsKey, ids).apply()
 
     }

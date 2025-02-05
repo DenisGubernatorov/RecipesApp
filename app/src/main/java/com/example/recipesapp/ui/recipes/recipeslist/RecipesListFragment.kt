@@ -22,6 +22,7 @@ class RecipesListFragment : Fragment() {
         const val ARG_CATEGORY_NAME: String = "ARG_CATEGORY_NAME"
         const val ARG_CATEGORY_IMAGE_URL: String = "ARG_CATEGORY_IMAGE_URL"
         const val ARG_RECIPE: String = "ARG_RECIPE"
+        const val ARG_RECIPE_ID: String = "ARG_RECIPE_ID"
     }
 
     private var _binding: RecipesListFragmentBinding? = null
@@ -82,10 +83,9 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val recipe = STUB.getRecipeById(recipeId)
 
         val recipeArguments = bundleOf(
-            ARG_RECIPE to recipe
+            ARG_RECIPE_ID to recipeId
         )
 
         parentFragmentManager.commit {
