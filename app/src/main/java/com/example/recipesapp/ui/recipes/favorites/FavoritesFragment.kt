@@ -16,7 +16,7 @@ import com.example.recipesapp.data.STUB
 import com.example.recipesapp.databinding.FragmentFavoritesBinding
 import com.example.recipesapp.ui.recipes.recipe.RecipeFragment
 import com.example.recipesapp.ui.recipes.recipeslist.RecipeListAdapter
-import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment.Companion.ARG_RECIPE
+import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment.Companion.ARG_RECIPE_ID
 import java.io.IOException
 
 
@@ -84,7 +84,7 @@ class FavoritesFragment : Fragment() {
         val recipe = STUB.getRecipeById(recipeId)
 
         val recipeArguments = bundleOf(
-            ARG_RECIPE to recipe
+            ARG_RECIPE_ID to recipeId
         )
 
         parentFragmentManager.commit {

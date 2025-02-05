@@ -1,17 +1,20 @@
 package com.example.recipesapp.ui.recipes.recipe
 
 import android.app.Application
+import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.recipesapp.data.FavoritesUtils
 import com.example.recipesapp.data.STUB
 import com.example.recipesapp.model.Recipe
+import java.io.IOException
 
-class RecipeViewModel(application: Application) : AndroidViewModel(application) {
+class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
     private var _rfLiveData: MutableLiveData<RecipeViewModelState> = MutableLiveData()
+    private val recipeImagePrefix = "Property 1="
     val rfLiveData: LiveData<RecipeViewModelState> get() = _rfLiveData
-
 
     private val favoritesUtils = FavoritesUtils(application)
 
@@ -19,8 +22,10 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         val recipe = STUB.getRecipeById(recipeId)
         val isFavorite = favoritesUtils.getFavorites().contains(recipeId)
         val currentState = _rfLiveData.value ?: RecipeViewModelState()
+        val recipeImage = getDrawable(recipe)
         _rfLiveData.value = RecipeViewModelState(
             recipe = recipe,
+            recipeImage = recipeImage,
             seekBarProgress = currentState.seekBarProgress,
             isFavorite = isFavorite
         )
@@ -28,7 +33,19 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         // TODO: load from network
     }
 
+    private fun getDrawable(recipe: Recipe?): Drawable? {
 
+        return try {
+            application.assets.open(recipeImagePrefix + recipe?.imageUrl)
+                .use { inputStream ->
+                    Drawable.createFromStream(inputStream, null)
+                }
+        } catch (e: IOException) {
+            Log.e("!!!!__", "image not found ${recipe?.title}", e)
+            null
+        }
+
+    }
 
     private fun saveFavorites(isFavorite: Boolean, recipeId: Int) {
         val favorites = favoritesUtils.getFavorites()
@@ -55,6 +72,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
 data class RecipeViewModelState(
     val recipe: Recipe? = null,
+    val recipeImage: Drawable? = null,
     val seekBarProgress: Int = 1,
     val isFavorite: Boolean = false
 )

@@ -21,7 +21,6 @@ class RecipesListFragment : Fragment() {
         const val ARG_CATEGORY_ID: String = "ARG_CATEGORY_ID"
         const val ARG_CATEGORY_NAME: String = "ARG_CATEGORY_NAME"
         const val ARG_CATEGORY_IMAGE_URL: String = "ARG_CATEGORY_IMAGE_URL"
-        const val ARG_RECIPE: String = "ARG_RECIPE"
         const val ARG_RECIPE_ID: String = "ARG_RECIPE_ID"
     }
 
