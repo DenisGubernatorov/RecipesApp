@@ -16,13 +16,10 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment() {
 
-    // private var sliderPositionState: Int = 1
-    //  private var recipe: Recipe? = null
     private var _binding: RecipeFragmentBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding  for RecipesListFragmentBinding must be not null ")
-    // private var isFavorite = false
 
     private val recipeViewModel: RecipeViewModel by viewModels()
 
@@ -39,13 +36,12 @@ class RecipeFragment : Fragment() {
         }
 
         initUI()
-        initRecycler()
 
         return binding.root
     }
 
 
-    private fun initRecycler() {
+    private fun initUI() {
 
         val itemDecoration = MaterialDividerItemDecoration(
             requireContext(),
@@ -58,9 +54,8 @@ class RecipeFragment : Fragment() {
             isLastItemDecorated = false
         }
 
-
-
-        binding.rvIngredients.adapter = IngredientsAdapter(emptyList(), requireContext())
+        val ingredientsAdapter = IngredientsAdapter(emptyList(), requireContext())
+        binding.rvIngredients.adapter = ingredientsAdapter
         binding.rvIngredients.addItemDecoration(
             itemDecoration
         )
@@ -69,10 +64,10 @@ class RecipeFragment : Fragment() {
 
             override fun onProgressChanged(
                 seekBar: SeekBar?,
-                sliderPosition: Int,
+                portionCount: Int,
                 isFromUser: Boolean
             ) {
-                updateIngredients(sliderPosition)
+                recipeViewModel.onProgressChanged(portionCount)
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {}
@@ -85,35 +80,29 @@ class RecipeFragment : Fragment() {
         val methodAdapter = MethodAdapter(emptyList(), requireContext())
         binding.rvMethod.adapter = methodAdapter
         binding.rvMethod.addItemDecoration(itemDecoration)
-    }
 
-    private fun updateIngredients(progress: Int) {
-
-        binding.portionCount.text = "$progress"
-        val ingredientsAdapter = binding.rvIngredients.adapter as? IngredientsAdapter
-        ingredientsAdapter?.updateQuantity(progress)
-
-    }
-
-    private fun initUI() {
-
+        binding.favoritesImage.setOnClickListener {
+            recipeViewModel.onFavoritesClicked()
+        }
         recipeViewModel.rfLiveData.observe(viewLifecycleOwner) { state ->
             state?.let {
                 binding.recipesHeaderImg.setImageDrawable(state.recipeImage)
                 binding.recipeHeaderText.text =
                     state.recipe?.title ?: getString(R.string.get_recipes_error)
-                (binding.rvIngredients.adapter as? IngredientsAdapter)?.updateDataSet(state.recipe?.ingredients)
-                (binding.rvMethod.adapter as? MethodAdapter)?.updateDataSet(state.recipe?.method)
+                binding.portionCount.text = "${state.portionCount}"
+
+
+                ingredientsAdapter.updateDataSet(state.recipe?.ingredients)
+                ingredientsAdapter.updateQuantity(state.portionCount)
+
+                methodAdapter.updateDataSet(state.recipe?.method)
 
                 setFavoritesButtonImage(state.isFavorite)
-                updateIngredients(state.seekBarProgress)
+
 
             }
         }
 
-        binding.favoritesImage.setOnClickListener {
-            recipeViewModel.onFavoritesClicked()
-        }
     }
 
     private fun setFavoritesButtonImage(isFavorite: Boolean) {
