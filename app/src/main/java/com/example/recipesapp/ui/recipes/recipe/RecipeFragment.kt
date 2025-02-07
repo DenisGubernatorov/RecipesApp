@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -60,20 +61,8 @@ class RecipeFragment : Fragment() {
             itemDecoration
         )
 
-        binding.SeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-
-            override fun onProgressChanged(
-                seekBar: SeekBar?,
-                portionCount: Int,
-                isFromUser: Boolean
-            ) {
-                recipeViewModel.onProgressChanged(portionCount)
-            }
-
-            override fun onStartTrackingTouch(p0: SeekBar?) {}
-
-            override fun onStopTrackingTouch(p0: SeekBar?) {}
-
+        binding.SeekBar.setOnSeekBarChangeListener(PortionSeekBarListener { portionCount ->
+            recipeViewModel.onPortionCountChanged(portionCount)
         })
 
 
@@ -119,4 +108,22 @@ class RecipeFragment : Fragment() {
         _binding = null
     }
 
+    class PortionSeekBarListener(private val onChangeIngredients: (Int) -> Unit) :
+        OnSeekBarChangeListener {
+
+        override fun onProgressChanged(
+            seekBar: SeekBar?,
+            portionCount: Int,
+            isFromUser: Boolean
+        ) {
+            onChangeIngredients(portionCount)
+        }
+
+        override fun onStartTrackingTouch(p0: SeekBar?) {/*to do*/
+        }
+
+        override fun onStopTrackingTouch(p0: SeekBar?) {/*to do*/
+        }
+
+    }
 }

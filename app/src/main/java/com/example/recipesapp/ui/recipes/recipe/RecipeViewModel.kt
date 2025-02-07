@@ -69,7 +69,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         saveFavorites(newIsFavorite, recipeId)
     }
 
-    fun onProgressChanged(portionCount: Int) {
+    fun onPortionCountChanged(portionCount: Int) {
         val currentState = _rfLiveData.value ?: return
         _rfLiveData.value = currentState.copy(portionCount = portionCount)
     }
