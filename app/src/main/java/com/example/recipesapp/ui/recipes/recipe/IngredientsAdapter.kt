@@ -11,7 +11,7 @@ import com.example.recipesapp.model.Ingredient
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class IngredientsAdapter(private var dataSet: List<Ingredient>, private val context: Context) :
+class IngredientsAdapter(var dataSet: List<Ingredient>, private val context: Context) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
     private var quantity = 1
 
@@ -62,11 +62,6 @@ class IngredientsAdapter(private var dataSet: List<Ingredient>, private val cont
 
     fun updateQuantity(newQuantity: Int) {
         quantity = newQuantity
-        notifyItemRangeChanged(0, dataSet.size)
-    }
-
-    fun updateDataSet(ingredients: List<Ingredient>?) {
-        dataSet = ingredients ?: return
         notifyItemRangeChanged(0, dataSet.size)
     }
 

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.recipesapp.R
 import com.example.recipesapp.databinding.MethodItemBinding
 
-class MethodAdapter(private var dataSet: List<String>, private val context: Context) :
+class MethodAdapter(var dataSet: List<String>, private val context: Context) :
     RecyclerView.Adapter<MethodAdapter.ViewHolder
             >() {
 
@@ -38,8 +38,4 @@ class MethodAdapter(private var dataSet: List<String>, private val context: Cont
         return dataSet.size
     }
 
-    fun updateDataSet(method: List<String>?) {
-        dataSet = method ?: return
-        notifyItemRangeChanged(0, dataSet.size)
-    }
 }
