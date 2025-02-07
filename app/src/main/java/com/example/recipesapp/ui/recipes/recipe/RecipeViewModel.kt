@@ -26,7 +26,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         _rfLiveData.value = RecipeViewModelState(
             recipe = recipe,
             recipeImage = recipeImage,
-            seekBarProgress = currentState.seekBarProgress,
+            portionCount = currentState.portionCount,
             isFavorite = isFavorite
         )
 
@@ -68,11 +68,16 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
 
         saveFavorites(newIsFavorite, recipeId)
     }
+
+    fun onProgressChanged(portionCount: Int) {
+        val currentState = _rfLiveData.value ?: return
+        _rfLiveData.value = currentState.copy(portionCount = portionCount)
+    }
 }
 
 data class RecipeViewModelState(
     val recipe: Recipe? = null,
     val recipeImage: Drawable? = null,
-    val seekBarProgress: Int = 1,
+    val portionCount: Int = 1,
     val isFavorite: Boolean = false
 )
