@@ -81,10 +81,10 @@ class RecipeFragment : Fragment() {
                 binding.portionCount.text = "${state.portionCount}"
 
 
-                ingredientsAdapter.dataSet = state.recipe?.ingredients ?: emptyList()
+                ingredientsAdapter.updateDataSet(state.recipe?.ingredients ?: emptyList())
                 ingredientsAdapter.updateQuantity(state.portionCount)
 
-                methodAdapter.dataSet = state.recipe?.method ?: emptyList()
+                methodAdapter.updateDataSet(state.recipe?.method ?: emptyList())
 
                 setFavoritesButtonImage(state.isFavorite)
 
