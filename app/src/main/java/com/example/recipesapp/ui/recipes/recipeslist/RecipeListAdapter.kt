@@ -10,7 +10,7 @@ import com.example.recipesapp.databinding.ItemRecipeBinding
 import com.example.recipesapp.model.Recipe
 
 
-class RecipeListAdapter(private val dataSet: List<Recipe>) :
+class RecipeListAdapter(private var dataSet: List<Recipe>) :
     RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
 
 
@@ -59,5 +59,10 @@ class RecipeListAdapter(private val dataSet: List<Recipe>) :
             itemClickListener?.onItemClick(recipe.id)
         }
 
+    }
+
+    fun updateState(dataSet: List<Recipe>) {
+        this.dataSet = dataSet
+        notifyItemRangeChanged(0, dataSet.size)
     }
 }
