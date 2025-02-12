@@ -11,6 +11,7 @@ import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import com.example.recipesapp.R
 import com.example.recipesapp.databinding.RecipesListFragmentBinding
+import com.example.recipesapp.ui.common.RecipeListAdapter
 import com.example.recipesapp.ui.recipes.recipe.RecipeFragment
 
 class RecipesListFragment : Fragment() {

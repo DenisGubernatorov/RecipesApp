@@ -1,4 +1,4 @@
-package com.example.recipesapp.ui.recipes.recipeslist
+package com.example.recipesapp.ui.common
 
 import android.graphics.drawable.Drawable
 import android.util.Log

@@ -14,8 +14,8 @@ import com.example.recipesapp.R
 import com.example.recipesapp.data.FavoritesUtils
 import com.example.recipesapp.data.STUB
 import com.example.recipesapp.databinding.FragmentFavoritesBinding
+import com.example.recipesapp.ui.common.RecipeListAdapter
 import com.example.recipesapp.ui.recipes.recipe.RecipeFragment
-import com.example.recipesapp.ui.recipes.recipeslist.RecipeListAdapter
 import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment.Companion.ARG_RECIPE_ID
 import java.io.IOException
 
@@ -81,7 +81,6 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val recipe = STUB.getRecipeById(recipeId)
 
         val recipeArguments = bundleOf(
             ARG_RECIPE_ID to recipeId
