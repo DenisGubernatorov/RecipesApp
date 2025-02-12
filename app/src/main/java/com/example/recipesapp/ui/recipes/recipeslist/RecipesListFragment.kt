@@ -47,12 +47,12 @@ class RecipesListFragment : Fragment() {
             )
         }
 
-        initRecycler()
+        initUI()
 
         return binding.root
     }
 
-    private fun initRecycler() {
+    private fun initUI() {
 
         val recipeListAdapter = RecipeListAdapter(emptyList())
 
