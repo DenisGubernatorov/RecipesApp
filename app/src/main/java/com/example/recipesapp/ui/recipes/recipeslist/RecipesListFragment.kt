@@ -75,7 +75,7 @@ class RecipesListFragment : Fragment() {
 
                 binding.recipesListTitle.text = state.categoryName
 
-                recipeListAdapter.updateState(state.categoryList)
+                recipeListAdapter.updateState(state.recipeList)
             }
 
         }

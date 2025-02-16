@@ -18,7 +18,7 @@ class RecipeListViewModel(private val application: Application) : AndroidViewMod
         val categoryImage = getDrawable(categoryImageUrl, categoryName)
 
         _rlfLiveData.value = RecipeListViewModelState(
-            categoryList = STUB.getRecipesByCategoryId(categoryId),
+            recipeList = STUB.getRecipesByCategoryId(categoryId),
             categoryName = categoryName,
             categoryImage = categoryImage
         )
@@ -41,7 +41,7 @@ class RecipeListViewModel(private val application: Application) : AndroidViewMod
     }
 
     data class RecipeListViewModelState(
-        val categoryList: List<Recipe>,
+        val recipeList: List<Recipe>,
         val categoryName: String?,
         val categoryImage: Drawable?
 

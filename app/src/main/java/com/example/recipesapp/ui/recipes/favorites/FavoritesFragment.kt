@@ -1,6 +1,8 @@
 package com.example.recipesapp.ui.recipes.favorites
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,7 @@ import com.example.recipesapp.databinding.FragmentFavoritesBinding
 import com.example.recipesapp.ui.common.RecipeListAdapter
 import com.example.recipesapp.ui.recipes.recipe.RecipeFragment
 import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment.Companion.ARG_RECIPE_ID
+import java.io.IOException
 
 
 class FavoritesFragment : Fragment() {
@@ -30,10 +33,19 @@ class FavoritesFragment : Fragment() {
     ): View {
         _binding = FragmentFavoritesBinding.inflate(inflater)
 
+        binding.favoritesListHeaderImg.setImageDrawable(
+            try {
+                binding.root.context.assets.open("bcg_favorites.png")
+                    .use { inputStream ->
+                        Drawable.createFromStream(inputStream, null)
+                    }
+            } catch (e: IOException) {
+                Log.e("!!!!__", "image  for favorites not found ", e)
+                null
+            })
 
         favoritesViewModel.loadFavorites()
         initUI()
-
         return binding.root
     }
 
@@ -56,12 +68,15 @@ class FavoritesFragment : Fragment() {
 
         favoritesViewModel.ffLiveData.observe(viewLifecycleOwner) { state ->
             state?.let {
-                binding.favoritesListHeaderImg.setImageDrawable(state.favoritesImage)
-                binding.emptyRecipesList.visibility = state.emptyListVisibility
-                binding.rvFavoritesRecipes.visibility = state.rvFavoritesVisibility
-                binding.emptyRecipesList.visibility = state.rvFavoritesVisibility
-
                 recipeListAdapter.updateState(state.favoritesList)
+
+                if (state.favoritesList.isEmpty()) {
+                    binding.emptyRecipesList.visibility = View.VISIBLE
+                    binding.rvFavoritesRecipes.visibility = View.GONE
+                } else {
+                    binding.emptyRecipesList.visibility = View.GONE
+                    binding.rvFavoritesRecipes.visibility = View.VISIBLE
+                }
             }
         }
     }
