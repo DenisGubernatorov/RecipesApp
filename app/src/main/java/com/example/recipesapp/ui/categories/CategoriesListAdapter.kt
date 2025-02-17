@@ -9,7 +9,7 @@ import com.example.recipesapp.R
 import com.example.recipesapp.databinding.ItemCategoryBinding
 import com.example.recipesapp.model.Category
 
-class CategoriesListAdapter(private val dataSet: List<Category>) :
+class CategoriesListAdapter(private var dataSet: List<Category>) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
 
     class ViewHolder(private var binding: ItemCategoryBinding) :
@@ -59,5 +59,10 @@ class CategoriesListAdapter(private val dataSet: List<Category>) :
             itemClickListener?.onItemClick(position)
         }
 
+    }
+
+    fun updateState(dataSet: List<Category>) {
+        this.dataSet = dataSet
+        notifyItemRangeChanged(0, dataSet.size)
     }
 }
