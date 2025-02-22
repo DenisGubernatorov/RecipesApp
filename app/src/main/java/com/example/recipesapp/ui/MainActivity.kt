@@ -16,14 +16,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val navController = findNavController(R.id.mainContainer)
         binding.category.setOnClickListener {
+            val navController = findNavController(R.id.mainContainer)
             if (navController.currentDestination?.id != R.id.categoriesListFragment) {
                 navController.navigate(R.id.global_action_for_categories_list)
             }
         }
 
         binding.favorites.setOnClickListener {
+            val navController = findNavController(R.id.mainContainer)
             if (navController.currentDestination?.id != R.id.favoritesFragment) {
                 navController.navigate(R.id.global_action_for_favorites)
             }
