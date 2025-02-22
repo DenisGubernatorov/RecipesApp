@@ -40,4 +40,11 @@
             android:id="@+id/action_recipesListFragment_to_recipeFragment"
             app:destination="@id/recipeFragment" />
     </fragment>
+    <action
+        android:id="@+id/global_action_for_favorites"
+        app:destination="@+id/favoritesFragment" />
+    <action
+        android:id="@+id/global_action_for_categories_list"
+        app:destination="@+id/categoriesListFragment" />
+
 </navigation>
