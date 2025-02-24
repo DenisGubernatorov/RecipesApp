@@ -9,10 +9,10 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.recipesapp.R
 import com.example.recipesapp.databinding.RecipeFragmentBinding
-import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment.Companion.ARG_RECIPE_ID
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment() {
@@ -23,7 +23,7 @@ class RecipeFragment : Fragment() {
             ?: throw IllegalStateException("Binding  for RecipesListFragmentBinding must be not null ")
 
     private val recipeViewModel: RecipeViewModel by viewModels()
-
+    private val args by navArgs<RecipeFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,10 +32,8 @@ class RecipeFragment : Fragment() {
     ): View {
         _binding = RecipeFragmentBinding.inflate(inflater)
 
-        arguments?.getInt(ARG_RECIPE_ID)?.let { recipeId ->
-            recipeViewModel.loadRecipe(recipeId)
-        }
 
+        recipeViewModel.loadRecipe(args.recipeId)
         initUI()
 
         return binding.root

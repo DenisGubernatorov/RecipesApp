@@ -4,22 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.recipesapp.R
 import com.example.recipesapp.databinding.RecipesListFragmentBinding
+import com.example.recipesapp.ui.categories.CategoriesListFragmentArgs
 import com.example.recipesapp.ui.common.RecipeListAdapter
-import com.example.recipesapp.ui.recipes.recipe.RecipeFragment
 
 class RecipesListFragment : Fragment() {
 
     companion object {
-        const val ARG_CATEGORY_ID: String = "ARG_CATEGORY_ID"
-        const val ARG_CATEGORY_NAME: String = "ARG_CATEGORY_NAME"
-        const val ARG_CATEGORY_IMAGE_URL: String = "ARG_CATEGORY_IMAGE_URL"
         const val ARG_RECIPE_ID: String = "ARG_RECIPE_ID"
     }
 
@@ -30,7 +26,7 @@ class RecipesListFragment : Fragment() {
 
 
     private val recipeListViewModel: RecipeListViewModel by viewModels()
-
+    private val safeArgs by navArgs<CategoriesListFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,13 +35,11 @@ class RecipesListFragment : Fragment() {
     ): View {
         _binding = RecipesListFragmentBinding.inflate(inflater)
 
-        arguments?.let {
-            recipeListViewModel.loadRecipesList(
-                it.getInt(ARG_CATEGORY_ID),
-                it.getString(ARG_CATEGORY_NAME),
-                it.getString(ARG_CATEGORY_IMAGE_URL)
-            )
-        }
+        recipeListViewModel.loadRecipesList(
+            safeArgs.categoryId,
+            safeArgs.categoryTitle,
+            safeArgs.categoryImageUrl
+        )
 
         initUI()
 
@@ -83,16 +77,12 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-
-        val recipeArguments = bundleOf(
-            ARG_RECIPE_ID to recipeId
+        findNavController().navigate(
+            RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(
+                recipeId
+            )
         )
 
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<RecipeFragment>(R.id.mainContainer, args = recipeArguments)
-            addToBackStack(null)
-        }
     }
 
     override fun onDestroyView() {

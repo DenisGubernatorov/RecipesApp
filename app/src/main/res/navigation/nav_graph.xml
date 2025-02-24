@@ -16,6 +16,15 @@
         <action
             android:id="@+id/action_categoriesListFragment_to_favoritesFragment"
             app:destination="@id/favoritesFragment" />
+        <argument
+            android:name="categoryId"
+            app:argType="integer" />
+        <argument
+            android:name="categoryTitle"
+            app:argType="string" />
+        <argument
+            android:name="categoryImageUrl"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
@@ -30,7 +39,11 @@
         android:id="@+id/recipeFragment"
         android:name="com.example.recipesapp.ui.recipes.recipe.RecipeFragment"
         android:label="RecipeFragment"
-        tools:layout="@layout/recipe_fragment" />
+        tools:layout="@layout/recipe_fragment">
+        <argument
+            android:name="recipeId"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/recipesListFragment"
         android:name="com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment"
@@ -39,6 +52,15 @@
         <action
             android:id="@+id/action_recipesListFragment_to_recipeFragment"
             app:destination="@id/recipeFragment" />
+        <argument
+            android:name="categoryId"
+            app:argType="integer" />
+        <argument
+            android:name="categoryTitle"
+            app:argType="string" />
+        <argument
+            android:name="categoryImageUrl"
+            app:argType="string" />
     </fragment>
     <action
         android:id="@+id/global_action_for_favorites"
