@@ -4,14 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
-import com.example.recipesapp.R
+import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
-import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment
 
 class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null
@@ -66,17 +62,16 @@ class CategoriesListFragment : Fragment() {
 
         val category =
             categoriesViewModel.catLiveData.value?.categories?.find { it.id == categoryId }
+        val categoryTitle = category?.title ?: ""
+        val categoryImageUrl = category?.imageUrl ?: ""
 
-        arguments = bundleOf(
-            RecipesListFragment.ARG_CATEGORY_ID to categoryId,
-            RecipesListFragment.ARG_CATEGORY_NAME to category?.title,
-            RecipesListFragment.ARG_CATEGORY_IMAGE_URL to category?.imageUrl
-        )
+        val categoriesListToRecipesList =
+            CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
+                categoryId,
+                categoryTitle,
+                categoryImageUrl
+            )
+        findNavController().navigate(categoriesListToRecipesList)
 
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<RecipesListFragment>(R.id.mainContainer, args = arguments)
-            addToBackStack(null)
-        }
     }
 }
