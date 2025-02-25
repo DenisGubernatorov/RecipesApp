@@ -6,16 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
-import com.example.recipesapp.R
+import androidx.navigation.fragment.findNavController
 import com.example.recipesapp.databinding.FragmentFavoritesBinding
 import com.example.recipesapp.ui.common.RecipeListAdapter
-import com.example.recipesapp.ui.recipes.recipe.RecipeFragment
-import com.example.recipesapp.ui.recipes.recipeslist.RecipesListFragment.Companion.ARG_RECIPE_ID
 import java.io.IOException
 
 
@@ -82,16 +77,12 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-
-        val recipeArguments = bundleOf(
-            ARG_RECIPE_ID to recipeId
+        findNavController().navigate(
+            FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(
+                recipeId
+            )
         )
 
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<RecipeFragment>(R.id.mainContainer, args = recipeArguments)
-            addToBackStack(null)
-        }
     }
 
     override fun onDestroyView() {

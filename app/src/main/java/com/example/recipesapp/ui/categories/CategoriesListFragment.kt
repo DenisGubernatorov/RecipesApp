@@ -60,18 +60,14 @@ class CategoriesListFragment : Fragment() {
 
     private fun openRecipesByCategoryId(categoryId: Int) {
 
-        val category =
-            categoriesViewModel.catLiveData.value?.categories?.find { it.id == categoryId }
-        val categoryTitle = category?.title ?: ""
-        val categoryImageUrl = category?.imageUrl ?: ""
+        categoriesViewModel.catLiveData.value?.categories?.find { it.id == categoryId }?.let {
+            val categoriesListToRecipesList =
+                CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
+                    it
+                )
+            findNavController().navigate(categoriesListToRecipesList)
+        } ?: throw IllegalStateException("Category must be not null")
 
-        val categoriesListToRecipesList =
-            CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
-                categoryId,
-                categoryTitle,
-                categoryImageUrl
-            )
-        findNavController().navigate(categoriesListToRecipesList)
 
     }
 }

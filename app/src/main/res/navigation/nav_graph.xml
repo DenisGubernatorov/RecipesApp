@@ -12,19 +12,21 @@
         tools:layout="@layout/fragment_list_categories">
         <action
             android:id="@+id/action_categoriesListFragment_to_recipesListFragment"
-            app:destination="@id/recipesListFragment" />
+            app:destination="@id/recipesListFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_categoriesListFragment_to_favoritesFragment"
-            app:destination="@id/favoritesFragment" />
+            app:destination="@id/favoritesFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <argument
-            android:name="categoryId"
-            app:argType="integer" />
-        <argument
-            android:name="categoryTitle"
-            app:argType="string" />
-        <argument
-            android:name="categoryImageUrl"
-            app:argType="string" />
+            android:name="category"
+            app:argType="com.example.recipesapp.model.Category" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
@@ -33,7 +35,14 @@
         tools:layout="@layout/fragment_favorites">
         <action
             android:id="@+id/action_favoritesFragment_to_recipeFragment"
-            app:destination="@id/recipeFragment" />
+            app:destination="@id/recipeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <argument
+            android:name="recipeId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/recipeFragment"
@@ -51,22 +60,28 @@
         tools:layout="@layout/recipes_list_fragment">
         <action
             android:id="@+id/action_recipesListFragment_to_recipeFragment"
-            app:destination="@id/recipeFragment" />
+            app:destination="@id/recipeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <argument
-            android:name="categoryId"
-            app:argType="integer" />
-        <argument
-            android:name="categoryTitle"
-            app:argType="string" />
-        <argument
-            android:name="categoryImageUrl"
-            app:argType="string" />
+            android:name="category"
+            app:argType="com.example.recipesapp.model.Category" />
     </fragment>
     <action
         android:id="@+id/global_action_for_favorites"
-        app:destination="@+id/favoritesFragment" />
+        app:destination="@+id/favoritesFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     <action
         android:id="@+id/global_action_for_categories_list"
-        app:destination="@+id/categoriesListFragment" />
+        app:destination="@+id/categoriesListFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
 </navigation>
