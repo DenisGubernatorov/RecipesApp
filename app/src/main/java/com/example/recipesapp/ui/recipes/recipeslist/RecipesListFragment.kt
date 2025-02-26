@@ -15,10 +15,6 @@ import com.example.recipesapp.ui.common.RecipeListAdapter
 
 class RecipesListFragment : Fragment() {
 
-    companion object {
-        const val ARG_RECIPE_ID: String = "ARG_RECIPE_ID"
-    }
-
     private var _binding: RecipesListFragmentBinding? = null
     private val binding
         get() = _binding
@@ -36,9 +32,9 @@ class RecipesListFragment : Fragment() {
         _binding = RecipesListFragmentBinding.inflate(inflater)
 
         recipeListViewModel.loadRecipesList(
-            safeArgs.categoryId,
-            safeArgs.categoryTitle,
-            safeArgs.categoryImageUrl
+            safeArgs.category.id,
+            safeArgs.category.title,
+            safeArgs.category.imageUrl
         )
 
         initUI()
