@@ -11,14 +11,12 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 import java.net.URL
-import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
-    private val mainUrl = " https://recipes.androidsprint.ru/api"
+
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-    private val threadPool = Executors.newFixedThreadPool(10)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,29 +25,28 @@ class MainActivity : AppCompatActivity() {
         Log.i("thread", "Метод onCreate() выполняется на потоке: ${Thread.currentThread().name}")
 
         val thread = Thread {
-            val url = URL("$mainUrl/category")
-            val connForCategory = url.openConnection() as HttpURLConnection
+            val url = URL("https://recipes.androidsprint.ru/api/category")
+            val connection = url.openConnection() as HttpURLConnection
             try {
-                connForCategory.connect()
+                connection.connect()
                 Log.i("thread", "Выполняю запрос на потоке: ${Thread.currentThread().name}")
 
                 val bufferedData =
-                    connForCategory.inputStream.bufferedReader().use { reader -> reader.readText() }
+                    connection.inputStream.bufferedReader().use { reader -> reader.readText() }
                 Log.i("data", bufferedData)
 
                 val json = Json { ignoreUnknownKeys = true }
                 val categories: List<Category> = json.decodeFromString(bufferedData)
-
-                val catIDs = categories.map { it.id }
-                for (id in catIDs) {
-                    val getRecipesInCategoryTask = getTaskForRecipesList(url, id)
-                    threadPool.submit(getRecipesInCategoryTask)
+                categories.forEach { category ->
+                    Log.i(
+                        "category",
+                        "ID: ${category.id}, Name: ${category.title}, description: ${category.description}, imageURL: ${category.imageUrl}"
+                    )
                 }
-
             } catch (e: Exception) {
-                Log.e("getCategoriesTask", e.toString())
+                Log.e("connection", e.toString())
             } finally {
-                connForCategory.disconnect()
+                connection.disconnect()
             }
         }
 
@@ -70,23 +67,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getTaskForRecipesList(url: URL, id: Int) = Runnable {
-
-        val categoryUrl = URL("${url}/${id}/recipes")
-        val connForRecipesList = categoryUrl.openConnection() as HttpURLConnection
-        try {
-            val recipes =
-                connForRecipesList.inputStream.bufferedReader().use { reader -> reader.readText() }
-            Log.i("recipeList", "${Thread.currentThread().name}: $recipes")
-        } catch (e: Exception) {
-            Log.e("getRecipesTask", e.toString())
-        } finally {
-            connForRecipesList.disconnect()
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        threadPool.shutdown()
-    }
 }
