@@ -9,8 +9,9 @@ import com.example.recipesapp.databinding.ActivityMainBinding
 import com.example.recipesapp.model.Category
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import java.net.HttpURLConnection
-import java.net.URL
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +20,9 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
     private val threadPool = Executors.newFixedThreadPool(10)
+    private val client = OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }).build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,29 +31,30 @@ class MainActivity : AppCompatActivity() {
         Log.i("thread", "Метод onCreate() выполняется на потоке: ${Thread.currentThread().name}")
 
         val thread = Thread {
-            val url = URL("$mainUrl/category")
-            val connForCategory = url.openConnection() as HttpURLConnection
-            try {
-                connForCategory.connect()
-                Log.i("thread", "Выполняю запрос на потоке: ${Thread.currentThread().name}")
 
-                val bufferedData =
-                    connForCategory.inputStream.bufferedReader().use { reader -> reader.readText() }
-                Log.i("data", bufferedData)
+            val catRequest = Request.Builder().url("$mainUrl/category").build()
+            val response = client.newCall(catRequest).execute()
+            Log.i("thread", "Выполняю запрос на потоке: ${Thread.currentThread().name}")
+
+            if (!response.isSuccessful) return@Thread
+
+            try {
+
+                val body = response.body.use {
+                    it?.string().orEmpty()
+                }
 
                 val json = Json { ignoreUnknownKeys = true }
-                val categories: List<Category> = json.decodeFromString(bufferedData)
+                val categories: List<Category> = json.decodeFromString(body)
 
                 val catIDs = categories.map { it.id }
                 for (id in catIDs) {
-                    val getRecipesInCategoryTask = getTaskForRecipesList(url, id)
+                    val getRecipesInCategoryTask = getTaskForRecipesList(id)
                     threadPool.submit(getRecipesInCategoryTask)
                 }
 
             } catch (e: Exception) {
                 Log.e("getCategoriesTask", e.toString())
-            } finally {
-                connForCategory.disconnect()
             }
         }
 
@@ -70,18 +75,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getTaskForRecipesList(url: URL, id: Int) = Runnable {
+    private fun getTaskForRecipesList(id: Int) = Runnable {
 
-        val categoryUrl = URL("${url}/${id}/recipes")
-        val connForRecipesList = categoryUrl.openConnection() as HttpURLConnection
+        val request = Request.Builder().url("$mainUrl/category/$id/recipes").build()
+        val response = client.newCall(request).execute()
+        if (!response.isSuccessful) return@Runnable
+
         try {
-            val recipes =
-                connForRecipesList.inputStream.bufferedReader().use { reader -> reader.readText() }
-            Log.i("recipeList", "${Thread.currentThread().name}: $recipes")
+            response.body.use { it?.string().orEmpty() }
+
         } catch (e: Exception) {
             Log.e("getRecipesTask", e.toString())
-        } finally {
-            connForRecipesList.disconnect()
         }
     }
 
