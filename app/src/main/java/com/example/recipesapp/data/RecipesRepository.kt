@@ -6,34 +6,39 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
+import java.util.concurrent.Executors
 
 class RecipesRepository {
+    private val threadPool = Executors.newFixedThreadPool(10)
+    private val contentType = "application/json".toMediaType()
 
+    private val retrofit =
+        Retrofit.Builder().baseUrl("https://recipes.androidsprint.ru/api/")
+            .addConverterFactory(Json.asConverterFactory(contentType))
+            .build()
+    private val service = retrofit.create(RecipeApiService::class.java)
 
-    fun getCategories(): List<Category> {
-        var result = emptyList<Category>()
-        val thread = Thread {
+    fun getCategories(callback: (RepositoryResult<List<Category>>) -> Unit) {
+        threadPool.submit {
             try {
+                val response = service.getCategories().execute()
+                callback(
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            RepositoryResult.Success(it)
+                        } ?: getError()
 
-                val contentType = "application/json".toMediaType()
-
-                val retrofit =
-                    Retrofit.Builder().baseUrl("https://recipes.androidsprint.ru/api/")
-                        .addConverterFactory(Json.asConverterFactory(contentType))
-                        .build()
-                val service = retrofit.create(RecipeApiService::class.java)
-                val categoryCall = service.getCategories()
-                val categoriseResponse = categoryCall.execute()
-                result = categoriseResponse.body().orEmpty()
-
+                    } else {
+                        getError()
+                    }
+                )
             } catch (e: Exception) {
-                Log.e("!!!", e.toString())
-
+                Log.e("RRE", "Failed to fetch categories")
+                callback(getError())
             }
-
         }
-        thread.start()
-        thread.join()
-        return result
     }
+
+    private fun getError() = RepositoryResult.Error(Exception("Ошибка получения данных"))
+
 }

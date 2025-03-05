@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.recipesapp.data.RecipesRepository
+import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.model.Category
 
 class CategoriesViewModel : ViewModel() {
@@ -12,16 +13,14 @@ class CategoriesViewModel : ViewModel() {
 
 
     fun loadCategories() {
-        val categories = RecipesRepository().getCategories(
-
-        )
-        _catLiveData.value = CategoriesState(categories = categories)
+        RecipesRepository().getCategories { result ->
+            _catLiveData.postValue(CategoriesState(result))
+        }
     }
-
 }
 
 data class CategoriesState(
-    val categories: List<Category>
+    val result: RepositoryResult<List<Category>>
 )
 
 
