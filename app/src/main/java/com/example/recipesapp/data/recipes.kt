@@ -1,30 +1,10 @@
 package com.example.recipesapp.data
 
-import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Ingredient
 import com.example.recipesapp.model.Recipe
 
 
 object STUB {
-
-    private val categories = listOf(
-        Category(0, "Бургеры", "Рецепты всех популярных видов бургеров", "burger.png"),
-        Category(
-            1,
-            "Десерты",
-            "Самые вкусные рецепты десертов специально для вас",
-            "dessert.png"
-        ),
-        Category(
-            2,
-            "Пицца",
-            "Пицца на любой вкус и цвет. Лучшая подборка для тебя",
-            "pizza.png"
-        ),
-        Category(3, "Рыба", "Печеная, жареная, сушеная, любая рыба на твой вкус", "fish.png"),
-        Category(4, "Супы", "От классики до экзотики: мир в одной тарелке", "soup.png"),
-        Category(5, "Салаты", "Хрустящий калейдоскоп под соусом вдохновения", "salad.png")
-    )
 
     fun getRecipesByCategoryId(categoryId: Int?): List<Recipe> {
         return when (categoryId) {
@@ -254,10 +234,6 @@ object STUB {
             imageUrl = "burger-chili.png"
         )
     )
-
-    fun getRecipeById(id: Int): Recipe {
-        return burgerRecipes.first { it.id == id }
-    }
 
     fun getRecipesByIds(ids: Set<Int>): List<Recipe> {
         return burgerRecipes.filter { ids.contains(it.id) }.toList()

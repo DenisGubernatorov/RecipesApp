@@ -2,6 +2,7 @@ package com.example.recipesapp.data
 
 import android.util.Log
 import com.example.recipesapp.model.Category
+import com.example.recipesapp.model.Recipe
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -34,6 +35,27 @@ class RecipesRepository {
                 )
             } catch (e: Exception) {
                 Log.e("RRE", "Failed to fetch categories")
+                callback(getError())
+            }
+        }
+    }
+
+    fun getRecipe(recipeId: Int, callback: (RepositoryResult<Recipe>) -> Unit) {
+        threadPool.submit {
+            try {
+                val response = service.getRecipe(recipeId.toString()).execute()
+                callback(
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            RepositoryResult.Success(it)
+                        } ?: getError()
+
+                    } else {
+                        getError()
+                    }
+                )
+            } catch (e: Exception) {
+                Log.e("RRE", "Failed to fetch recipe")
                 callback(getError())
             }
         }
