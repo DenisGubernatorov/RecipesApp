@@ -7,7 +7,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.recipesapp.data.FavoritesUtils
-import com.example.recipesapp.data.STUB
+import com.example.recipesapp.data.RecipesRepository
+import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.model.Recipe
 import java.io.IOException
 
@@ -19,19 +20,26 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
     private val favoritesUtils = FavoritesUtils(application)
 
     fun loadRecipe(recipeId: Int) {
-        val recipe = STUB.getRecipeById(recipeId)
-        val isFavorite = favoritesUtils.getFavorites().contains(recipeId)
-        val currentState = _rfLiveData.value ?: RecipeViewModelState()
-        val recipeImage = getDrawable(recipe)
-        _rfLiveData.value = RecipeViewModelState(
-            recipe = recipe,
-            recipeImage = recipeImage,
-            portionCount = currentState.portionCount,
-            isFavorite = isFavorite
-        )
 
-        // TODO: load from network
+        RecipesRepository().getRecipe(recipeId) { result ->
+            if (result is RepositoryResult.Error) {
+                _rfLiveData.postValue(RecipeViewModelState(result = result))
+            } else if (result is RepositoryResult.Success) {
+                val recipe = result.data
+                val recipeImage = getDrawable(recipe)
+                val isFavorite = favoritesUtils.getFavorites().contains(recipeId)
+                _rfLiveData.postValue(
+                    RecipeViewModelState(
+                        recipe = recipe,
+                        recipeImage = recipeImage,
+                        isFavorite = isFavorite,
+                        result = result
+                    )
+                )
+            }
+        }
     }
+
 
     private fun getDrawable(recipe: Recipe?): Drawable? {
 
@@ -79,5 +87,6 @@ data class RecipeViewModelState(
     val recipe: Recipe? = null,
     val recipeImage: Drawable? = null,
     val portionCount: Int = 1,
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean = false,
+    val result: RepositoryResult<Recipe>
 )

@@ -6,9 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.FragmentFavoritesBinding
 import com.example.recipesapp.ui.common.RecipeListAdapter
 import java.io.IOException
@@ -63,14 +65,27 @@ class FavoritesFragment : Fragment() {
 
         favoritesViewModel.ffLiveData.observe(viewLifecycleOwner) { state ->
             state?.let {
-                recipeListAdapter.updateState(state.favoritesList)
+                when (state.result) {
+                    is RepositoryResult.Success -> {
+                        val recipes = state.result.data
+                        recipeListAdapter.updateState(recipes)
 
-                if (state.favoritesList.isEmpty()) {
-                    binding.emptyRecipesList.visibility = View.VISIBLE
-                    binding.rvFavoritesRecipes.visibility = View.GONE
-                } else {
-                    binding.emptyRecipesList.visibility = View.GONE
-                    binding.rvFavoritesRecipes.visibility = View.VISIBLE
+                        if (recipes.isEmpty()) {
+                            binding.emptyRecipesList.visibility = View.VISIBLE
+                            binding.rvFavoritesRecipes.visibility = View.GONE
+                        } else {
+                            binding.emptyRecipesList.visibility = View.GONE
+                            binding.rvFavoritesRecipes.visibility = View.VISIBLE
+                        }
+                    }
+
+                    else -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "Ошибка загрузки рецептов",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }

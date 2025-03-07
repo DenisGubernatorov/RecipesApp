@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.recipesapp.R
+import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.RecipeFragmentBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
@@ -73,18 +75,28 @@ class RecipeFragment : Fragment() {
         }
         recipeViewModel.rfLiveData.observe(viewLifecycleOwner) { state ->
             state?.let {
-                binding.recipesHeaderImg.setImageDrawable(state.recipeImage)
-                binding.recipeHeaderText.text =
-                    state.recipe?.title ?: getString(R.string.get_recipes_error)
-                binding.portionCount.text = "${state.portionCount}"
+                if (state.result is RepositoryResult.Error) {
+                    Toast.makeText(
+                        requireContext(),
+                        state.result.exception.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+
+                    binding.recipesHeaderImg.setImageDrawable(state.recipeImage)
+                    binding.recipeHeaderText.text =
+                        state.recipe?.title ?: getString(R.string.get_recipes_error)
+                    binding.portionCount.text = "${state.portionCount}"
 
 
-                ingredientsAdapter.updateDataSet(state.recipe?.ingredients ?: emptyList())
-                ingredientsAdapter.updateQuantity(state.portionCount)
+                    ingredientsAdapter.updateDataSet(state.recipe?.ingredients ?: emptyList())
+                    ingredientsAdapter.updateQuantity(state.portionCount)
 
-                methodAdapter.updateDataSet(state.recipe?.method ?: emptyList())
+                    methodAdapter.updateDataSet(state.recipe?.method ?: emptyList())
 
-                setFavoritesButtonImage(state.isFavorite)
+                    setFavoritesButtonImage(state.isFavorite)
+
+                }
 
 
             }
