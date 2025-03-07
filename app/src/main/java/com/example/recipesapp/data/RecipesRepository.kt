@@ -61,6 +61,33 @@ class RecipesRepository {
         }
     }
 
+    fun getRecipes(ids: HashSet<Int>, callback: (RepositoryResult<List<Recipe>>) -> Unit) {
+        threadPool.submit {
+
+            try {
+
+                val call = service.getRecipes(ids.joinToString(","))
+                val url = call.request().url
+                Log.i("url", "URL: $url")
+
+                val response = call.execute()
+                callback(
+
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            RepositoryResult.Success(it)
+                        } ?: getError()
+
+                    } else {
+                        getError()
+                    }
+                )
+            } catch (e: Exception) {
+                Log.e("RRE", "Failed to fetch recipe")
+                callback(getError())
+            }
+        }
+    }
     private fun getError() = RepositoryResult.Error(Exception("Ошибка получения данных"))
 
 }

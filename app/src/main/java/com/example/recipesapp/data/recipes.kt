@@ -235,8 +235,5 @@ object STUB {
         )
     )
 
-    fun getRecipesByIds(ids: Set<Int>): List<Recipe> {
-        return burgerRecipes.filter { ids.contains(it.id) }.toList()
-    }
 }
 
