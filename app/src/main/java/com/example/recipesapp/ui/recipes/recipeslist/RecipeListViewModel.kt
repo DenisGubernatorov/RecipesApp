@@ -6,7 +6,8 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.recipesapp.data.STUB
+import com.example.recipesapp.data.RecipesRepository
+import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.model.Recipe
 import java.io.IOException
 
@@ -14,14 +15,14 @@ class RecipeListViewModel(private val application: Application) : AndroidViewMod
     private var _rlfLiveData: MutableLiveData<RecipeListViewModelState> = MutableLiveData()
     val rlfLiveData: LiveData<RecipeListViewModelState> get() = _rlfLiveData
 
-    fun loadRecipesList(categoryId: Int?, categoryName: String?, categoryImageUrl: String?) {
+    fun loadRecipesList(categoryId: Int, categoryName: String?, categoryImageUrl: String?) {
         val categoryImage = getDrawable(categoryImageUrl, categoryName)
 
-        _rlfLiveData.value = RecipeListViewModelState(
-            recipeList = STUB.getRecipesByCategoryId(categoryId),
-            categoryName = categoryName,
-            categoryImage = categoryImage
-        )
+        RecipesRepository().getRecipesByCategoryId(categoryId) {
+            _rlfLiveData.postValue(RecipeListViewModelState(it, categoryName, categoryImage))
+
+        }
+
     }
 
     private fun getDrawable(categoryImageUrl: String?, categoryName: String?): Drawable? {
@@ -41,7 +42,7 @@ class RecipeListViewModel(private val application: Application) : AndroidViewMod
     }
 
     data class RecipeListViewModelState(
-        val recipeList: List<Recipe>,
+        val result: RepositoryResult<List<Recipe>>,
         val categoryName: String?,
         val categoryImage: Drawable?
 
