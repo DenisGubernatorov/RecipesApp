@@ -12,10 +12,10 @@
         android:layout_height="@dimen/cat_header_height_224dp">
 
         <ImageView
+            android:id="@+id/categories_list_header_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/bcg_categories"
             android:contentDescription="@string/text_category" />
 
         <TextView

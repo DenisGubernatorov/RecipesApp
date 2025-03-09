@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.example.recipesapp.R
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
 
@@ -51,6 +53,12 @@ class CategoriesListFragment : Fragment() {
         })
 
         val rvCategories = binding.rvCategories
+        Glide.with(binding.categoriesListHeaderImg)
+            .load(R.drawable.bcg_categories)
+            .placeholder(R.drawable.img_placeholder)
+            .error(R.drawable.img_error)
+            .into(binding.categoriesListHeaderImg)
+
         rvCategories.adapter = categoriesListAdapter
 
         categoriesViewModel.catLiveData.observe(viewLifecycleOwner) { state ->
