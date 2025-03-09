@@ -40,10 +40,10 @@ class RecipesRepository {
         }
     }
 
-    fun getRecipe(recipeId: Int, callback: (RepositoryResult<Recipe>) -> Unit) {
+    fun getRecipeById(recipeId: Int, callback: (RepositoryResult<Recipe>) -> Unit) {
         threadPool.submit {
             try {
-                val response = service.getRecipe(recipeId.toString()).execute()
+                val response = service.getRecipeById(recipeId.toString()).execute()
                 callback(
                     if (response.isSuccessful) {
                         response.body()?.let {
@@ -61,11 +61,11 @@ class RecipesRepository {
         }
     }
 
-    fun getRecipes(ids: HashSet<Int>, callback: (RepositoryResult<List<Recipe>>) -> Unit) {
+    fun getRecipesByIds(ids: HashSet<Int>, callback: (RepositoryResult<List<Recipe>>) -> Unit) {
         threadPool.submit {
 
             try {
-                val response = service.getRecipes(ids.joinToString(",")).execute()
+                val response = service.getRecipesByIds(ids.joinToString(",")).execute()
                 callback(
                     if (response.isSuccessful) {
                         response.body()?.let {

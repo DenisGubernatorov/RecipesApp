@@ -21,7 +21,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
 
     fun loadRecipe(recipeId: Int) {
 
-        RecipesRepository().getRecipe(recipeId) { result ->
+        RecipesRepository().getRecipeById(recipeId) { result ->
             if (result is RepositoryResult.Error) {
                 _rfLiveData.postValue(RecipeViewModelState(result = result))
             } else if (result is RepositoryResult.Success) {

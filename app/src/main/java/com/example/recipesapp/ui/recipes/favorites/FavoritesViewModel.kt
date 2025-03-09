@@ -16,7 +16,7 @@ class FavoritesViewModel(private val application: Application) : AndroidViewMode
 
     fun loadFavorites() {
 
-        RecipesRepository().getRecipes(FavoritesUtils(application).getFavorites()) { result ->
+        RecipesRepository().getRecipesByIds(FavoritesUtils(application).getFavorites()) { result ->
             _ffLiveData.postValue(FavoritesState(result = result))
         }
 
