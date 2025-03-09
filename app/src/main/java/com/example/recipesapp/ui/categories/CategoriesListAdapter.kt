@@ -1,11 +1,11 @@
 package com.example.recipesapp.ui.categories
 
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.recipesapp.R
+import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.databinding.ItemCategoryBinding
 import com.example.recipesapp.model.Category
 
@@ -18,14 +18,13 @@ class CategoriesListAdapter(private var dataSet: List<Category>) :
             binding.cardTitleTextView.text = category.title
             binding.cardDescriptionTextView.text = category.description
 
-            val drawableImage = try {
-                Drawable.createFromStream(itemView.context.assets.open(category.imageUrl), null)
+            Glide.with(binding.cardImageView)
+                .load(RecipesRepository.BASE_URL + "/images/${category.imageUrl}")
+                .placeholder(R.drawable.img_placeholder)
+                .error(R.drawable.img_error)
+                .into(binding.cardImageView)
 
-            } catch (e: Exception) {
-                Log.e("!!!!__", "image not found $category")
-                null
-            }
-            binding.cardImageView.setImageDrawable(drawableImage)
+
             binding.cardImageView.contentDescription =
                 itemView.context.getString(R.string.category_image_description, category.title)
 

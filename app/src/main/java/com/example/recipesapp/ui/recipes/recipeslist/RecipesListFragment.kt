@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.example.recipesapp.R
+import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.RecipesListFragmentBinding
 import com.example.recipesapp.ui.categories.CategoriesListFragmentArgs
@@ -21,7 +23,6 @@ class RecipesListFragment : Fragment() {
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding  for RecipesListFragmentBinding must be not null ")
-
 
     private val recipeListViewModel: RecipeListViewModel by viewModels()
     private val safeArgs by navArgs<CategoriesListFragmentArgs>()
@@ -61,8 +62,14 @@ class RecipesListFragment : Fragment() {
         recipeListViewModel.rlfLiveData.observe(viewLifecycleOwner) { state ->
             state?.let {
                 when (state.result) {
+
                     is RepositoryResult.Success -> {
-                        binding.recipesListHeaderImg.setImageDrawable(state.categoryImage)
+                        Glide.with(this)
+                            .load(state.categoryImageUrl.let { RecipesRepository.BASE_URL + "/images/$it" })
+                            .placeholder(R.drawable.img_placeholder)
+                            .error(R.drawable.img_error)
+                            .into(binding.recipesListHeaderImg)
+
                         binding.recipesListHeaderImg.contentDescription =
                             getString(
                                 R.string.category_header_image_description,

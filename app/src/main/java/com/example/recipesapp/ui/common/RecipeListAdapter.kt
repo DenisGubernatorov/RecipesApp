@@ -1,11 +1,11 @@
 package com.example.recipesapp.ui.common
 
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.recipesapp.R
+import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.databinding.ItemRecipeBinding
 import com.example.recipesapp.model.Recipe
 
@@ -19,14 +19,12 @@ class RecipeListAdapter(private var dataSet: List<Recipe>) :
         fun bind(recipe: Recipe) {
             binding.recipeTitleTextView.text = recipe.title
 
-            val drawableImage = try {
-                Drawable.createFromStream(itemView.context.assets.open(recipe.imageUrl), null)
+            Glide.with(binding.recipeImageView)
+                .load(RecipesRepository.BASE_URL + "/images/${recipe.imageUrl}")
+                .placeholder(R.drawable.img_placeholder)
+                .error(R.drawable.img_error)
+                .into(binding.recipeImageView)
 
-            } catch (e: Exception) {
-                Log.e("!!!!__", "image not found ${recipe.title}")
-                null
-            }
-            binding.recipeImageView.setImageDrawable(drawableImage)
             binding.recipeImageView.contentDescription =
                 itemView.context.getString(R.string.recipe_header_image_description, recipe.title)
 

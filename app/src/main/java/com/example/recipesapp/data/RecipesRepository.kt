@@ -10,11 +10,17 @@ import retrofit2.Retrofit
 import java.util.concurrent.Executors
 
 class RecipesRepository {
+
+    companion object {
+        const val BASE_URL = "https://recipes.androidsprint.ru/api/"
+    }
+
+
     private val threadPool = Executors.newFixedThreadPool(10)
     private val contentType = "application/json".toMediaType()
 
     private val retrofit =
-        Retrofit.Builder().baseUrl("https://recipes.androidsprint.ru/api/")
+        Retrofit.Builder().baseUrl(BASE_URL)
             .addConverterFactory(Json.asConverterFactory(contentType))
             .build()
     private val service = retrofit.create(RecipeApiService::class.java)
@@ -40,10 +46,10 @@ class RecipesRepository {
         }
     }
 
-    fun getRecipe(recipeId: Int, callback: (RepositoryResult<Recipe>) -> Unit) {
+    fun getRecipeById(recipeId: Int, callback: (RepositoryResult<Recipe>) -> Unit) {
         threadPool.submit {
             try {
-                val response = service.getRecipe(recipeId.toString()).execute()
+                val response = service.getRecipeById(recipeId.toString()).execute()
                 callback(
                     if (response.isSuccessful) {
                         response.body()?.let {
@@ -61,11 +67,11 @@ class RecipesRepository {
         }
     }
 
-    fun getRecipes(ids: HashSet<Int>, callback: (RepositoryResult<List<Recipe>>) -> Unit) {
+    fun getRecipesByIds(ids: HashSet<Int>, callback: (RepositoryResult<List<Recipe>>) -> Unit) {
         threadPool.submit {
 
             try {
-                val response = service.getRecipes(ids.joinToString(",")).execute()
+                val response = service.getRecipesByIds(ids.joinToString(",")).execute()
                 callback(
                     if (response.isSuccessful) {
                         response.body()?.let {
