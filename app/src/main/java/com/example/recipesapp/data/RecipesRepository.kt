@@ -10,11 +10,17 @@ import retrofit2.Retrofit
 import java.util.concurrent.Executors
 
 class RecipesRepository {
+
+    companion object {
+        const val BASE_URL = "https://recipes.androidsprint.ru/api/"
+    }
+
+
     private val threadPool = Executors.newFixedThreadPool(10)
     private val contentType = "application/json".toMediaType()
 
     private val retrofit =
-        Retrofit.Builder().baseUrl("https://recipes.androidsprint.ru/api/")
+        Retrofit.Builder().baseUrl(BASE_URL)
             .addConverterFactory(Json.asConverterFactory(contentType))
             .build()
     private val service = retrofit.create(RecipeApiService::class.java)
