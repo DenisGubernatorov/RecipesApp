@@ -1,12 +1,15 @@
 package com.example.recipesapp.ui.categories
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
 
 class CategoriesListFragment : Fragment() {
@@ -51,23 +54,41 @@ class CategoriesListFragment : Fragment() {
         rvCategories.adapter = categoriesListAdapter
 
         categoriesViewModel.catLiveData.observe(viewLifecycleOwner) { state ->
-            state?.let {
-                categoriesListAdapter.updateState(state.categories)
+            when (state.result) {
+                is RepositoryResult.Success -> {
+                    categoriesListAdapter.updateState(state.result.data)
+                }
+
+                is RepositoryResult.Error -> {
+                    categoriesListAdapter.updateState(emptyList())
+                    Toast.makeText(
+                        requireContext(),
+                        state.result.exception.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
 
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
+        categoriesViewModel.catLiveData.value?.result?.let { result ->
+            when (result) {
+                is RepositoryResult.Success -> {
+                    result.data.find { categoryId == it.id }?.let { category ->
+                        val categoriesListToRecipesList =
+                            CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
+                                category
+                            )
+                        findNavController().navigate(categoriesListToRecipesList)
+                    } ?: Log.e("ORE", "Category id not found")
+                }
 
-        categoriesViewModel.catLiveData.value?.categories?.find { it.id == categoryId }?.let {
-            val categoriesListToRecipesList =
-                CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
-                    it
-                )
-            findNavController().navigate(categoriesListToRecipesList)
-        } ?: throw IllegalStateException("Category must be not null")
-
-
+                is RepositoryResult.Error -> {
+                    Log.e("ORE", "${result.exception.message}")
+                }
+            }
+        }
     }
 }
