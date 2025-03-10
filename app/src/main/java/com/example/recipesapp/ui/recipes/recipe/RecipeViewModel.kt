@@ -4,10 +4,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.recipesapp.data.FavoritesUtils
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.model.Recipe
+import kotlinx.coroutines.launch
 
 class RecipeViewModel(application: Application) : AndroidViewModel(application) {
     private var _rfLiveData: MutableLiveData<RecipeViewModelState> = MutableLiveData()
@@ -17,7 +19,8 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     fun loadRecipe(recipeId: Int) {
 
-        RecipesRepository().getRecipeById(recipeId) { result ->
+        viewModelScope.launch {
+            val result = RecipesRepository().getRecipeById(recipeId)
             if (result is RepositoryResult.Error) {
                 _rfLiveData.postValue(RecipeViewModelState(result = result))
             } else if (result is RepositoryResult.Success) {
@@ -34,6 +37,7 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
                 )
             }
         }
+
     }
 
 

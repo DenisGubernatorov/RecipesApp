@@ -4,19 +4,20 @@ import android.util.Log
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
-import java.util.concurrent.Executors
 
 class RecipesRepository {
 
     companion object {
         const val BASE_URL = "https://recipes.androidsprint.ru/api/"
+        const val IMAGE_URL = "$BASE_URL/images/"
     }
 
 
-    private val threadPool = Executors.newFixedThreadPool(10)
     private val contentType = "application/json".toMediaType()
 
     private val retrofit =
@@ -25,88 +26,86 @@ class RecipesRepository {
             .build()
     private val service = retrofit.create(RecipeApiService::class.java)
 
-    fun getCategories(callback: (RepositoryResult<List<Category>>) -> Unit) {
-        threadPool.submit {
+    suspend fun getCategories(): RepositoryResult<List<Category>> {
+        return withContext(Dispatchers.IO) {
             try {
                 val response = service.getCategories().execute()
-                callback(
-                    if (response.isSuccessful) {
-                        response.body()?.let {
-                            RepositoryResult.Success(it)
-                        } ?: getError()
 
-                    } else {
-                        getError()
-                    }
-                )
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        RepositoryResult.Success(it)
+                    } ?: getError()
+
+                } else {
+                    getError()
+                }
+
             } catch (e: Exception) {
                 Log.e("RRE", "Failed to fetch categories")
-                callback(getError())
+                getError()
             }
         }
     }
 
-    fun getRecipeById(recipeId: Int, callback: (RepositoryResult<Recipe>) -> Unit) {
-        threadPool.submit {
+    suspend fun getRecipeById(recipeId: Int): RepositoryResult<Recipe> {
+        return withContext(Dispatchers.IO) {
             try {
                 val response = service.getRecipeById(recipeId.toString()).execute()
-                callback(
-                    if (response.isSuccessful) {
-                        response.body()?.let {
-                            RepositoryResult.Success(it)
-                        } ?: getError()
 
-                    } else {
-                        getError()
-                    }
-                )
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        RepositoryResult.Success(it)
+                    } ?: getError()
+
+                } else {
+                    getError()
+                }
+
             } catch (e: Exception) {
                 Log.e("RRE", "Failed to fetch recipe")
-                callback(getError())
+                getError()
             }
         }
     }
 
-    fun getRecipesByIds(ids: HashSet<Int>, callback: (RepositoryResult<List<Recipe>>) -> Unit) {
-        threadPool.submit {
+    suspend fun getRecipesByIds(ids: HashSet<Int>): RepositoryResult<List<Recipe>> {
+        return withContext(Dispatchers.IO) {
 
             try {
                 val response = service.getRecipesByIds(ids.joinToString(",")).execute()
-                callback(
-                    if (response.isSuccessful) {
-                        response.body()?.let {
-                            RepositoryResult.Success(it)
-                        } ?: getError()
 
-                    } else {
-                        getError()
-                    }
-                )
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        RepositoryResult.Success(it)
+                    } ?: getError()
+
+                } else {
+                    getError()
+                }
+
             } catch (e: Exception) {
                 Log.e("RRE", "Failed to fetch recipe list")
-                callback(getError())
+                getError()
             }
         }
     }
 
-    fun getRecipesByCategoryId(id: Int, callback: (RepositoryResult<List<Recipe>>) -> Unit) {
-        threadPool.submit {
+    suspend fun getRecipesByCategoryId(id: Int): RepositoryResult<List<Recipe>> {
+        return withContext(Dispatchers.IO) {
             try {
-
                 val response = service.getRecipesByCategoryId(id.toString()).execute()
-                callback(
-                    if (response.isSuccessful) {
-                        response.body()?.let {
-                            RepositoryResult.Success(it)
-                        } ?: getError()
 
-                    } else {
-                        getError()
-                    }
-                )
+                if (response.isSuccessful) {
+                    response.body()?.let { recipes ->
+                        RepositoryResult.Success(recipes)
+                    } ?: getError()
+                } else {
+                    getError()
+                }
+
             } catch (e: Exception) {
-                Log.e("RRE", "Failed to fetch recipe list")
-                callback(getError())
+                Log.e("RRE", "Failed to fetch recipe list", e)
+                getError()
             }
         }
     }

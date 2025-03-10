@@ -65,7 +65,7 @@ class RecipesListFragment : Fragment() {
 
                     is RepositoryResult.Success -> {
                         Glide.with(this)
-                            .load(state.categoryImageUrl.let { RecipesRepository.BASE_URL + "/images/$it" })
+                            .load(state.categoryImageUrl.let { RecipesRepository.IMAGE_URL + "$it" })
                             .placeholder(R.drawable.img_placeholder)
                             .error(R.drawable.img_error)
                             .into(binding.recipesListHeaderImg)

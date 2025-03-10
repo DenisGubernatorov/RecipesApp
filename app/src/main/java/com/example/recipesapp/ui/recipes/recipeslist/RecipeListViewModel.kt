@@ -4,18 +4,21 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.model.Recipe
+import kotlinx.coroutines.launch
 
-class RecipeListViewModel(private val application: Application) : AndroidViewModel(application) {
+class RecipeListViewModel(application: Application) : AndroidViewModel(application) {
     private var _rlfLiveData: MutableLiveData<RecipeListViewModelState> = MutableLiveData()
     val rlfLiveData: LiveData<RecipeListViewModelState> get() = _rlfLiveData
 
     fun loadRecipesList(categoryId: Int, categoryName: String?, categoryImageUrl: String?) {
 
-        RecipesRepository().getRecipesByCategoryId(categoryId) {
-            _rlfLiveData.postValue(RecipeListViewModelState(it, categoryName, categoryImageUrl))
+        viewModelScope.launch {
+            val result = RecipesRepository().getRecipesByCategoryId(categoryId)
+            _rlfLiveData.postValue(RecipeListViewModelState(result, categoryName, categoryImageUrl))
         }
 
     }

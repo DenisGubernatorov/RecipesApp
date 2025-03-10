@@ -20,7 +20,7 @@ class RecipeListAdapter(private var dataSet: List<Recipe>) :
             binding.recipeTitleTextView.text = recipe.title
 
             Glide.with(binding.recipeImageView)
-                .load(RecipesRepository.BASE_URL + "/images/${recipe.imageUrl}")
+                .load(RecipesRepository.IMAGE_URL + "${recipe.imageUrl}")
                 .placeholder(R.drawable.img_placeholder)
                 .error(R.drawable.img_error)
                 .into(binding.recipeImageView)
