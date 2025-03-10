@@ -12,7 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.bumptech.glide.Glide
 import com.example.recipesapp.R
+import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.RecipeFragmentBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -83,7 +85,12 @@ class RecipeFragment : Fragment() {
                     ).show()
                 } else {
 
-                    binding.recipesHeaderImg.setImageDrawable(state.recipeImage)
+                    Glide.with(this)
+                        .load(state.recipeImageUrl.let { RecipesRepository.BASE_URL + "/images/$it" })
+                        .placeholder(R.drawable.img_placeholder)
+                        .error(R.drawable.img_error)
+                        .into(binding.recipesHeaderImg)
+
                     binding.recipeHeaderText.text =
                         state.recipe?.title ?: getString(R.string.get_recipes_error)
                     binding.portionCount.text = "${state.portionCount}"

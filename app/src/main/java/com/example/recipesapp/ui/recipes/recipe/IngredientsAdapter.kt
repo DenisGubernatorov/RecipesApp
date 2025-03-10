@@ -20,14 +20,15 @@ class IngredientsAdapter(private var dataSet: List<Ingredient>, private val cont
 
         private fun getTotalQuantity(quantityStr: String, quantity: Int): Any {
 
-            val totalQuantity = BigDecimal(quantityStr) * BigDecimal(quantity)
-            val displayQuantity = totalQuantity
-                .setScale(1, RoundingMode.HALF_UP)
-                .stripTrailingZeros()
-                .toPlainString()
+            return if ("по вкусу" == quantityStr.lowercase()) {
+                quantityStr
+            } else {
+                BigDecimal(quantityStr).multiply(BigDecimal(quantity))
+                    .setScale(1, RoundingMode.HALF_UP)
+                    .stripTrailingZeros()
+                    .toPlainString()
 
-            return displayQuantity
-
+            }
         }
 
         fun bind(ingredient: Ingredient, context: Context, quantity: Int) {
