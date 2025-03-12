@@ -19,7 +19,7 @@ class CategoriesListAdapter(private var dataSet: List<Category>) :
             binding.cardDescriptionTextView.text = category.description
 
             Glide.with(binding.cardImageView)
-                .load(RecipesRepository.BASE_URL + "/images/${category.imageUrl}")
+                .load(RecipesRepository.IMAGE_URL + category.imageUrl)
                 .placeholder(R.drawable.img_placeholder)
                 .error(R.drawable.img_error)
                 .into(binding.cardImageView)
