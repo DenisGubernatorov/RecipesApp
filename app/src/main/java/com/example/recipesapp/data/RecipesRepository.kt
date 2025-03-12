@@ -4,13 +4,14 @@ import android.util.Log
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
-class RecipesRepository {
+class RecipesRepository(private val dispatcher: CoroutineDispatcher = Dispatchers.IO) {
 
     companion object {
         const val BASE_URL = "https://recipes.androidsprint.ru/api/"
@@ -27,7 +28,7 @@ class RecipesRepository {
     private val service = retrofit.create(RecipeApiService::class.java)
 
     suspend fun getCategories(): RepositoryResult<List<Category>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(dispatcher) {
             try {
                 val response = service.getCategories().execute()
 
@@ -48,7 +49,7 @@ class RecipesRepository {
     }
 
     suspend fun getRecipeById(recipeId: Int): RepositoryResult<Recipe> {
-        return withContext(Dispatchers.IO) {
+        return withContext(dispatcher) {
             try {
                 val response = service.getRecipeById(recipeId.toString()).execute()
 
@@ -69,7 +70,7 @@ class RecipesRepository {
     }
 
     suspend fun getRecipesByIds(ids: HashSet<Int>): RepositoryResult<List<Recipe>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(dispatcher) {
 
             try {
                 val response = service.getRecipesByIds(ids.joinToString(",")).execute()
@@ -91,7 +92,7 @@ class RecipesRepository {
     }
 
     suspend fun getRecipesByCategoryId(id: Int): RepositoryResult<List<Recipe>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(dispatcher) {
             try {
                 val response = service.getRecipesByCategoryId(id.toString()).execute()
 
