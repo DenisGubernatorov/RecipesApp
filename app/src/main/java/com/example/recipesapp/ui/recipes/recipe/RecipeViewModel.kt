@@ -1,6 +1,7 @@
 package com.example.recipesapp.ui.recipes.recipe
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,10 +18,10 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
 
     private val favoritesUtils = FavoritesUtils(application)
 
-    fun loadRecipe(recipeId: Int) {
+    fun loadRecipe(recipeId: Int, applicationContext: Context) {
 
         viewModelScope.launch {
-            val result = RecipesRepository().getRecipeById(recipeId)
+            val result = RecipesRepository.getInstance(applicationContext).getRecipeById(recipeId)
             if (result is RepositoryResult.Error) {
                 _rfLiveData.postValue(RecipeViewModelState(result = result))
             } else if (result is RepositoryResult.Success) {

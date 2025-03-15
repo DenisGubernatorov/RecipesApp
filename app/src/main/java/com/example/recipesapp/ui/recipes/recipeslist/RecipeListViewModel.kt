@@ -1,6 +1,7 @@
 package com.example.recipesapp.ui.recipes.recipeslist
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,10 +15,16 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
     private var _rlfLiveData: MutableLiveData<RecipeListViewModelState> = MutableLiveData()
     val rlfLiveData: LiveData<RecipeListViewModelState> get() = _rlfLiveData
 
-    fun loadRecipesList(categoryId: Int, categoryName: String?, categoryImageUrl: String?) {
+    fun loadRecipesList(
+        categoryId: Int,
+        categoryName: String?,
+        categoryImageUrl: String?,
+        applicationContext: Context
+    ) {
 
         viewModelScope.launch {
-            val result = RecipesRepository().getRecipesByCategoryId(categoryId)
+            val result =
+                RecipesRepository.getInstance(applicationContext).getRecipesByCategoryId(categoryId)
             _rlfLiveData.postValue(RecipeListViewModelState(result, categoryName, categoryImageUrl))
         }
 

@@ -37,7 +37,8 @@ class RecipesListFragment : Fragment() {
         recipeListViewModel.loadRecipesList(
             safeArgs.category.id,
             safeArgs.category.title,
-            safeArgs.category.imageUrl
+            safeArgs.category.imageUrl,
+            requireContext().applicationContext
         )
 
         initUI()
