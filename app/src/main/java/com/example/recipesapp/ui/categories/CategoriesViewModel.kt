@@ -1,5 +1,6 @@
 package com.example.recipesapp.ui.categories
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,9 +15,25 @@ class CategoriesViewModel : ViewModel() {
     val catLiveData: LiveData<CategoriesState> get() = _catLiveData
 
 
-    fun loadCategories() {
+    fun loadCategories(applicationContext: Context) {
         viewModelScope.launch {
-            _catLiveData.postValue(CategoriesState(RecipesRepository().getCategories()))
+            val repository = RecipesRepository.getInstance(applicationContext)
+
+            val postVal = when (val cachedCategoriesResult = repository.getCategoriesFromCache()) {
+                is RepositoryResult.Success -> cachedCategoriesResult
+                is RepositoryResult.Error -> {
+                    when (val categoriesApiResult = repository.getCategories()) {
+                        is RepositoryResult.Success -> {
+                            repository.saveCategoriesToCache(categoriesApiResult.data)
+                            categoriesApiResult
+                        }
+
+                        is RepositoryResult.Error -> categoriesApiResult
+                    }
+                }
+            }
+
+            _catLiveData.postValue(CategoriesState(postVal))
         }
     }
 }

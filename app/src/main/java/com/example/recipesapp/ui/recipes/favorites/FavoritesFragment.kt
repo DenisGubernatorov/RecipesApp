@@ -37,7 +37,7 @@ class FavoritesFragment : Fragment() {
 
 
 
-        favoritesViewModel.loadFavorites()
+        favoritesViewModel.loadFavorites(requireContext().applicationContext)
         initUI()
         return binding.root
     }

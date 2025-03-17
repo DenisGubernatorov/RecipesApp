@@ -29,7 +29,7 @@ class CategoriesListFragment : Fragment() {
     ): View {
         _binding = FragmentListCategoriesBinding.inflate(inflater)
 
-        categoriesViewModel.loadCategories()
+        categoriesViewModel.loadCategories(requireContext().applicationContext)
         initUI()
 
         return binding.root

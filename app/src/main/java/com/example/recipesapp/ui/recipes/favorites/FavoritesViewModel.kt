@@ -1,6 +1,7 @@
 package com.example.recipesapp.ui.recipes.favorites
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,11 +17,11 @@ class FavoritesViewModel(private val application: Application) : AndroidViewMode
 
     val ffLiveData: LiveData<FavoritesState> get() = _ffLiveData
 
-    fun loadFavorites() {
+    fun loadFavorites(applicationContext: Context) {
         viewModelScope.launch {
             _ffLiveData.postValue(
                 FavoritesState(
-                    RecipesRepository().getRecipesByIds(
+                    RecipesRepository.getInstance(applicationContext).getRecipesByIds(
                         FavoritesUtils(
                             application
                         ).getFavorites()
