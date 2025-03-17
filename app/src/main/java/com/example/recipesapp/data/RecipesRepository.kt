@@ -100,6 +100,23 @@ class RecipesRepository private constructor(
         }
     }
 
+    suspend fun getCachedRecipes(rangeStart: Int, rangeEnd: Int): RepositoryResult<List<Recipe>> {
+        return try {
+            val recipeList = recipesDatabase.recipesListDao().getRecipesList(rangeStart, rangeEnd)
+            if (recipeList.isNotEmpty()) RepositoryResult.Success(recipeList) else getError()
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+    }
+
+    suspend fun saveRecipeToCache(recipes: List<Recipe>) {
+        try {
+            recipesDatabase.recipesListDao().insertRecipes(recipes)
+        } catch (e: Exception) {
+            Log.e("RRE", "Failed to save recipe to DB ${e.message}")
+        }
+    }
+
     suspend fun getRecipesByIds(ids: HashSet<Int>): RepositoryResult<List<Recipe>> {
         return withContext(dispatcher) {
 

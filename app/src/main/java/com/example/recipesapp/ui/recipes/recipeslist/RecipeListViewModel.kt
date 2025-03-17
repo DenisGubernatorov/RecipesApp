@@ -23,13 +23,39 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
     ) {
 
         viewModelScope.launch {
-            val result =
-                RecipesRepository.getInstance(applicationContext).getRecipesByCategoryId(categoryId)
-            _rlfLiveData.postValue(RecipeListViewModelState(result, categoryName, categoryImageUrl))
+            val repository = RecipesRepository.getInstance(applicationContext)
+
+            val rangeStart = categoryId * 100
+            val rangeEnd = (categoryId + 1) * 100
+
+            val postVal =
+                when (val cachedRecipesResult = repository.getCachedRecipes(rangeStart, rangeEnd)) {
+                    is RepositoryResult.Success -> cachedRecipesResult
+
+                    is RepositoryResult.Error -> {
+
+                        when (val recipesApiResult =
+                            repository.getRecipesByCategoryId(categoryId)) {
+                            is RepositoryResult.Success -> {
+
+                                repository.saveRecipeToCache(recipesApiResult.data)
+                                recipesApiResult
+                            }
+
+                            is RepositoryResult.Error -> recipesApiResult
+                        }
+                    }
+                }
+
+            _rlfLiveData.postValue(
+                RecipeListViewModelState(
+                    postVal,
+                    categoryName,
+                    categoryImageUrl
+                )
+            )
         }
-
     }
-
 
     data class RecipeListViewModelState(
         val result: RepositoryResult<List<Recipe>>,

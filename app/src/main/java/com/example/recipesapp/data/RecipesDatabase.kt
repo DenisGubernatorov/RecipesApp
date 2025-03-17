@@ -4,9 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.recipesapp.model.Category
+import com.example.recipesapp.model.Recipe
 
-@Database(entities = [Category::class], version = 1)
+@Database(entities = [Category::class, Recipe::class], version = 2)
+@TypeConverters(ConvertersUtils::class)
 abstract class RecipesDatabase : RoomDatabase() {
     companion object {
         private var INSTANCE: RecipesDatabase? = null
@@ -17,10 +20,11 @@ abstract class RecipesDatabase : RoomDatabase() {
                     context.applicationContext,
                     RecipesDatabase::class.java,
                     "recipes_database"
-                ).build().also { INSTANCE = it }
+                ).fallbackToDestructiveMigration().build().also { INSTANCE = it }
             }
         }
     }
 
     abstract fun categoriesDao(): CategoriesDao
+    abstract fun recipesListDao(): RecipesDao
 }
