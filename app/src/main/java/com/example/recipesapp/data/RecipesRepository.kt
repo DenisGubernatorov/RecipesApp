@@ -79,27 +79,6 @@ class RecipesRepository private constructor(
         }
     }
 
-    suspend fun getRecipeById(recipeId: Int): RepositoryResult<Recipe> {
-        return withContext(dispatcher) {
-            try {
-                val response = service.getRecipeById(recipeId.toString()).execute()
-
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        RepositoryResult.Success(it)
-                    } ?: getError()
-
-                } else {
-                    getError()
-                }
-
-            } catch (e: Exception) {
-                Log.e("RRE", "Failed to fetch recipe")
-                getError()
-            }
-        }
-    }
-
     suspend fun getCachedRecipes(rangeStart: Int, rangeEnd: Int): RepositoryResult<List<Recipe>> {
         return try {
             val recipeList = recipesDatabase.recipesListDao().getRecipesList(rangeStart, rangeEnd)
@@ -109,33 +88,11 @@ class RecipesRepository private constructor(
         }
     }
 
-    suspend fun saveRecipeToCache(recipes: List<Recipe>) {
+    suspend fun saveRecipesToCache(recipes: List<Recipe>) {
         try {
             recipesDatabase.recipesListDao().insertRecipes(recipes)
         } catch (e: Exception) {
-            Log.e("RRE", "Failed to save recipe to DB ${e.message}")
-        }
-    }
-
-    suspend fun getRecipesByIds(ids: HashSet<Int>): RepositoryResult<List<Recipe>> {
-        return withContext(dispatcher) {
-
-            try {
-                val response = service.getRecipesByIds(ids.joinToString(",")).execute()
-
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        RepositoryResult.Success(it)
-                    } ?: getError()
-
-                } else {
-                    getError()
-                }
-
-            } catch (e: Exception) {
-                Log.e("RRE", "Failed to fetch recipe list")
-                getError()
-            }
+            Log.e("RRE", "Failed to save recipes to DB ${e.message}")
         }
     }
 
@@ -156,6 +113,23 @@ class RecipesRepository private constructor(
                 Log.e("RRE", "Failed to fetch recipe list", e)
                 getError()
             }
+        }
+    }
+
+    suspend fun getFavoriteRecipes(): RepositoryResult<List<Recipe>> {
+        return try {
+            val favoriteRecipes = recipesDatabase.recipesListDao().getFavoriteRecipes()
+            RepositoryResult.Success(favoriteRecipes)
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+    }
+
+    suspend fun setFavorite(recipeId: Int, isFavorite: Boolean) {
+        try {
+            recipesDatabase.recipesListDao().setIsFavorite(recipeId, isFavorite)
+        } catch (e: Exception) {
+            Log.e("RRE", "Failed to update favorite status ${e.message}")
         }
     }
 

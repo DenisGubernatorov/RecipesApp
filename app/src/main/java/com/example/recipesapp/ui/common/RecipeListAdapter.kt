@@ -32,7 +32,7 @@ class RecipeListAdapter(private var dataSet: List<Recipe>) :
     }
 
     interface OnItemClickListener {
-        fun onItemClick(recipeId: Int)
+        fun onItemClick(recipe: Recipe)
     }
 
     private var itemClickListener: OnItemClickListener? = null
@@ -54,7 +54,7 @@ class RecipeListAdapter(private var dataSet: List<Recipe>) :
         val recipe = dataSet[position]
         holder.bind(recipe)
         holder.itemView.setOnClickListener {
-            itemClickListener?.onItemClick(recipe.id)
+            itemClickListener?.onItemClick(recipe)
         }
 
     }

@@ -38,7 +38,7 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
                             repository.getRecipesByCategoryId(categoryId)) {
                             is RepositoryResult.Success -> {
 
-                                repository.saveRecipeToCache(recipesApiResult.data)
+                                repository.saveRecipesToCache(recipesApiResult.data)
                                 recipesApiResult
                             }
 

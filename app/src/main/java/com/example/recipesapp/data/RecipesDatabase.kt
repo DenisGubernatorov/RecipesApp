@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
 
-@Database(entities = [Category::class, Recipe::class], version = 2)
+@Database(entities = [Category::class, Recipe::class], version = 3)
 @TypeConverters(ConvertersUtils::class)
 abstract class RecipesDatabase : RoomDatabase() {
     companion object {
