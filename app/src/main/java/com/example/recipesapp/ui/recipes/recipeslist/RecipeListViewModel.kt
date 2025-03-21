@@ -2,6 +2,7 @@ package com.example.recipesapp.ui.recipes.recipeslist
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,14 +28,17 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
 
             val rangeStart = categoryId * 100
             val rangeEnd = (categoryId + 1) * 100
-
+            Log.e("RRE", "try get RECIPES from DB")
             val postVal =
                 when (val cachedRecipesResult = repository.getCachedRecipes(rangeStart, rangeEnd)) {
-                    is RepositoryResult.Success -> cachedRecipesResult
+                    is RepositoryResult.Success -> {
+                        cachedRecipesResult
+                    }
 
                     is RepositoryResult.Error -> {
-
+                        Log.e("RRE", "try get RECIPES from API")
                         when (val recipesApiResult =
+
                             repository.getRecipesByCategoryId(categoryId)) {
                             is RepositoryResult.Success -> {
 

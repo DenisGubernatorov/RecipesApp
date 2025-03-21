@@ -1,9 +1,15 @@
 package com.example.recipesapp.ui.common
 
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.recipesapp.R
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.databinding.ItemRecipeBinding
@@ -23,12 +29,45 @@ class RecipeListAdapter(private var dataSet: List<Recipe>) :
                 .load(RecipesRepository.IMAGE_URL + "${recipe.imageUrl}")
                 .placeholder(R.drawable.img_placeholder)
                 .error(R.drawable.img_error)
+                .listener(object : RequestListener<Drawable> {
+
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        model: Any,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return false
+                    }
+
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        e?.let { exception ->
+                            exception.logRootCauses("RRE")
+                            exception.printStackTrace()
+                        }
+                        Log.e(
+                            "RRE",
+                            "FAIL TO LOAD IMAGE ${recipe.title}: id:${recipe.id} url:${recipe.imageUrl}  error: $e."
+                        )
+
+                        return false
+                    }
+
+
+                })
                 .into(binding.recipeImageView)
 
             binding.recipeImageView.contentDescription =
                 itemView.context.getString(R.string.recipe_header_image_description, recipe.title)
-
         }
+
+
     }
 
     interface OnItemClickListener {
