@@ -46,14 +46,14 @@ class RecipesRepository private constructor(
         return try {
             val categories = recipesDatabase.categoriesDao().getCategories()
             if (categories.isNotEmpty()) {
-                Log.e(
-                    "RRE",
+                Log.d(
+                    "RRD",
                     "success get CATEGORIES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time: ${LocalDateTime.now()}"
                 )
                 RepositoryResult.Success(categories)
             } else {
-                Log.e(
-                    "RRE",
+                Log.d(
+                    "RRD",
                     "empty data from  CATEGORIES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
                 )
                 getError()
@@ -70,7 +70,7 @@ class RecipesRepository private constructor(
     suspend fun saveCategoriesToCache(categories: List<Category>) {
         try {
             recipesDatabase.categoriesDao().insertCategories(categories)
-            Log.e("RRE", "save categories to DB(${recipesDatabase.hashCode()})  success")
+            Log.d("RRD", "save categories to DB(${recipesDatabase.hashCode()})  success")
         } catch (e: Exception) {
             Log.e(
                 "RRE",
@@ -104,14 +104,14 @@ class RecipesRepository private constructor(
         return try {
             val recipeList = recipesDatabase.recipesListDao().getRecipesList(rangeStart, rangeEnd)
             if (recipeList.isNotEmpty()) {
-                Log.e(
-                    "RRE",
+                Log.d(
+                    "RRD",
                     "success  get RECIPES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
                 )
                 RepositoryResult.Success(recipeList)
             } else {
-                Log.e(
-                    "RRE",
+                Log.d(
+                    "RRD",
                     "empty data from RECIPES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
                 )
                 getError()
@@ -128,8 +128,8 @@ class RecipesRepository private constructor(
     suspend fun saveRecipesToCache(recipes: List<Recipe>) {
         try {
             recipesDatabase.recipesListDao().insertRecipes(recipes)
-            Log.e(
-                "RRE",
+            Log.d(
+                "RRD",
                 "success  save RECIPES to DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
             )
         } catch (e: Exception) {

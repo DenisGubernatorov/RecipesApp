@@ -28,7 +28,7 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
 
             val rangeStart = categoryId * 100
             val rangeEnd = (categoryId + 1) * 100
-            Log.e("RRE", "try get RECIPES from DB")
+            Log.d("RRD", "try get RECIPES from DB")
             val postVal =
                 when (val cachedRecipesResult = repository.getCachedRecipes(rangeStart, rangeEnd)) {
                     is RepositoryResult.Success -> {
@@ -36,7 +36,7 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
                     }
 
                     is RepositoryResult.Error -> {
-                        Log.e("RRE", "try get RECIPES from API")
+                        Log.d("RRD", "try get RECIPES from API")
                         when (val recipesApiResult =
 
                             repository.getRecipesByCategoryId(categoryId)) {
