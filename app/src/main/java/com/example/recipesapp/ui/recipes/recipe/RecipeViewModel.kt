@@ -1,57 +1,47 @@
 package com.example.recipesapp.ui.recipes.recipe
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.recipesapp.data.FavoritesUtils
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.model.Recipe
 import kotlinx.coroutines.launch
 
-class RecipeViewModel(application: Application) : AndroidViewModel(application) {
+class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
     private var _rfLiveData: MutableLiveData<RecipeViewModelState> = MutableLiveData()
     val rfLiveData: LiveData<RecipeViewModelState> get() = _rfLiveData
 
-    private val favoritesUtils = FavoritesUtils(application)
-
-    fun loadRecipe(recipeId: Int, applicationContext: Context) {
+    fun loadRecipe(recipe: Recipe?) {
 
         viewModelScope.launch {
-            val result = RecipesRepository.getInstance(applicationContext).getRecipeById(recipeId)
-            if (result is RepositoryResult.Error) {
-                _rfLiveData.postValue(RecipeViewModelState(result = result))
-            } else if (result is RepositoryResult.Success) {
-                val recipe = result.data
-                val recipeImageUrl = result.data.imageUrl
-                val isFavorite = favoritesUtils.getFavorites().contains(recipeId)
+
+            if (recipe == null) {
+                _rfLiveData.postValue(
+                    RecipeViewModelState(
+                        result = RepositoryResult.Error(
+                            Exception(
+                                "Ошибка получения данных"
+                            )
+                        )
+                    )
+                )
+            } else {
+                val recipeImageUrl = recipe.imageUrl
+                val isFavorite = recipe.isFavorite
                 _rfLiveData.postValue(
                     RecipeViewModelState(
                         recipe = recipe,
                         recipeImageUrl = recipeImageUrl,
-                        isFavorite = isFavorite,
-                        result = result
+                        isFavorite = isFavorite ?: false,
+                        result = RepositoryResult.Success(recipe)
                     )
                 )
             }
         }
 
-    }
-
-
-    private fun saveFavorites(isFavorite: Boolean, recipeId: Int) {
-        val favorites = favoritesUtils.getFavorites()
-        if (isFavorite) {
-            favorites.add(recipeId)
-        } else {
-            favorites.remove(recipeId)
-        }
-
-
-        favoritesUtils.setFavorites(favorites.map { it.toString() }.toSet())
     }
 
     fun onFavoritesClicked() {
@@ -61,7 +51,11 @@ class RecipeViewModel(application: Application) : AndroidViewModel(application) 
         _rfLiveData.value = currentState.copy(isFavorite = newIsFavorite)
         val recipeId = _rfLiveData.value?.recipe?.id ?: -1
 
-        saveFavorites(newIsFavorite, recipeId)
+        viewModelScope.launch {
+            RecipesRepository.getInstance(application.applicationContext)
+                .setFavorite(recipeId, newIsFavorite)
+        }
+
     }
 
     fun onPortionCountChanged(portionCount: Int) {

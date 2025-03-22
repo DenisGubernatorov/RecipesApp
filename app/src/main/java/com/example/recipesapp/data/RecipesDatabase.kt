@@ -9,7 +9,7 @@ import androidx.room.TypeConverters
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
 
-@Database(entities = [Category::class, Recipe::class], version = 2)
+@Database(entities = [Category::class, Recipe::class], version = 3)
 @TypeConverters(ConvertersUtils::class)
 abstract class RecipesDatabase : RoomDatabase() {
     companion object {
@@ -18,7 +18,7 @@ abstract class RecipesDatabase : RoomDatabase() {
         fun getDatabase(context: Context): RecipesDatabase {
             return synchronized(this) {
                 INSTANCE?.let {
-                    Log.e("RRE", "get existing DB(${it.hashCode()})")
+                    Log.d("RRD", "get existing DB(${it.hashCode()})")
                     it
                 } ?: Room.databaseBuilder(
                     context.applicationContext,
@@ -26,7 +26,7 @@ abstract class RecipesDatabase : RoomDatabase() {
                     "recipes_database"
                 ).fallbackToDestructiveMigration().build().also {
                     INSTANCE = it
-                    Log.e("RRE", "create DB(${it.hashCode()})")
+                    Log.d("RRD", "create DB(${it.hashCode()})")
                 }
             }
         }

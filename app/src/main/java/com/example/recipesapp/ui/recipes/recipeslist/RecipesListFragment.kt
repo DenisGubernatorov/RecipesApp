@@ -14,6 +14,7 @@ import com.example.recipesapp.R
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.RecipesListFragmentBinding
+import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.ui.categories.CategoriesListFragmentArgs
 import com.example.recipesapp.ui.common.RecipeListAdapter
 
@@ -52,8 +53,8 @@ class RecipesListFragment : Fragment() {
 
         recipeListAdapter.setOnItemClickListener(object :
             RecipeListAdapter.OnItemClickListener {
-            override fun onItemClick(recipeId: Int) {
-                openRecipeByRecipeId(recipeId)
+            override fun onItemClick(recipe: Recipe) {
+                openRecipeByRecipeId(recipe)
             }
         })
 
@@ -98,10 +99,10 @@ class RecipesListFragment : Fragment() {
 
     }
 
-    private fun openRecipeByRecipeId(recipeId: Int) {
+    private fun openRecipeByRecipeId(recipe: Recipe) {
         findNavController().navigate(
             RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(
-                recipeId
+                recipe
             )
         )
 

@@ -6,13 +6,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.recipesapp.data.FavoritesUtils
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.model.Recipe
 import kotlinx.coroutines.launch
 
-class FavoritesViewModel(private val application: Application) : AndroidViewModel(application) {
+class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
     private var _ffLiveData: MutableLiveData<FavoritesState> = MutableLiveData()
 
     val ffLiveData: LiveData<FavoritesState> get() = _ffLiveData
@@ -21,15 +20,10 @@ class FavoritesViewModel(private val application: Application) : AndroidViewMode
         viewModelScope.launch {
             _ffLiveData.postValue(
                 FavoritesState(
-                    RecipesRepository.getInstance(applicationContext).getRecipesByIds(
-                        FavoritesUtils(
-                            application
-                        ).getFavorites()
-                    )
+                    RecipesRepository.getInstance(applicationContext).getFavoriteRecipes()
                 )
             )
         }
-
     }
 
     data class FavoritesState(

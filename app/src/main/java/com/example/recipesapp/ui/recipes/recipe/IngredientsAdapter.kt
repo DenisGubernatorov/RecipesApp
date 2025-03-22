@@ -2,6 +2,7 @@ package com.example.recipesapp.ui.recipes.recipe
 
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -14,20 +15,27 @@ import java.math.RoundingMode
 class IngredientsAdapter(private var dataSet: List<Ingredient>, private val context: Context) :
     RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
     private var quantity = 1
+    private val positiveDecimalPattern = Regex("""^\d+(?:\.\d*)?$""")
 
-    class ViewHolder(private var binding: IngredientItemBinding) :
+    inner class ViewHolder(private var binding: IngredientItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         private fun getTotalQuantity(quantityStr: String, quantity: Int): Any {
 
-            return if ("по вкусу" == quantityStr.lowercase()) {
-                quantityStr
-            } else {
-                BigDecimal(quantityStr).multiply(BigDecimal(quantity))
-                    .setScale(1, RoundingMode.HALF_UP)
-                    .stripTrailingZeros()
-                    .toPlainString()
+            return when {
+                positiveDecimalPattern.matches(quantityStr) -> {
+                    try {
+                        BigDecimal(quantityStr).multiply(BigDecimal(quantity))
+                            .setScale(1, RoundingMode.HALF_UP)
+                            .stripTrailingZeros()
+                            .toPlainString()
+                    } catch (e: Exception) {
+                        Log.e("IAE", "Fail to parse string to number")
+                        quantityStr
+                    }
+                }
 
+                else -> quantityStr
             }
         }
 
