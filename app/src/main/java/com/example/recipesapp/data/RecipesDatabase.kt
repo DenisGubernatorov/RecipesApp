@@ -1,6 +1,7 @@
 package com.example.recipesapp.data
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -15,16 +16,23 @@ abstract class RecipesDatabase : RoomDatabase() {
         private var INSTANCE: RecipesDatabase? = null
 
         fun getDatabase(context: Context): RecipesDatabase {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: Room.databaseBuilder(
+            return synchronized(this) {
+                INSTANCE?.let {
+                    Log.e("RRE", "get existing DB(${it.hashCode()})")
+                    it
+                } ?: Room.databaseBuilder(
                     context.applicationContext,
                     RecipesDatabase::class.java,
                     "recipes_database"
-                ).fallbackToDestructiveMigration().build().also { INSTANCE = it }
+                ).fallbackToDestructiveMigration().build().also {
+                    INSTANCE = it
+                    Log.e("RRE", "create DB(${it.hashCode()})")
+                }
             }
         }
     }
 
     abstract fun categoriesDao(): CategoriesDao
     abstract fun recipesListDao(): RecipesDao
+
 }

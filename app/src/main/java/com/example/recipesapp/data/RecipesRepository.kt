@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
+import java.time.LocalDateTime
 
 class RecipesRepository private constructor(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -44,8 +45,24 @@ class RecipesRepository private constructor(
     suspend fun getCategoriesFromCache(): RepositoryResult<List<Category>> {
         return try {
             val categories = recipesDatabase.categoriesDao().getCategories()
-            if (categories.isNotEmpty()) RepositoryResult.Success(categories) else getError()
+            if (categories.isNotEmpty()) {
+                Log.e(
+                    "RRE",
+                    "success get CATEGORIES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time: ${LocalDateTime.now()}"
+                )
+                RepositoryResult.Success(categories)
+            } else {
+                Log.e(
+                    "RRE",
+                    "empty data from  CATEGORIES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
+                )
+                getError()
+            }
         } catch (e: Exception) {
+            Log.e(
+                "RRE",
+                "failed get data from  CATEGORIES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
+            )
             RepositoryResult.Error(e)
         }
     }
@@ -53,8 +70,12 @@ class RecipesRepository private constructor(
     suspend fun saveCategoriesToCache(categories: List<Category>) {
         try {
             recipesDatabase.categoriesDao().insertCategories(categories)
+            Log.e("RRE", "save categories to DB(${recipesDatabase.hashCode()})  success")
         } catch (e: Exception) {
-            Log.e("RRE", "Failed to save categories to DB ${e.message}")
+            Log.e(
+                "RRE",
+                "failed to save categories to DB(${recipesDatabase.hashCode()}) ${e.message}"
+            )
         }
     }
 
@@ -82,8 +103,24 @@ class RecipesRepository private constructor(
     suspend fun getCachedRecipes(rangeStart: Int, rangeEnd: Int): RepositoryResult<List<Recipe>> {
         return try {
             val recipeList = recipesDatabase.recipesListDao().getRecipesList(rangeStart, rangeEnd)
-            if (recipeList.isNotEmpty()) RepositoryResult.Success(recipeList) else getError()
+            if (recipeList.isNotEmpty()) {
+                Log.e(
+                    "RRE",
+                    "success  get RECIPES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
+                )
+                RepositoryResult.Success(recipeList)
+            } else {
+                Log.e(
+                    "RRE",
+                    "empty data from RECIPES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
+                )
+                getError()
+            }
         } catch (e: Exception) {
+            Log.e(
+                "RRE",
+                "failed get data from RECIPES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
+            )
             RepositoryResult.Error(e)
         }
     }
@@ -91,10 +128,18 @@ class RecipesRepository private constructor(
     suspend fun saveRecipesToCache(recipes: List<Recipe>) {
         try {
             recipesDatabase.recipesListDao().insertRecipes(recipes)
+            Log.e(
+                "RRE",
+                "success  save RECIPES to DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
+            )
         } catch (e: Exception) {
-            Log.e("RRE", "Failed to save recipes to DB ${e.message}")
+            Log.e(
+                "RRE",
+                "failed to save recipe to DB DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()} ___ ${e.message}"
+            )
         }
     }
+
 
     suspend fun getRecipesByCategoryId(id: Int): RepositoryResult<List<Recipe>> {
         return withContext(dispatcher) {
