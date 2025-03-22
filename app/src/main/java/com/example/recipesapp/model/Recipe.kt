@@ -1,13 +1,20 @@
 package com.example.recipesapp.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.recipesapp.data.ConvertersUtils
 import kotlinx.serialization.Serializable
 
 
 @Serializable
+@Entity(tableName = "recipe")
+@TypeConverters(ConvertersUtils::class)
 data class Recipe(
-    val id: Int,
-    val title: String,
-    val ingredients: List<Ingredient>,
-    val method: List<String>,
-    val imageUrl: String?
+    @PrimaryKey val id: Int,
+    @ColumnInfo(name = "title") val title: String,
+    @ColumnInfo(name = "ingredients") val ingredients: List<Ingredient>,
+    @ColumnInfo(name = "method") val method: List<String>,
+    @ColumnInfo(name = "imageUrl") val imageUrl: String?
 )

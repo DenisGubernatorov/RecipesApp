@@ -1,26 +1,38 @@
 package com.example.recipesapp.data
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.recipesapp.model.Category
+import com.example.recipesapp.model.Recipe
 
-@Database(entities = [Category::class], version = 1)
+@Database(entities = [Category::class, Recipe::class], version = 2)
+@TypeConverters(ConvertersUtils::class)
 abstract class RecipesDatabase : RoomDatabase() {
     companion object {
         private var INSTANCE: RecipesDatabase? = null
 
         fun getDatabase(context: Context): RecipesDatabase {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: Room.databaseBuilder(
+            return synchronized(this) {
+                INSTANCE?.let {
+                    Log.e("RRE", "get existing DB(${it.hashCode()})")
+                    it
+                } ?: Room.databaseBuilder(
                     context.applicationContext,
                     RecipesDatabase::class.java,
                     "recipes_database"
-                ).build().also { INSTANCE = it }
+                ).fallbackToDestructiveMigration().build().also {
+                    INSTANCE = it
+                    Log.e("RRE", "create DB(${it.hashCode()})")
+                }
             }
         }
     }
 
     abstract fun categoriesDao(): CategoriesDao
+    abstract fun recipesListDao(): RecipesDao
+
 }

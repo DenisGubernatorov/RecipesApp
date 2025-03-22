@@ -2,6 +2,7 @@ package com.example.recipesapp.ui.recipes.recipeslist
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,13 +24,42 @@ class RecipeListViewModel(application: Application) : AndroidViewModel(applicati
     ) {
 
         viewModelScope.launch {
-            val result =
-                RecipesRepository.getInstance(applicationContext).getRecipesByCategoryId(categoryId)
-            _rlfLiveData.postValue(RecipeListViewModelState(result, categoryName, categoryImageUrl))
+            val repository = RecipesRepository.getInstance(applicationContext)
+
+            val rangeStart = categoryId * 100
+            val rangeEnd = (categoryId + 1) * 100
+            Log.e("RRE", "try get RECIPES from DB")
+            val postVal =
+                when (val cachedRecipesResult = repository.getCachedRecipes(rangeStart, rangeEnd)) {
+                    is RepositoryResult.Success -> {
+                        cachedRecipesResult
+                    }
+
+                    is RepositoryResult.Error -> {
+                        Log.e("RRE", "try get RECIPES from API")
+                        when (val recipesApiResult =
+
+                            repository.getRecipesByCategoryId(categoryId)) {
+                            is RepositoryResult.Success -> {
+
+                                repository.saveRecipeToCache(recipesApiResult.data)
+                                recipesApiResult
+                            }
+
+                            is RepositoryResult.Error -> recipesApiResult
+                        }
+                    }
+                }
+
+            _rlfLiveData.postValue(
+                RecipeListViewModelState(
+                    postVal,
+                    categoryName,
+                    categoryImageUrl
+                )
+            )
         }
-
     }
-
 
     data class RecipeListViewModelState(
         val result: RepositoryResult<List<Recipe>>,
