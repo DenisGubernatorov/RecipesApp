@@ -46,14 +46,14 @@ class RecipesRepository private constructor(
         return try {
             val categories = recipesDatabase.categoriesDao().getCategories()
             if (categories.isNotEmpty()) {
-                Log.e(
-                    "RRE",
+                Log.d(
+                    "RRD",
                     "success get CATEGORIES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time: ${LocalDateTime.now()}"
                 )
                 RepositoryResult.Success(categories)
             } else {
-                Log.e(
-                    "RRE",
+                Log.d(
+                    "RRD",
                     "empty data from  CATEGORIES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
                 )
                 getError()
@@ -70,7 +70,7 @@ class RecipesRepository private constructor(
     suspend fun saveCategoriesToCache(categories: List<Category>) {
         try {
             recipesDatabase.categoriesDao().insertCategories(categories)
-            Log.e("RRE", "save categories to DB(${recipesDatabase.hashCode()})  success")
+            Log.d("RRD", "save categories to DB(${recipesDatabase.hashCode()})  success")
         } catch (e: Exception) {
             Log.e(
                 "RRE",
@@ -100,39 +100,18 @@ class RecipesRepository private constructor(
         }
     }
 
-    suspend fun getRecipeById(recipeId: Int): RepositoryResult<Recipe> {
-        return withContext(dispatcher) {
-            try {
-                val response = service.getRecipeById(recipeId.toString()).execute()
-
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        RepositoryResult.Success(it)
-                    } ?: getError()
-
-                } else {
-                    getError()
-                }
-
-            } catch (e: Exception) {
-                Log.e("RRE", "Failed to fetch recipe")
-                getError()
-            }
-        }
-    }
-
     suspend fun getCachedRecipes(rangeStart: Int, rangeEnd: Int): RepositoryResult<List<Recipe>> {
         return try {
             val recipeList = recipesDatabase.recipesListDao().getRecipesList(rangeStart, rangeEnd)
             if (recipeList.isNotEmpty()) {
-                Log.e(
-                    "RRE",
+                Log.d(
+                    "RRD",
                     "success  get RECIPES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
                 )
                 RepositoryResult.Success(recipeList)
             } else {
-                Log.e(
-                    "RRE",
+                Log.d(
+                    "RRD",
                     "empty data from RECIPES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
                 )
                 getError()
@@ -146,11 +125,11 @@ class RecipesRepository private constructor(
         }
     }
 
-    suspend fun saveRecipeToCache(recipes: List<Recipe>) {
+    suspend fun saveRecipesToCache(recipes: List<Recipe>) {
         try {
             recipesDatabase.recipesListDao().insertRecipes(recipes)
-            Log.e(
-                "RRE",
+            Log.d(
+                "RRD",
                 "success  save RECIPES to DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
             )
         } catch (e: Exception) {
@@ -161,43 +140,6 @@ class RecipesRepository private constructor(
         }
     }
 
-    suspend fun getRecipesByIds(ids: HashSet<Int>): RepositoryResult<List<Recipe>> {
-        return withContext(dispatcher) {
-            try {
-                if (ids.isEmpty()) {
-                    return@withContext RepositoryResult.Success(emptyList<Recipe>())
-                }
-                val response = service.getRecipesByIds(ids.joinToString(",")).execute()
-
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        Log.e(
-                            "RRE",
-                            "success to load recipes from API _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
-                        )
-                        RepositoryResult.Success(it)
-                    } ?: run {
-                        Log.e(
-                            "RRE",
-                            "null query body with recipes from API _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
-                        )
-                        getError()
-                    }
-
-                } else {
-                    Log.e(
-                        "RRE",
-                        "failed load recipes from API _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()} ___ e:${response.code()} ${response.message()}"
-                    )
-                    getError()
-                }
-
-            } catch (e: Exception) {
-                Log.e("RRE", "Failed to fetch recipe list")
-                getError()
-            }
-        }
-    }
 
     suspend fun getRecipesByCategoryId(id: Int): RepositoryResult<List<Recipe>> {
         return withContext(dispatcher) {
@@ -216,6 +158,23 @@ class RecipesRepository private constructor(
                 Log.e("RRE", "Failed to fetch recipe list", e)
                 getError()
             }
+        }
+    }
+
+    suspend fun getFavoriteRecipes(): RepositoryResult<List<Recipe>> {
+        return try {
+            val favoriteRecipes = recipesDatabase.recipesListDao().getFavoriteRecipes()
+            RepositoryResult.Success(favoriteRecipes)
+        } catch (e: Exception) {
+            RepositoryResult.Error(e)
+        }
+    }
+
+    suspend fun setFavorite(recipeId: Int, isFavorite: Boolean) {
+        try {
+            recipesDatabase.recipesListDao().setIsFavorite(recipeId, isFavorite)
+        } catch (e: Exception) {
+            Log.e("RRE", "Failed to update favorite status ${e.message}")
         }
     }
 

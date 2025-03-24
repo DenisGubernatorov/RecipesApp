@@ -37,7 +37,7 @@ class RecipeFragment : Fragment() {
         _binding = RecipeFragmentBinding.inflate(inflater)
 
 
-        recipeViewModel.loadRecipe(args.recipeId, requireContext().applicationContext)
+        recipeViewModel.loadRecipe(args.recipe)
         initUI()
 
         return binding.root

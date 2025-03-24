@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.recipesapp.R
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.FragmentFavoritesBinding
+import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.ui.common.RecipeListAdapter
 
 
@@ -52,8 +53,8 @@ class FavoritesFragment : Fragment() {
 
         recipeListAdapter.setOnItemClickListener(object :
             RecipeListAdapter.OnItemClickListener {
-            override fun onItemClick(recipeId: Int) {
-                openRecipeByRecipeId(recipeId)
+            override fun onItemClick(recipe: Recipe) {
+                openRecipeByRecipeId(recipe)
             }
 
         })
@@ -87,10 +88,10 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-    private fun openRecipeByRecipeId(recipeId: Int) {
+    private fun openRecipeByRecipeId(recipe: Recipe) {
         findNavController().navigate(
             FavoritesFragmentDirections.actionFavoritesFragmentToRecipeFragment(
-                recipeId
+                recipe
             )
         )
 
