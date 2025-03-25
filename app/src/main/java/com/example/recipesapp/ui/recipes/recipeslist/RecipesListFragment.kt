@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.recipesapp.R
+import com.example.recipesapp.RecipesApplication
 import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.RecipesListFragmentBinding
@@ -24,6 +25,10 @@ class RecipesListFragment : Fragment() {
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding  for RecipesListFragmentBinding must be not null ")
+
+    private val appContainer by lazy {
+        (requireActivity().application as RecipesApplication).appContainer
+    }
 
     private val recipeListViewModel: RecipeListViewModel by viewModels()
     private val safeArgs by navArgs<CategoriesListFragmentArgs>()
@@ -49,7 +54,7 @@ class RecipesListFragment : Fragment() {
 
     private fun initUI() {
 
-        val recipeListAdapter = RecipeListAdapter(emptyList())
+        val recipeListAdapter = RecipeListAdapter(emptyList(), appContainer.imageUrl)
 
         recipeListAdapter.setOnItemClickListener(object :
             RecipeListAdapter.OnItemClickListener {

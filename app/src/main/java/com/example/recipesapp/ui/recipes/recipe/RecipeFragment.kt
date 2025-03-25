@@ -14,7 +14,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.bumptech.glide.Glide
 import com.example.recipesapp.R
-import com.example.recipesapp.data.RecipesRepository
+import com.example.recipesapp.RecipesApplication
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.RecipeFragmentBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -25,6 +25,10 @@ class RecipeFragment : Fragment() {
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding  for RecipesListFragmentBinding must be not null ")
+
+    private val appContainer by lazy {
+        (requireActivity().application as RecipesApplication).appContainer
+    }
 
     private val recipeViewModel: RecipeViewModel by viewModels()
     private val args by navArgs<RecipeFragmentArgs>()
@@ -86,7 +90,7 @@ class RecipeFragment : Fragment() {
                 } else {
 
                     Glide.with(this)
-                        .load(state.recipeImageUrl.let { RecipesRepository.IMAGE_URL + "$it" })
+                        .load(state.recipeImageUrl.let { "${appContainer.imageUrl}$it" })
                         .placeholder(R.drawable.img_placeholder)
                         .error(R.drawable.img_error)
                         .into(binding.recipesHeaderImg)

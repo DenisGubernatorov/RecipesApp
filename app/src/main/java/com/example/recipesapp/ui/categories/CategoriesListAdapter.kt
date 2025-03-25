@@ -5,21 +5,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.recipesapp.R
-import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.databinding.ItemCategoryBinding
 import com.example.recipesapp.model.Category
 
-class CategoriesListAdapter(private var dataSet: List<Category>) :
+class CategoriesListAdapter(private var dataSet: List<Category>, private val imageUrl: String) :
     RecyclerView.Adapter<CategoriesListAdapter.ViewHolder>() {
 
-    class ViewHolder(private var binding: ItemCategoryBinding) :
+    class ViewHolder(private var binding: ItemCategoryBinding, private val imageUrl: String) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(category: Category) {
             binding.cardTitleTextView.text = category.title
             binding.cardDescriptionTextView.text = category.description
 
             Glide.with(binding.cardImageView)
-                .load(RecipesRepository.IMAGE_URL + category.imageUrl)
+                .load(imageUrl + category.imageUrl)
                 .placeholder(R.drawable.img_placeholder)
                 .error(R.drawable.img_error)
                 .into(binding.cardImageView)
@@ -44,7 +43,7 @@ class CategoriesListAdapter(private var dataSet: List<Category>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             ItemCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        return ViewHolder(binding, imageUrl)
     }
 
     override fun getItemCount(): Int {

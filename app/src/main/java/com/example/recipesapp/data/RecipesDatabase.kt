@@ -33,6 +33,6 @@ abstract class RecipesDatabase : RoomDatabase() {
     }
 
     abstract fun categoriesDao(): CategoriesDao
-    abstract fun recipesListDao(): RecipesDao
+    abstract fun recipesDao(): RecipesDao
 
 }

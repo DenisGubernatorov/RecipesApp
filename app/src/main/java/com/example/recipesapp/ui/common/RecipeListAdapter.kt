@@ -11,22 +11,21 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.recipesapp.R
-import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.databinding.ItemRecipeBinding
 import com.example.recipesapp.model.Recipe
 
 
-class RecipeListAdapter(private var dataSet: List<Recipe>) :
+class RecipeListAdapter(private var dataSet: List<Recipe>, private val imageUrl: String) :
     RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
 
 
-    class ViewHolder(private var binding: ItemRecipeBinding) :
+    class ViewHolder(private var binding: ItemRecipeBinding, private val imageUrl: String) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(recipe: Recipe) {
             binding.recipeTitleTextView.text = recipe.title
 
             Glide.with(binding.recipeImageView)
-                .load(RecipesRepository.IMAGE_URL + "${recipe.imageUrl}")
+                .load("$imageUrl${recipe.imageUrl}")
                 .placeholder(R.drawable.img_placeholder)
                 .error(R.drawable.img_error)
                 .listener(object : RequestListener<Drawable> {
@@ -82,7 +81,7 @@ class RecipeListAdapter(private var dataSet: List<Recipe>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRecipeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        return ViewHolder(binding, imageUrl)
     }
 
     override fun getItemCount(): Int {
