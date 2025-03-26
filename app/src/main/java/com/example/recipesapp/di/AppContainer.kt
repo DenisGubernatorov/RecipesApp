@@ -41,5 +41,20 @@ class AppContainer(
     val repository =
         RecipesRepository.getInstance(Dispatchers.IO, categoriesDao, recipesDao, service)
 
-    val categoriesListViewModel = CategoriesListViewModel(this)
+    val categoriesListViewModelFactory: CategoriesListViewModelFactory by lazy {
+        CategoriesListViewModelFactory(
+            this
+        )
+    }
+    val recipesListViewModelFactory: RecipesListViewModelFactory by lazy {
+        RecipesListViewModelFactory(
+            this
+        )
+    }
+    val favoritesViewModelFactory: FavoritesViewModelFactory by lazy {
+        FavoritesViewModelFactory(
+            this
+        )
+    }
+    val recipeViewModelFactory: RecipeViewModelFactory by lazy { RecipeViewModelFactory(this) }
 }

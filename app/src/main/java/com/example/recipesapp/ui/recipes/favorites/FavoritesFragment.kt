@@ -26,7 +26,7 @@ class FavoritesFragment : Fragment() {
     private val appContainer by lazy {
         (requireActivity().application as RecipesApplication).appContainer
     }
-    private val favoritesViewModel: FavoritesViewModel by viewModels()
+    private val favoritesViewModel: FavoritesViewModel by viewModels { appContainer.favoritesViewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +43,7 @@ class FavoritesFragment : Fragment() {
 
 
 
-        favoritesViewModel.loadFavorites(requireContext().applicationContext)
+        favoritesViewModel.loadFavorites()
         initUI()
         return binding.root
     }

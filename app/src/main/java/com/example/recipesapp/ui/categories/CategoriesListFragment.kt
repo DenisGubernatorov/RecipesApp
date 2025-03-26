@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.recipesapp.R
@@ -24,8 +25,10 @@ class CategoriesListFragment : Fragment() {
         (requireActivity().application as RecipesApplication).appContainer
     }
 
-    private val categoriesListViewModel: CategoriesListViewModel =
-        appContainer.categoriesListViewModel.create()
+    private val categoriesListViewModel: CategoriesListViewModel by viewModels {
+        appContainer.categoriesListViewModelFactory
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -1,16 +1,15 @@
 package com.example.recipesapp.ui.recipes.recipe
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.data.RepositoryResult
+import com.example.recipesapp.di.AppContainer
 import com.example.recipesapp.model.Recipe
 import kotlinx.coroutines.launch
 
-class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
+class RecipeViewModel(private val appContainer: AppContainer) : ViewModel() {
     private var _rfLiveData: MutableLiveData<RecipeViewModelState> = MutableLiveData()
     val rfLiveData: LiveData<RecipeViewModelState> get() = _rfLiveData
 
@@ -52,8 +51,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         val recipeId = _rfLiveData.value?.recipe?.id ?: -1
 
         viewModelScope.launch {
-            RecipesRepository.getInstance(application.applicationContext)
-                .setFavorite(recipeId, newIsFavorite)
+            appContainer.repository.setFavorite(recipeId, newIsFavorite)
         }
 
     }

@@ -30,7 +30,7 @@ class RecipeFragment : Fragment() {
         (requireActivity().application as RecipesApplication).appContainer
     }
 
-    private val recipeViewModel: RecipeViewModel by viewModels()
+    private val recipeViewModel: RecipeViewModel by viewModels { appContainer.recipeViewModelFactory }
     private val args by navArgs<RecipeFragmentArgs>()
 
     override fun onCreateView(
