@@ -1,67 +1,60 @@
 package com.example.recipesapp.data
 
-import android.content.Context
 import android.util.Log
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Retrofit
-import java.time.LocalDateTime
 
 class RecipesRepository private constructor(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    context: Context
-) {
+    private val categoriesDao: CategoriesDao,
+    private val recipesDao: RecipesDao,
+    private val service: RecipeApiService,
 
+    ) {
     companion object {
-        const val BASE_URL = "https://recipes.androidsprint.ru/api/"
-        const val IMAGE_URL = "$BASE_URL/images/"
-
         @Volatile
         private var INSTANCE: RecipesRepository? = null
 
-        fun getInstance(context: Context): RecipesRepository {
+        fun getInstance(
+            dispatcher: CoroutineDispatcher,
+            categoriesDao: CategoriesDao,
+            recipesDao: RecipesDao,
+            service: RecipeApiService
+        ): RecipesRepository {
             return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: RecipesRepository(context = context).also { INSTANCE = it }
+                INSTANCE ?: RecipesRepository(
+                    dispatcher = dispatcher,
+                    categoriesDao = categoriesDao,
+                    recipesDao = recipesDao,
+                    service = service
+                ).also { INSTANCE = it }
             }
         }
     }
 
-
-    private val contentType = "application/json".toMediaType()
-    private val recipesDatabase = RecipesDatabase.getDatabase(context)
-
-    private val retrofit =
-        Retrofit.Builder().baseUrl(BASE_URL)
-            .addConverterFactory(Json.asConverterFactory(contentType))
-            .build()
-    private val service = retrofit.create(RecipeApiService::class.java)
-
     suspend fun getCategoriesFromCache(): RepositoryResult<List<Category>> {
         return try {
-            val categories = recipesDatabase.categoriesDao().getCategories()
+            val categories = categoriesDao.getCategories()
             if (categories.isNotEmpty()) {
                 Log.d(
                     "RRD",
-                    "success get CATEGORIES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time: ${LocalDateTime.now()}"
+                    "success get CATEGORIES data from DB"
                 )
                 RepositoryResult.Success(categories)
             } else {
                 Log.d(
                     "RRD",
-                    "empty data from  CATEGORIES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
+                    "empty data from  CATEGORIES data from DB"
                 )
                 getError()
             }
         } catch (e: Exception) {
             Log.e(
                 "RRE",
-                "failed get data from  CATEGORIES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
+                "failed get data from  CATEGORIES data from DB"
             )
             RepositoryResult.Error(e)
         }
@@ -69,12 +62,12 @@ class RecipesRepository private constructor(
 
     suspend fun saveCategoriesToCache(categories: List<Category>) {
         try {
-            recipesDatabase.categoriesDao().insertCategories(categories)
-            Log.d("RRD", "save categories to DB(${recipesDatabase.hashCode()})  success")
+            categoriesDao.insertCategories(categories)
+            Log.d("RRD", "save categories to DB")
         } catch (e: Exception) {
             Log.e(
                 "RRE",
-                "failed to save categories to DB(${recipesDatabase.hashCode()}) ${e.message}"
+                "failed to save categories to DB"
             )
         }
     }
@@ -102,24 +95,24 @@ class RecipesRepository private constructor(
 
     suspend fun getCachedRecipes(rangeStart: Int, rangeEnd: Int): RepositoryResult<List<Recipe>> {
         return try {
-            val recipeList = recipesDatabase.recipesListDao().getRecipesList(rangeStart, rangeEnd)
+            val recipeList = recipesDao.getRecipesList(rangeStart, rangeEnd)
             if (recipeList.isNotEmpty()) {
                 Log.d(
                     "RRD",
-                    "success  get RECIPES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
+                    "success  get RECIPES data from DB"
                 )
                 RepositoryResult.Success(recipeList)
             } else {
                 Log.d(
                     "RRD",
-                    "empty data from RECIPES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
+                    "empty data from RECIPES data from DB"
                 )
                 getError()
             }
         } catch (e: Exception) {
             Log.e(
                 "RRE",
-                "failed get data from RECIPES data from DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
+                "failed get data from RECIPES data from DB"
             )
             RepositoryResult.Error(e)
         }
@@ -127,15 +120,15 @@ class RecipesRepository private constructor(
 
     suspend fun saveRecipesToCache(recipes: List<Recipe>) {
         try {
-            recipesDatabase.recipesListDao().insertRecipes(recipes)
+            recipesDao.insertRecipes(recipes)
             Log.d(
                 "RRD",
-                "success  save RECIPES to DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()}"
+                "success  save RECIPES to DB"
             )
         } catch (e: Exception) {
             Log.e(
                 "RRE",
-                "failed to save recipe to DB DB(${recipesDatabase.hashCode()}) _____ thread: ${Thread.currentThread().name} ___ time ${LocalDateTime.now()} ___ ${e.message}"
+                "failed to save recipe to DB"
             )
         }
     }
@@ -163,7 +156,7 @@ class RecipesRepository private constructor(
 
     suspend fun getFavoriteRecipes(): RepositoryResult<List<Recipe>> {
         return try {
-            val favoriteRecipes = recipesDatabase.recipesListDao().getFavoriteRecipes()
+            val favoriteRecipes = recipesDao.getFavoriteRecipes()
             RepositoryResult.Success(favoriteRecipes)
         } catch (e: Exception) {
             RepositoryResult.Error(e)
@@ -172,7 +165,7 @@ class RecipesRepository private constructor(
 
     suspend fun setFavorite(recipeId: Int, isFavorite: Boolean) {
         try {
-            recipesDatabase.recipesListDao().setIsFavorite(recipeId, isFavorite)
+            recipesDao.setIsFavorite(recipeId, isFavorite)
         } catch (e: Exception) {
             Log.e("RRE", "Failed to update favorite status ${e.message}")
         }

@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.recipesapp.R
-import com.example.recipesapp.data.RecipesRepository
+import com.example.recipesapp.RecipesApplication
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.RecipesListFragmentBinding
 import com.example.recipesapp.model.Recipe
@@ -25,7 +25,12 @@ class RecipesListFragment : Fragment() {
         get() = _binding
             ?: throw IllegalStateException("Binding  for RecipesListFragmentBinding must be not null ")
 
-    private val recipeListViewModel: RecipeListViewModel by viewModels()
+    private val appContainer by lazy {
+        (requireActivity().application as RecipesApplication).appContainer
+    }
+
+    private val recipesListViewModel: RecipesListViewModel by viewModels { appContainer.recipesListViewModelFactory }
+
     private val safeArgs by navArgs<CategoriesListFragmentArgs>()
 
     override fun onCreateView(
@@ -35,11 +40,10 @@ class RecipesListFragment : Fragment() {
     ): View {
         _binding = RecipesListFragmentBinding.inflate(inflater)
 
-        recipeListViewModel.loadRecipesList(
+        recipesListViewModel.loadRecipesList(
             safeArgs.category.id,
             safeArgs.category.title,
-            safeArgs.category.imageUrl,
-            requireContext().applicationContext
+            safeArgs.category.imageUrl
         )
 
         initUI()
@@ -49,7 +53,7 @@ class RecipesListFragment : Fragment() {
 
     private fun initUI() {
 
-        val recipeListAdapter = RecipeListAdapter(emptyList())
+        val recipeListAdapter = RecipeListAdapter(emptyList(), appContainer.imageUrl)
 
         recipeListAdapter.setOnItemClickListener(object :
             RecipeListAdapter.OnItemClickListener {
@@ -61,13 +65,13 @@ class RecipesListFragment : Fragment() {
         val rvRecipesList = binding.rvRecipes
         rvRecipesList.adapter = recipeListAdapter
 
-        recipeListViewModel.rlfLiveData.observe(viewLifecycleOwner) { state ->
+        recipesListViewModel.rlfLiveData.observe(viewLifecycleOwner) { state ->
             state?.let {
                 when (state.result) {
 
                     is RepositoryResult.Success -> {
                         Glide.with(this)
-                            .load(state.categoryImageUrl.let { RecipesRepository.IMAGE_URL + "$it" })
+                            .load(state.categoryImageUrl.let { "${appContainer.imageUrl}$it" })
                             .placeholder(R.drawable.img_placeholder)
                             .error(R.drawable.img_error)
                             .into(binding.recipesListHeaderImg)

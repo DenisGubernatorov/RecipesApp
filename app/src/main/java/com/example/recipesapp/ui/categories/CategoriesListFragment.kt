@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.recipesapp.R
+import com.example.recipesapp.RecipesApplication
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
 
@@ -20,7 +21,14 @@ class CategoriesListFragment : Fragment() {
         get() = _binding
             ?: throw IllegalStateException("Binding  for FragmentListCategoriesBinding must be not null ")
 
-    private val categoriesViewModel: CategoriesViewModel by viewModels()
+    private val appContainer by lazy {
+        (requireActivity().application as RecipesApplication).appContainer
+    }
+
+    private val categoriesListViewModel: CategoriesListViewModel by viewModels {
+        appContainer.categoriesListViewModelFactory
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,7 +37,7 @@ class CategoriesListFragment : Fragment() {
     ): View {
         _binding = FragmentListCategoriesBinding.inflate(inflater)
 
-        categoriesViewModel.loadCategories(requireContext().applicationContext)
+        categoriesListViewModel.loadCategories()
         initUI()
 
         return binding.root
@@ -43,7 +51,7 @@ class CategoriesListFragment : Fragment() {
 
     private fun initUI() {
 
-        val categoriesListAdapter = CategoriesListAdapter(emptyList())
+        val categoriesListAdapter = CategoriesListAdapter(emptyList(), appContainer.imageUrl)
 
         categoriesListAdapter.setOnItemClickListener(object :
             CategoriesListAdapter.OnItemClickListener {
@@ -61,7 +69,7 @@ class CategoriesListFragment : Fragment() {
 
         rvCategories.adapter = categoriesListAdapter
 
-        categoriesViewModel.catLiveData.observe(viewLifecycleOwner) { state ->
+        categoriesListViewModel.catLiveData.observe(viewLifecycleOwner) { state ->
             when (state.result) {
                 is RepositoryResult.Success -> {
                     categoriesListAdapter.updateState(state.result.data)
@@ -81,7 +89,7 @@ class CategoriesListFragment : Fragment() {
     }
 
     private fun openRecipesByCategoryId(categoryId: Int) {
-        categoriesViewModel.catLiveData.value?.result?.let { result ->
+        categoriesListViewModel.catLiveData.value?.result?.let { result ->
             when (result) {
                 is RepositoryResult.Success -> {
                     result.data.find { categoryId == it.id }?.let { category ->
