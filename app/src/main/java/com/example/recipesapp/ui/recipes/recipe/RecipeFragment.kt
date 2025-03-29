@@ -89,7 +89,7 @@ class RecipeFragment : Fragment() {
                 } else {
 
                     Glide.with(this)
-                        .load(state.recipeImageUrl.let { "${recipeViewModel.getUrl()}$it" })
+                        .load(state.recipeImageUrl.let { "${recipeViewModel.getImageUrl()}$it" })
                         .placeholder(R.drawable.img_placeholder)
                         .error(R.drawable.img_error)
                         .into(binding.recipesHeaderImg)

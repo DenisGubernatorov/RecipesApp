@@ -31,7 +31,7 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
-    fun getUrl(): String {
+    fun getImageUrl(): String {
         return imageUrl
     }
 

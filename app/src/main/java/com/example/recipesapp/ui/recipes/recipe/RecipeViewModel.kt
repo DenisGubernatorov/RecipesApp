@@ -19,7 +19,7 @@ class RecipeViewModel @Inject constructor(
 ) : ViewModel() {
     private var _rfLiveData: MutableLiveData<RecipeViewModelState> = MutableLiveData()
     val rfLiveData: LiveData<RecipeViewModelState> get() = _rfLiveData
-    fun getUrl(): String = imageUrl
+    fun getImageUrl(): String = imageUrl
 
     fun loadRecipe(recipe: Recipe?) {
 

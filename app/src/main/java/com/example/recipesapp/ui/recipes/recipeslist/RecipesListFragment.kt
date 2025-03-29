@@ -51,7 +51,7 @@ class RecipesListFragment @Inject constructor() : Fragment() {
     }
 
     private fun initUI() {
-        val imageUrl = recipesListViewModel.getUrl()
+        val imageUrl = recipesListViewModel.getImageUrl()
         val recipeListAdapter = RecipeListAdapter(emptyList(), imageUrl)
 
         recipeListAdapter.setOnItemClickListener(object :

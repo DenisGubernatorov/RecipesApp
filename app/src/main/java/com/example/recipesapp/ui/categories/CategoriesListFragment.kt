@@ -23,7 +23,7 @@ class CategoriesListFragment : Fragment() {
             ?: throw IllegalStateException("Binding  for FragmentListCategoriesBinding must be not null ")
 
     private val categoriesListViewModel: CategoriesListViewModel by viewModels()
-    private val imageUrl: String by lazy { categoriesListViewModel.getUrl() }
+    private val imageUrl: String by lazy { categoriesListViewModel.getImageUrl() }
 
     override fun onCreateView(
         inflater: LayoutInflater,

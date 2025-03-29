@@ -21,7 +21,7 @@ class CategoriesListViewModel @Inject constructor(
     private var _catLiveData: MutableLiveData<CategoriesState> = MutableLiveData()
     val catLiveData: LiveData<CategoriesState> get() = _catLiveData
 
-    fun getUrl(): String = imageUrl
+    fun getImageUrl(): String = imageUrl
     fun loadCategories() {
         viewModelScope.launch {
 

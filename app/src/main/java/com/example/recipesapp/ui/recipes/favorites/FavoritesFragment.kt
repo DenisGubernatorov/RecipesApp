@@ -25,7 +25,7 @@ class FavoritesFragment : Fragment() {
 
 
     private val favoritesViewModel: FavoritesViewModel by viewModels()
-    private val imageUrl: String by lazy { favoritesViewModel.getUrl() }
+    private val imageUrl: String by lazy { favoritesViewModel.getImageUrl() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
