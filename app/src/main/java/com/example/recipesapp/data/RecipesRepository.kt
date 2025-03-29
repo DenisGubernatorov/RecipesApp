@@ -5,16 +5,15 @@ import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class RecipesRepository @Inject constructor(
     private val categoriesDao: CategoriesDao,
     private val recipesDao: RecipesDao,
     private val service: RecipeApiService,
+    private val dispatcher: CoroutineDispatcher
 
-    ) {
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) {
 
     suspend fun getCategoriesFromCache(): RepositoryResult<List<Category>> {
         return try {
