@@ -5,15 +5,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.data.RepositoryResult
-import com.example.recipesapp.di.AppContainer
 import com.example.recipesapp.model.Recipe
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
+import jakarta.inject.Named
 import kotlinx.coroutines.launch
 
-class RecipesListViewModel(private val appContainer: AppContainer) : ViewModel() {
+@HiltViewModel
+class RecipesListViewModel @Inject constructor(
+    private val repository: RecipesRepository,
+    @Named("imageUrl") private val imageUrl: String
+) : ViewModel() {
     private var _rlfLiveData: MutableLiveData<RecipeListViewModelState> = MutableLiveData()
     val rlfLiveData: LiveData<RecipeListViewModelState> get() = _rlfLiveData
-
+    fun getUrl(): String = imageUrl
     fun loadRecipesList(
         categoryId: Int,
         categoryName: String?,
@@ -21,7 +28,7 @@ class RecipesListViewModel(private val appContainer: AppContainer) : ViewModel()
     ) {
 
         viewModelScope.launch {
-            val repository = appContainer.repository
+            val repository = repository
 
             val rangeStart = categoryId * 100
             val rangeEnd = (categoryId + 1) * 100

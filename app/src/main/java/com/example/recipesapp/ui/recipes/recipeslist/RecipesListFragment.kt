@@ -11,25 +11,24 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.recipesapp.R
-import com.example.recipesapp.RecipesApplication
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.RecipesListFragmentBinding
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.ui.categories.CategoriesListFragmentArgs
 import com.example.recipesapp.ui.common.RecipeListAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import jakarta.inject.Inject
 
-class RecipesListFragment : Fragment() {
+@AndroidEntryPoint
+class RecipesListFragment @Inject constructor() : Fragment() {
 
     private var _binding: RecipesListFragmentBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding  for RecipesListFragmentBinding must be not null ")
 
-    private val appContainer by lazy {
-        (requireActivity().application as RecipesApplication).appContainer
-    }
 
-    private val recipesListViewModel: RecipesListViewModel by viewModels { appContainer.recipesListViewModelFactory }
+    private val recipesListViewModel: RecipesListViewModel by viewModels()
 
     private val safeArgs by navArgs<CategoriesListFragmentArgs>()
 
@@ -52,8 +51,8 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun initUI() {
-
-        val recipeListAdapter = RecipeListAdapter(emptyList(), appContainer.imageUrl)
+        val imageUrl = recipesListViewModel.getUrl()
+        val recipeListAdapter = RecipeListAdapter(emptyList(), imageUrl)
 
         recipeListAdapter.setOnItemClickListener(object :
             RecipeListAdapter.OnItemClickListener {
@@ -71,7 +70,7 @@ class RecipesListFragment : Fragment() {
 
                     is RepositoryResult.Success -> {
                         Glide.with(this)
-                            .load(state.categoryImageUrl.let { "${appContainer.imageUrl}$it" })
+                            .load(state.categoryImageUrl.let { "${imageUrl}$it" })
                             .placeholder(R.drawable.img_placeholder)
                             .error(R.drawable.img_error)
                             .into(binding.recipesListHeaderImg)

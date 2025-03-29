@@ -4,12 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.data.RepositoryResult
-import com.example.recipesapp.di.AppContainer
 import com.example.recipesapp.model.Recipe
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
+import jakarta.inject.Named
 import kotlinx.coroutines.launch
 
-class FavoritesViewModel(private val appContainer: AppContainer) : ViewModel() {
+@HiltViewModel
+class FavoritesViewModel @Inject constructor(
+    private val repository: RecipesRepository,
+    @Named("imageUrl") private val imageUrl: String
+) : ViewModel() {
     private var _ffLiveData: MutableLiveData<FavoritesState> = MutableLiveData()
 
     val ffLiveData: LiveData<FavoritesState> get() = _ffLiveData
@@ -18,10 +25,14 @@ class FavoritesViewModel(private val appContainer: AppContainer) : ViewModel() {
         viewModelScope.launch {
             _ffLiveData.postValue(
                 FavoritesState(
-                    appContainer.repository.getFavoriteRecipes()
+                    repository.getFavoriteRecipes()
                 )
             )
         }
+    }
+
+    fun getUrl(): String {
+        return imageUrl
     }
 
     data class FavoritesState(
