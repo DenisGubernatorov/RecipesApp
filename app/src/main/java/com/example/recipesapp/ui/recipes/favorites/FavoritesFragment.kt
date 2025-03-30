@@ -10,23 +10,22 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.recipesapp.R
-import com.example.recipesapp.RecipesApplication
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.FragmentFavoritesBinding
 import com.example.recipesapp.model.Recipe
 import com.example.recipesapp.ui.common.RecipeListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding  for FragmentListCategoriesBinding must be not null ")
 
-    private val appContainer by lazy {
-        (requireActivity().application as RecipesApplication).appContainer
-    }
-    private val favoritesViewModel: FavoritesViewModel by viewModels { appContainer.favoritesViewModelFactory }
+
+    private val favoritesViewModel: FavoritesViewModel by viewModels()
+    private val imageUrl: String by lazy { favoritesViewModel.getImageUrl() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +51,7 @@ class FavoritesFragment : Fragment() {
     private fun initUI() {
 
 
-        val recipeListAdapter = RecipeListAdapter(emptyList(), appContainer.imageUrl)
+        val recipeListAdapter = RecipeListAdapter(emptyList(), imageUrl)
         val rvRecipesList = binding.rvFavoritesRecipes
         rvRecipesList.adapter = recipeListAdapter
 

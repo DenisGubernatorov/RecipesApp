@@ -5,25 +5,33 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.recipesapp.data.RecipesRepository
 import com.example.recipesapp.data.RepositoryResult
-import com.example.recipesapp.di.AppContainer
 import com.example.recipesapp.model.Category
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
+import jakarta.inject.Named
 import kotlinx.coroutines.launch
 
-class CategoriesListViewModel(private val appContainer: AppContainer) : ViewModel() {
+@HiltViewModel
+class CategoriesListViewModel @Inject constructor(
+    private val repository: RecipesRepository,
+    @Named("imageUrl") private val imageUrl: String
+) : ViewModel() {
     private var _catLiveData: MutableLiveData<CategoriesState> = MutableLiveData()
     val catLiveData: LiveData<CategoriesState> get() = _catLiveData
 
-
+    fun getImageUrl(): String = imageUrl
     fun loadCategories() {
         viewModelScope.launch {
-            val repository = appContainer.repository
+
             Log.d("RRD", "try get CATEGORIES from DB")
             val postVal = when (val cachedCategoriesResult = repository.getCategoriesFromCache()) {
                 is RepositoryResult.Success -> {
 
                     cachedCategoriesResult
                 }
+
                 is RepositoryResult.Error -> {
                     when (val categoriesApiResult = repository.getCategories()) {
                         is RepositoryResult.Success -> {

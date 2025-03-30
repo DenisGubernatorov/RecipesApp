@@ -1,9 +1,7 @@
 package com.example.recipesapp
 
 import android.app.Application
-import com.example.recipesapp.di.AppContainer
+import dagger.hilt.android.HiltAndroidApp
 
-class RecipesApplication : Application() {
-    val appContainer by lazy { AppContainer(this) }
-
-}
+@HiltAndroidApp
+class RecipesApplication : Application() 

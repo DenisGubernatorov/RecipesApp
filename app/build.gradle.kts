@@ -3,8 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.safeArgs)
-    kotlin("plugin.serialization") version "2.0.21"
-    id("com.google.devtools.ksp") version "2.1.0-1.0.29"
+    alias(libs.plugins.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -67,4 +68,6 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
 }

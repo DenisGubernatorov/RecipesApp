@@ -3,37 +3,17 @@ package com.example.recipesapp.data
 import android.util.Log
 import com.example.recipesapp.model.Category
 import com.example.recipesapp.model.Recipe
+import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class RecipesRepository private constructor(
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+class RecipesRepository @Inject constructor(
     private val categoriesDao: CategoriesDao,
     private val recipesDao: RecipesDao,
     private val service: RecipeApiService,
+    private val dispatcher: CoroutineDispatcher
 
-    ) {
-    companion object {
-        @Volatile
-        private var INSTANCE: RecipesRepository? = null
-
-        fun getInstance(
-            dispatcher: CoroutineDispatcher,
-            categoriesDao: CategoriesDao,
-            recipesDao: RecipesDao,
-            service: RecipeApiService
-        ): RecipesRepository {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: RecipesRepository(
-                    dispatcher = dispatcher,
-                    categoriesDao = categoriesDao,
-                    recipesDao = recipesDao,
-                    service = service
-                ).also { INSTANCE = it }
-            }
-        }
-    }
+) {
 
     suspend fun getCategoriesFromCache(): RepositoryResult<List<Category>> {
         return try {
@@ -172,5 +152,4 @@ class RecipesRepository private constructor(
     }
 
     private fun getError() = RepositoryResult.Error(Exception("Ошибка получения данных"))
-
 }

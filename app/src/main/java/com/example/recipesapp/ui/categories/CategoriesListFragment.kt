@@ -11,24 +11,19 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.recipesapp.R
-import com.example.recipesapp.RecipesApplication
 import com.example.recipesapp.data.RepositoryResult
 import com.example.recipesapp.databinding.FragmentListCategoriesBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoriesListFragment : Fragment() {
     private var _binding: FragmentListCategoriesBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding  for FragmentListCategoriesBinding must be not null ")
 
-    private val appContainer by lazy {
-        (requireActivity().application as RecipesApplication).appContainer
-    }
-
-    private val categoriesListViewModel: CategoriesListViewModel by viewModels {
-        appContainer.categoriesListViewModelFactory
-    }
-
+    private val categoriesListViewModel: CategoriesListViewModel by viewModels()
+    private val imageUrl: String by lazy { categoriesListViewModel.getImageUrl() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +46,7 @@ class CategoriesListFragment : Fragment() {
 
     private fun initUI() {
 
-        val categoriesListAdapter = CategoriesListAdapter(emptyList(), appContainer.imageUrl)
+        val categoriesListAdapter = CategoriesListAdapter(emptyList(), imageUrl)
 
         categoriesListAdapter.setOnItemClickListener(object :
             CategoriesListAdapter.OnItemClickListener {
